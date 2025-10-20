@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 
 const Events = () => {
     useEffect(() => {
-        document.title = 'RoboTUM | Events';
+        document.title = 'Events | RoboTUM';
     }, []);
 
     return (

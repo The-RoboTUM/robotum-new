@@ -25,7 +25,7 @@ export default function HeroSection() {
         {/* Buttons */}
         <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6">
           <a
-            href="#join"
+            href="/join"
             className="px-8 py-4 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-[15px] tracking-wide font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             Become a Member

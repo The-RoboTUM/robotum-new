@@ -6,15 +6,15 @@ export default function FooterSection() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
 
         {/* Logo and Description */}
-        <div className="flex flex-col gap-4">
-          <img src={assets.logo} alt="RoboTUM Logo" className="h-10" />
-          <p className="text-gray-400 text-sm">
+        <div className="flex flex-col gap-4 text-center sm:text-left items-center sm:items-start">
+          <img src={assets.logo} alt="RoboTUM Logo" className="h-10 mx-auto sm:mx-0" />
+          <p className="text-gray-400 text-sm max-w-xs">
             RoboTUM is a student-driven robotics club exploring AI, design, and engineering to push the limits of autonomous systems.
           </p>
         </div>
 
         {/* Quick Links */}
-        <div>
+        <div className="text-center sm:text-left">
           <h3 className="font-semibold text-lg mb-3">Explore</h3>
           <ul className="flex flex-col gap-2 text-sm text-gray-300">
             <li><a href="/" className="hover:text-white">Homepage</a></li>
@@ -26,7 +26,7 @@ export default function FooterSection() {
         </div>
 
         {/* Legal Links */}
-        <div>
+        <div className="text-center sm:text-left">
           <h3 className="font-semibold text-lg mb-3">Legal</h3>
           <ul className="flex flex-col gap-2 text-sm text-gray-300">
             <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
@@ -36,9 +36,9 @@ export default function FooterSection() {
         </div>
 
         {/* Follow Us */}
-        <div>
+        <div className="text-center sm:text-left">
           <h3 className="font-semibold text-lg mb-3">Follow us</h3>
-          <div className="flex gap-4 mt-2 bg-[#000C21] p-4 rounded-md">
+          <div className="flex justify-center sm:justify-start gap-4 mt-2 bg-[#000C21] p-4 rounded-md">
             <a
               href="https://www.instagram.com/therobotum/"
               className="hover:opacity-80"
@@ -82,7 +82,7 @@ export default function FooterSection() {
       <hr className="my-8 border-gray-700" />
 
       {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between text-sm text-gray-500">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 text-center gap-2">
         <span>© 2025 RoboTUM. All rights reserved.</span>
         <span>Built with ❤️ by RoboTUM Team</span>
       </div>

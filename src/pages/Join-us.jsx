@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 
 const JoinUs = () => {
     useEffect(() => {
-        document.title = 'RoboTUM | Join Us';
+        document.title = 'Join Us | RoboTUM';
     }, []);
 
     return (

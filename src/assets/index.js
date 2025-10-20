@@ -33,6 +33,15 @@ export { default as creativeRobotics } from './images/projects/creative-robotics
 export { default as itqPlastix } from './images/projects/itq-plastix-project.png'
 export { default as replyProject } from './images/projects/reply-project.png'
 export { default as websiteDevelopment } from './images/projects/website-development-project.png'
+export { default as hrFinanceLegal } from './images/projects/hr-finance-legal.png'
+export { default as communityEngagement } from './images/projects/community-engagement.png'
+export { default as bookclubDnD } from './images/projects/bookclub-dnd.png'
+export { default as workshop} from './images/projects/workshop.png'
+export { default as generation } from './images/projects/generation.png'
+export { default as precelerator } from './images/projects/precelerator.png'
+export { default as roboweek } from './images/projects/roboweek.png'
+export { default as podcast } from './images/projects/podcast.png'
+export { default as robospark } from './images/projects/robospark.png'
 
 // Members
 export { default as member } from './images/members/marco.jpg'

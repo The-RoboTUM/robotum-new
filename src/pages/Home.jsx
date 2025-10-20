@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 
 const Home = () => {
     useEffect(() => {
-        document.title = 'RoboTUM | Home';
+        document.title = 'Home | RoboTUM';
     }, []);
 
     return (

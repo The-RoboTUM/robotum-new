@@ -36,7 +36,70 @@ const projects = [
       'Together with our sponsor, Reply, we\'re developing a cutting-edge software stack that expands on the autonomous capabilities of the PUMA Quadruped robot. This project is right for you if your focus is on software in autonomous systems!',
     image: assets.replyProject,
     link: '#reply'
-  }
+  },
+  {
+    title: 'HR, Finance & Legal',
+    description:
+      'RoboTUM is an organization with more than 100 Members that needs a backbone to run on! If you want to help keep RoboTUM running, manage our Members, our Legal and Contractual obligations, or get some practical experience in Financial Accounting, RoboTUM needs you!',
+    image: assets.hrFinanceLegal,
+    link: '#hr-finance-legal'
+  },
+  {
+    title: 'Community Engagement',
+    description:
+      'Help bring together the RoboTUM Community by planning cool events, Bar evenings, multi-day retreats, or anything else that could be fun!',
+    image: assets.communityEngagement,
+    link: '#community-engagement'
+  },
+  {
+    title: 'Bookclub & DnD Project',
+    description:
+      'Want to engage with other RoboTUM members and discuss an interesting book or go on a DnD Campaign? Help organize it here!',
+    image: assets.bookclubDnD,
+    link: '#bookclub-dnd'
+  },
+  {
+    title: 'Workshop Wednesday',
+    description:
+      'Creating Value for our Members by hosting and organizing Weekly Workshops to bring together the community and share knowledge. If you want to help create interesting events and share knowledge across our members, this is the right place for you!',
+    image: assets.workshop,
+    link: '#workshop'
+  },
+  {
+    title: 'Generation Robotics: European Federation of Robotics Organizations',
+    description:
+      'RoboTUM goes International! We are planning to expand our network across Europe and engage with other Student initiatives from Zurich, Paris, London, Delft, and everywhere else. If you are interested in building an international community from the ground up, are interested in Event Planning, marketing, legal, or financial matters, help build this amazing platform!',
+    image: assets.generation,
+    link: '#generation'
+  },
+  {
+    title: 'Robotics Student Precelerator',
+    description:
+      'In addition to bringing together Robotics Talent in Gen R, we also want to deliver a platform for entrepreneurially minded roboticists, set up workshops, engage with VC Funds, Industry Partners, Accelerators like EF, and other stakeholders, to build amazing deep tech/Robotics companies!',
+    image: assets.precelerator,
+    link: '#precelerator'
+  },
+  {
+    title: 'Roboweek (industry + academic events)',
+    description:
+      'Planned for April next year, RoboTUM wants to bring together the whole Robotics Ecosystem from all over Germany and Europe and host a full week of amazing Robotics Events all over Munich!',
+    image: assets.roboweek,
+    link: '#roboweek'
+  },
+  {
+    title: 'RoboTUM Podcast',
+    description:
+      'Our Podcast continues as it exists right now, but needs passionate talent to lift it to the next level, increase its reach, and find amazing Partners! Join now to spread the Robotics Gospel.',
+    image: assets.podcast,
+    link: '#podcast'
+  },
+  {
+    title: 'Robo spark SUMMIT',
+    description:
+      'Unite with Bavaria\'s leading robotics and AI innovators at Google HQ Munich for a day of groundbreaking insights and game-changing connections.',
+    image: assets.robospark,
+    link: '#robospark'
+  },
 ]
 
 export default function ProjectSection() {
