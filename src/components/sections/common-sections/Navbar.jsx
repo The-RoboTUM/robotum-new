@@ -42,6 +42,7 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick }) {
   )
 }
 
+
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [projectsOpen, setProjectsOpen] = useState(false)
@@ -49,6 +50,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const hoverTimer = useRef(null)
   const { hash: currentHash } = useLocation()
+  const navRef = useRef(null)
 
   const handleProjectsEnter = useCallback(() => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
@@ -78,11 +80,32 @@ export default function Navbar() {
     }
   }, [])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setOpen(false)
+        setProjectsOpen(false)
+        setProjectsMobileOpen(false)
+      }
+    }
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [open])
+
   const itemBase =
     'inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-normal text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 hover:text-indigo-300 cursor-pointer'
 
   return (
     <nav
+      ref={navRef}
       role="navigation"
       aria-label="Main"
       className={`navbar-gradient fixed top-0 left-0 right-0 z-50 font-sans transition-opacity ${scrolled ? 'opacity-95' : 'opacity-95'}`}
@@ -197,8 +220,9 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`md:hidden px-4 navbar-gradient transition-all duration-400 ${open ? 'opacity-100 max-h-screen pb-3' : 'opacity-0 max-h-0 overflow-hidden'
-          }`}
+        className={`md:hidden px-4 navbar-gradient transition-all duration-400 ${
+          open ? 'opacity-100 max-h-screen pb-3 overflow-y-auto' : 'opacity-0 max-h-0 overflow-hidden'
+        }`}
       >
         <ul className="flex flex-col gap-1">
           {links.map(l => {
