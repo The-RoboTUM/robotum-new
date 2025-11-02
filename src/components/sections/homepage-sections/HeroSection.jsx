@@ -10,6 +10,7 @@ import Button from '@components/ui/Button'
  */
 export default function HeroSection({
   title = 'Shaping the Future of Robotics',
+  subtitle = '',
   ctaPrimary = 'Become a Member',
   ctaPrimaryTo = '/join',
   ctaSecondary = 'Become a Partner',
@@ -21,19 +22,19 @@ export default function HeroSection({
       id="hero"
       role="region"
       aria-labelledby="hero-heading"
-      className="relative w-full min-h-screen px-6 py-24 text-white font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
+      className="relative w-full min-h-screen px-6 py-20 md:py-28 lg:py-32 text-white font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
     >
       {/* Dark overlay for readability */}
       <div className="pointer-events-none absolute inset-0 bg-black/20" />
 
       {/* Content */}
       <div className="relative z-10 flex items-center">
-        <div className="container mx-auto md:py-32 grid place-items-center text-center">
+        <div className="mx-auto max-w-7xl w-full grid place-items-center text-center">
           {/* Logo */}
           <img
             src={assets.navLogo}
             alt="RoboTUM logo"
-            className="w-40 md:w-56 h-auto mb-8 drop-shadow"
+            className="w-36 sm:w-44 md:w-56 h-auto mb-8 drop-shadow"
             loading="eager"
             decoding="async"
           />
@@ -41,16 +42,20 @@ export default function HeroSection({
           {/* Heading */}
           <h1
             id="hero-heading"
-            className="font-bold leading-tight tracking-tight [text-wrap:balance] text-[clamp(2.5rem,6vw+0.5rem,7.5rem)]"
+            className="font-bold leading-tight tracking-tight text-balance text-hero md:text-display"
           >
             {title}
           </h1>
 
           {/* Subtext (optional): map to text1 scale if you add subtitle later */}
-          <p className="mt-4 text-white/80 max-w-3xl text-[clamp(1.125rem,1.2vw+0.5rem,1.75rem)]">Your subtitle here</p>
+          {subtitle && (
+            <p className="mt-4 text-white/80 max-w-3xl text-text1 text-balance mx-auto">
+              {subtitle}
+            </p>
+          )}
 
           {/* CTAs */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6">
+          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
             <Button variant="primary" as="link" to={ctaPrimaryTo}>
               {ctaPrimary}
             </Button>
