@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import * as assets from '@assets'
+import Button from '@components/ui/Button'
 
 /**
  * HeroSection
@@ -14,14 +15,6 @@ export default function HeroSection({
   ctaSecondary = 'Become a Partner',
   ctaSecondaryTo = '/#partners',
 }) {
-  const baseBtn =
-    'inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
-
-  const primaryBtn =
-    `${baseBtn} bg-[var(--brand)] text-white hover:opacity-90 focus-visible:ring-[var(--brand)]`
-
-  const secondaryBtn =
-    `${baseBtn} ring-1 ring-white/30 bg-white/10 text-white hover:bg-white/20 focus-visible:ring-white/50`
 
   return (
     <section
@@ -58,13 +51,13 @@ export default function HeroSection({
 
           {/* CTAs */}
           <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <Link to={ctaPrimaryTo} className={primaryBtn}>
+            <Button variant="primary" as="link" to={ctaPrimaryTo}>
               {ctaPrimary}
-            </Link>
+            </Button>
             {ctaSecondary ? (
-              <Link to={ctaSecondaryTo} className={secondaryBtn}>
+              <Button variant="secondary" as="link" to={ctaSecondaryTo}>
                 {ctaSecondary}
-              </Link>
+              </Button>
             ) : null}
           </div>
         </div>

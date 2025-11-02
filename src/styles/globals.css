@@ -89,3 +89,34 @@ body {
     );
   background-color: #000C21;
 }
+
+/* ==========================
+   Global Button Styles
+   ========================== */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-medium transition-all duration-200 select-none;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+}
+
+/* Primary button — bright accent on dark background */
+.btn-primary {
+  @apply bg-[var(--brand,#3B82F6)] text-white hover:opacity-90 active:opacity-80;
+  @apply focus-visible:ring-[var(--brand,#3B82F6)] focus-visible:ring-offset-0;
+}
+
+/* Secondary button — translucent on dark or outline on light */
+.btn-secondary {
+  @apply border border-white/30 text-white hover:bg-white/10;
+  @apply backdrop-blur-sm focus-visible:ring-white/40;
+}
+
+/* Ghost / text-only button */
+.btn-ghost {
+  @apply text-[var(--brand,#3B82F6)] hover:text-[var(--brand,#60A5FA)] bg-transparent;
+  @apply focus-visible:ring-[var(--brand,#3B82F6)];
+}
+
+/* Disabled state */
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
