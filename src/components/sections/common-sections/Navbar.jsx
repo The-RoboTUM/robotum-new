@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import * as assets from '@assets'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import Button from '@components/ui/Button'
 
 const links = [
   { label: 'Home', href: '/' },
@@ -24,16 +26,16 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick }) {
         onMouseLeave={onLeave}
       >
         {['Technical', 'Operations', 'Innovation & Entrepreneurship'].map(item => (
-          <a
+          <Link
             key={item}
-            href="#projects"
+            to="#projects"
             role="menuitem"
             tabIndex="0"
             className="block px-3 py-2 text-[14px] tracking-[0.8px] rounded text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 cursor-pointer"
             onClick={onItemClick}
           >
             {item}
-          </a>
+          </Link>
         ))}
       </div>
     )
@@ -46,7 +48,7 @@ export default function Navbar() {
   const [projectsMobileOpen, setProjectsMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const hoverTimer = useRef(null)
-  const currentHash = window.location.hash
+  const { hash: currentHash } = useLocation()
 
   const handleProjectsEnter = useCallback(() => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
@@ -81,13 +83,14 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`bg-gradient-to-b from-[#000C21] via-[#06142B] to-[#000C21] fixed top-0 left-0 right-0 z-50 font-exo transition-opacity ${scrolled ? 'opacity-95' : 'opacity-95'
-        }`}
+      role="navigation"
+      aria-label="Main"
+      className={`navbar-gradient fixed top-0 left-0 right-0 z-50 font-sans transition-opacity ${scrolled ? 'opacity-95' : 'opacity-95'}`}
     >
       <div className="mx-auto max-w-7xl w-full px-2 sm:px-4 pt-3 pb-1.5">
         <div className="flex w-full justify-between">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="pl-3 pr-3 flex"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
@@ -96,7 +99,7 @@ export default function Navbar() {
               alt="RoboTUM logo"
               className="w-[130px] h-[40px] object-contain"
             />
-          </a>
+          </Link>
 
           <ul className="hidden md:flex items-start gap-0">
             {links.map(l => {
@@ -144,24 +147,22 @@ export default function Navbar() {
               if (l.label === 'Join us') {
                 return (
                   <li key={l.label}>
-                    <a
-                      href={l.href}
-                      className="inline-flex items-center justify-center px-5 py-2 rounded-md bg-indigo-600 text-white text-[14px] tracking-[0.8px] font-semibold shadow hover:bg-indigo-500 transition-colors"
-                    >
+                    <Button variant="primary" as="link" to="/join" className="ml-2 text-sm px-4 py-2">
                       {l.label.toUpperCase()}
-                    </a>
+                    </Button>
                   </li>
                 )
               }
               return (
                 <li key={l.label}>
-                  <a
-                    href={l.href}
-                    className={`${itemBase} rounded-md ${currentHash === l.href ? 'text-indigo-400' : ''
-                      }`}
+                  <NavLink
+                    to={l.href}
+                    className={({ isActive }) =>
+                      `${itemBase} rounded-md ${isActive || currentHash === l.href ? 'text-indigo-300' : ''}`
+                    }
                   >
                     {l.label.toUpperCase()}
-                  </a>
+                  </NavLink>
                 </li>
               )
             })}
@@ -196,7 +197,7 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`md:hidden px-4 bg-[#000C21] transition-all duration-400 ${open ? 'opacity-100 max-h-screen pb-3' : 'opacity-0 max-h-0 overflow-hidden'
+        className={`md:hidden px-4 navbar-gradient transition-all duration-400 ${open ? 'opacity-100 max-h-screen pb-3' : 'opacity-0 max-h-0 overflow-hidden'
           }`}
       >
         <ul className="flex flex-col gap-1">
@@ -228,8 +229,8 @@ export default function Navbar() {
                     <ul className="ml-4 mt-2 bg-[#06142B]/95 rounded-md p-2">
                       {l.subLinks.map(sub => (
                         <li key={sub}>
-                          <a
-                            href="#projects"
+                          <Link
+                            to="#projects"
                             className="block px-4 py-2 text-[13px] text-white hover:bg-white/10 rounded cursor-pointer"
                             onClick={() => {
                               setOpen(false)
@@ -238,7 +239,7 @@ export default function Navbar() {
                             }}
                           >
                             {sub}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -251,32 +252,36 @@ export default function Navbar() {
             if (l.label === 'Join us') {
               return (
                 <li key={l.label}>
-                  <a
-                    href={l.href}
+                  <Button
+                    variant="primary"
+                    as="link"
+                    to={l.href}
+                    className="block w-full text-center text-[14px] tracking-[0.8px] font-semibold"
                     onClick={() => {
                       setOpen(false)
                       setProjectsOpen(false)
                     }}
-                    className="block w-full text-center px-4 py-3 rounded-md bg-indigo-600 text-white text-[14px] tracking-[0.8px] font-semibold shadow hover:bg-indigo-500 transition-colors"
                   >
                     {l.label.toUpperCase()}
-                  </a>
+                  </Button>
                 </li>
               )
             }
 
             return (
               <li key={l.label}>
-                <a
-                  href={l.href}
+                <NavLink
+                  to={l.href}
                   onClick={() => {
                     setOpen(false)
                     setProjectsOpen(false)
                   }}
-                  className={`block w-full px-4 py-3 text-[14px] tracking-[0.8px] rounded-md bg-[#112238] hover:bg-[#1A2E49] transition-colors focus:outline-none text-white ${currentHash === l.href ? 'text-indigo-400' : ''}`}
+                  className={({ isActive }) =>
+                    `block w-full px-4 py-3 text-[14px] tracking-[0.8px] rounded-md bg-[#112238] hover:bg-[#1A2E49] transition-colors focus:outline-none text-white ${isActive || currentHash === l.href ? 'text-indigo-300' : ''}`
+                  }
                 >
                   {l.label.toUpperCase()}
-                </a>
+                </NavLink>
               </li>
             )
           })}
