@@ -1,5 +1,6 @@
 import { useState } from 'react' 
 import * as assets from '@assets'
+import Button from '@components/ui/Button'
 
 const events = [
   {
@@ -38,7 +39,7 @@ export default function EventSection() {
   return (
     <section
       id="events"
-      className="w-full px-6 py-24 bg-gradient-to-b from-[#000C21] via-[#06142B] to-[#000C21] text-white font-exo"
+      className="w-full px-6 py-24 text-white font-sans section-gradient"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left side - image and title */}
@@ -87,12 +88,14 @@ export default function EventSection() {
                     {event.description}
                     {event.link && (
                       <div className="mt-4">
-                        <a
-                          href={event.link}
-                          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-sm rounded-md inline-block"
+                        <Button
+                          variant="primary"
+                          as="link"
+                          to={event.link}
+                          className="text-sm px-4 py-2"
                         >
                           Register →
-                        </a>
+                        </Button>
                       </div>
                     )}
                   </div>
