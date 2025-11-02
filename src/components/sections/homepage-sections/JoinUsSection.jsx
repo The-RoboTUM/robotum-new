@@ -5,7 +5,7 @@ export default function JoinUsSection() {
   return (
     <section
       id="join"
-      className="w-full px-6 py-24 text-white font-sans section-gradient"
+      className="w-full px-6 py-24 text-white font-sans surface-1 edge-fade-top"
     >
       <div className="max-w-7xl mx-auto flex flex-col gap-16">
         {/* Become a Member */}

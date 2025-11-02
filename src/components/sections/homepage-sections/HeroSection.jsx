@@ -21,7 +21,7 @@ export default function HeroSection({
       id="hero"
       role="region"
       aria-labelledby="hero-heading"
-      className="relative w-full min-h-screen px-6 py-24 text-white font-sans section-gradient overflow-hidden"
+      className="relative w-full min-h-screen px-6 py-24 text-white font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
     >
       {/* Dark overlay for readability */}
       <div className="pointer-events-none absolute inset-0 bg-black/20" />

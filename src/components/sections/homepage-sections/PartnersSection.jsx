@@ -10,7 +10,7 @@ const sponsors = [
 
 export default function PartnersSection() {
     return (
-        <section className="w-full py-4 font-sans section-gradient-light flex justify-center">
+        <section className="w-full py-10 font-sans surface-light edge-fade-top flex justify-center">
             <div className="w-full rounded-lg overflow-hidden">
                 <div className="flex gap-8 py-3 px-4 whitespace-nowrap overflow-hidden">
                     <div className="flex gap-12 animate-marquee">

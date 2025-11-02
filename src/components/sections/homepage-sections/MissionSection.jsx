@@ -3,10 +3,10 @@ import Button from '@components/ui/Button'
 
 export default function MissionSection() {
   return (
-    
-    <section className="bg-[var(--primary)] text-white font-sans section-gradient px-6 py-20">
+
+    <section className="text-white font-sans surface-2 edge-fade-toppx-6 py-20">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-hero font-bold leading-tight mb-16">
+        <h2 className="text-h2 font-bold leading-tight mb-16">
           We are a student initiative <br />
           formed of robotic <br />
           enthusiasts

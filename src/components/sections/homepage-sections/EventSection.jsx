@@ -39,7 +39,7 @@ export default function EventSection() {
   return (
     <section
       id="events"
-      className="w-full px-6 py-24 text-white font-sans section-gradient"
+      className="w-full px-6 py-24 font-sans surface-2 edge-fade-top"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left side - image and title */}
