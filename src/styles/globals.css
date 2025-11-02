@@ -126,20 +126,51 @@ body {
 
 /* Primary button — bright accent on dark background */
 .btn-primary {
-  @apply bg-[var(--brand,#3B82F6)] text-white hover:opacity-90 active:opacity-80;
-  @apply focus-visible:ring-[var(--brand,#3B82F6)] focus-visible:ring-offset-0;
+  @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold transition-all duration-300 select-none;
+  @apply text-white bg-gradient-to-r from-[#2563EB] to-[#7C3AED];
+  @apply shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_28px_rgba(124,58,237,0.4)];
+  @apply hover:scale-[1.03] active:scale-[0.98];
+  @apply focus-visible:ring-2 focus-visible:ring-[#60A5FA] focus-visible:ring-offset-0;
 }
 
-/* Secondary button — translucent on dark or outline on light */
+.btn-primary:hover {
+  box-shadow: 0 0 24px rgba(59,130,246,0.4), 0 0 48px rgba(124,58,237,0.3);
+}
+
+/* Secondary button */
 .btn-secondary {
-  @apply border border-white/30 text-white hover:bg-white/10;
-  @apply backdrop-blur-sm focus-visible:ring-white/40;
+  position: relative;
+  isolation: isolate;
+  @apply px-6 py-3 rounded-full font-semibold text-white overflow-hidden transition-transform duration-300;
 }
 
+.btn-secondary::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, #2563EB, #7C3AED, #2563EB);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  animation: rotate-gradient 3s linear infinite;
+}
+
+.btn-secondary:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(59,130,246,0.2), 0 0 40px rgba(124,58,237,0.25);
+  background-color: rgba(255,255,255,0.05);
+}
+
+@keyframes rotate-gradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
 /* Ghost / text-only button */
 .btn-ghost {
-  @apply text-[var(--brand,#3B82F6)] hover:text-[var(--brand,#60A5FA)] bg-transparent;
-  @apply focus-visible:ring-[var(--brand,#3B82F6)];
+  @apply inline-flex items-center justify-center rounded-full px-4 py-2 font-medium transition-colors duration-200;
+  @apply text-[#3B82F6] hover:text-[#60A5FA] bg-transparent;
+  @apply focus-visible:ring-1 focus-visible:ring-[#3B82F6];
 }
 
 /* Disabled state */
@@ -161,4 +192,3 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.6s ease-out forwards;
 }
-

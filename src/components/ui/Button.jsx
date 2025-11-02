@@ -1,28 +1,36 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 export default function Button({
-  children,
-  variant = 'primary',
   as = 'button',
   to,
+  variant = 'primary', // 'primary' | 'secondary' | 'ghost' | 'glow'
+  disabled = false,
   className,
+  children,
   ...props
 }) {
-  const Component = as === 'link' ? Link : 'button';
-  const variantClass = {
-    primary: 'btn btn-primary',
-    secondary: 'btn btn-secondary',
-    ghost: 'btn btn-ghost',
-  }[variant];
+  const Comp = as === 'link' || to ? Link : as;
 
   return (
-    <Component
-      to={as === 'link' ? to : undefined}
-      className={clsx(variantClass, className)}
+    <Comp
+      to={to}
+      disabled={disabled}
+      className={clsx(
+        'btn', // base style from globals.css
+        {
+          'btn-primary': variant === 'primary',
+          'btn-secondary': variant === 'secondary',
+          'btn-ghost': variant === 'ghost',
+          'btn-glow': variant === 'glow',
+        },
+        disabled && 'opacity-50 cursor-not-allowed',
+        className
+      )}
       {...props}
     >
       {children}
-    </Component>
+    </Comp>
   );
 }

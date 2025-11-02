@@ -89,7 +89,7 @@ export default function EventSection() {
                     {event.link && (
                       <div className="mt-4">
                         <Button
-                          variant="primary"
+                          variant="secondary"
                           as="link"
                           to={event.link}
                           className="text-sm px-4 py-2"
