@@ -90,6 +90,28 @@ body {
   background-color: #000C21;
 }
 
+/* Light section background for logos or light content */
+.section-gradient-light {
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(245, 245, 245, 1) 70%
+    );
+  background-color: #ffffff;
+  color: #000C21;
+}
+
+/* Optional: Light fade overlay for sections that scroll horizontally (like partners) */
+.section-gradient-light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5), transparent 70%);
+  mix-blend-mode: normal;
+}
+
 /* ==========================
    Global Button Styles
    ========================== */
