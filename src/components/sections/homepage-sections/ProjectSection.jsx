@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import * as assets from '@assets'
+import Button from '@components/ui/Button'
 
 const projects = [
   {
@@ -116,50 +117,81 @@ export default function ProjectSection() {
   return (
     <section
       id="projects"
-      className="w-full px-6 py-24 bg-gradient-to-b from-[#000C21] via-[#06142B] to-[#000C21] text-white font-exo"
+      className="w-full px-6 py-24 text-white font-sans section-gradient"
     >
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 md:gap-12">
         {/* Left side */}
-        <div className="md:w-1/2 relative min-h-[320px]">
-          <div key={current} className="absolute inset-0 transition-opacity duration-500 ease-in-out opacity-100">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+        <div className="md:w-1/2 relative text-center md:text-left min-h-[300px] sm:min-h-[360px] md:min-h-[420px]">
+          <div
+            key={current}
+            className="transition-all duration-700 ease-in-out opacity-0 translate-x-6 animate-fadeIn"
+          >
+            <h2 className="text-[1.5rem] md:text-h2 font-bold mb-2 md:mb-4 [text-wrap:balance]">
               {projects[current].title}
             </h2>
-            <p className="text-lg text-sky-100 mb-8">
+
+            {/* Show description only on md and up */}
+            <p className="hidden md:block text-text1 text-white/80 mb-6 leading-relaxed">
               {projects[current].description}
             </p>
-            <a
-              href={projects[current].link}
-              className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-md text-white text-[15px]"
-            >
-              View more →
-            </a>
+
+            {/* Button for desktop */}
+            <div className="hidden md:block">
+              <Button
+                variant="primary"
+                as="link"
+                to={projects[current].link}
+                className="text-base px-6 py-3"
+              >
+                View more →
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Right side */}
-        <div className="md:w-1/2 relative">
-          <div className="transition-all duration-500 ease-in-out">
-            <img
-              src={projects[current].image}
-              alt={projects[current].title}
-              className="rounded-lg w-full max-w-md mx-auto shadow-lg border border-white/10"
-            />
+        <div className="md:w-1/2 relative flex flex-col items-center">
+          <div
+            key={current}
+            className="transition-opacity duration-700 ease-in-out animate-fadeIn w-full"
+          >
+            <div className="relative w-full max-w-md mx-auto h-[300px] sm:h-[360px] md:h-[420px]">
+              <div className="w-full h-full rounded-xl overflow-hidden">
+                <img
+                  src={projects[current].image}
+                  alt={projects[current].title}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              {/* Navigation buttons (visible on all sizes, positioned responsively) */}
+              <button
+                onClick={prevProject}
+                aria-label="Previous project"
+                className="flex items-center justify-center absolute left-2 md:-left-10 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white w-10 h-10 md:w-11 md:h-11 rounded-full transition-all z-10"
+              >
+                ←
+              </button>
+              <button
+                onClick={nextProject}
+                aria-label="Next project"
+                className="flex items-center justify-center absolute right-2 md:-right-10 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white w-10 h-10 md:w-11 md:h-11 rounded-full transition-all z-10"
+              >
+                →
+              </button>
+            </div>
           </div>
-          <button
-            onClick={prevProject}
-            aria-label="Previous project"
-            className="cursor-pointer absolute -left-5 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-full transition-all"
-          >
-            ←
-          </button>
-          <button
-            onClick={nextProject}
-            aria-label="Next project"
-            className="cursor-pointer absolute -right-5 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-full transition-all"
-          >
-            →
-          </button>
+
+          {/* Button for mobile */}
+          <div className="mt-6 flex justify-center md:hidden">
+            <Button
+              variant="primary"
+              as="link"
+              to={projects[current].link}
+              className="text-sm px-4 py-2"
+            >
+              View more →
+            </Button>
+          </div>
         </div>
       </div>
 
