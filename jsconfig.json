@@ -1,3 +1,14 @@
+// What jsconfig.json gives you
+// 	1.	Path auto-completion
+// VS Code now recognizes your aliases (@components, @assets, etc.) and suggests them in IntelliSense.
+// → You can type @c and it’ll suggest @components.
+// 	2.	Go to definition / Peek definition
+// You can Ctrl+Click or Cmd+Click an alias import (like @components/Button) and jump straight to that file.
+// 	3.	Import auto-fixes
+// When you move or rename files, VS Code updates alias imports correctly, rather than breaking with long relative paths.
+// 	4.	Error highlighting & IntelliSense
+// TypeScript/JS language service understands your project root, giving better type hints and “cannot find module” errors disappear.
+
 {
   "compilerOptions": {
     "baseUrl": ".",
