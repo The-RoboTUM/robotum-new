@@ -6,7 +6,7 @@ export default function MissionSection() {
 
     <section className="text-white font-sans surface-2 edge-fade-top px-6 py-20">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-h1 font-bold leading-tight text-balance mb-10 md:mb-14">
+        <h2 className="text-h2 font-bold leading-tight text-balance mb-10 md:mb-14">
           We are a student initiative <br />
           formed of robotic <br />
           enthusiasts
