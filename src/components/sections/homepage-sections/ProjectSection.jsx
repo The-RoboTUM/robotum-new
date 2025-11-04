@@ -85,7 +85,7 @@ export default function ProjectSection() {
 
         {/* RIGHT — Image carousel (desktop) */}
         <div className="hidden md:flex md:w-1/2 relative flex-col items-center self-start">
-          <div className="relative w-full max-w-md mx-auto -mt-6 md:-mt-10 aspect-[3/2] min-h-[220px] sm:min-h-[260px]">
+          <div className="relative w-full max-w-md mx-auto -mt-6 md:-mt-10 aspect-3/2 min-h-[220px] sm:min-h-[260px]">
             {projects.map((p, i) => (
               <div
                 key={p.title}
