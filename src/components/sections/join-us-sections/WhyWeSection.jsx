@@ -9,7 +9,7 @@ const WhyWeSection = () => {
 
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-h1 font-bold leading-tight [text-wrap:balance] mb-6">
+          <h2 className="text-h1 font-bold leading-tight text-balance mb-6">
             Why RoboTUM?
           </h2>
           <p className="text-text2 md:text-text1 text-white/80 max-w-3xl mx-auto leading-relaxed">

@@ -1,49 +1,58 @@
+import React from 'react'
 import * as assets from '@assets'
 
-import React from 'react';
+const steps = [
+  {
+    number: 1,
+    title: 'Apply',
+    description:
+      'Fill out our short application form and tell us about yourself, your interests, and what you’d like to contribute to RoboTUM.',
+  },
+  {
+    number: 2,
+    title: 'Interview',
+    description:
+      'If your application matches one of our open spots, we’ll invite you to a short interview. It’s a casual conversation — we just want to get to know you better!',
+  },
+  {
+    number: 3,
+    title: 'Welcome!',
+    description:
+      'If it’s a fit on both sides — welcome to the RoboTUM team! We’ll onboard you, introduce you to your project group, and get you started.',
+  },
+]
 
 const ApplicationSection = () => {
   return (
-    <section className="bg-[#000C21] py-20 text-white px-6 md:px-20">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Application Process</h2>
-        <p className="text-lg md:text-xl text-gray-300">
-          Interested in joining RoboTUM? Great! Here’s how our application process works. <br />
-          The next application phase will open soon – stay tuned on our Website or follow us on social media.
+    <section className="w-full px-6 md:px-16 py-20 md:py-28 font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern">
+      <div className="max-w-6xl mx-auto text-center mb-16">
+        <h2 className="text-h1 font-bold leading-tight text-balance mb-6">
+          Application Process
+        </h2>
+        <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-3xl mx-auto">
+          Interested in joining RoboTUM? Great! Here’s how our application process works.
+          <br />
+          The next application phase will open soon — stay tuned on our website or social media.
         </p>
       </div>
 
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto text-center">
-        <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-xl bg-[#0F1E3C] text-4xl font-bold flex items-center justify-center mb-4">
-            1
+      {/* Steps grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 max-w-6xl mx-auto text-center">
+        {steps.map((step) => (
+          <div
+            key={step.number}
+            className="flex flex-col items-center p-8 rounded-3xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25)] hover:shadow-[0_8px_28px_rgba(59,130,246,0.25)] transition-all duration-300"
+          >
+            <div className="w-20 h-20 flex items-center justify-center rounded-2xl bg-accent/10 text-accent text-4xl font-bold mb-5">
+              {step.number}
+            </div>
+            <h3 className="text-text1 font-semibold mb-2 capitalize">{step.title}</h3>
+            <p className="text-text2 text-white/80 leading-relaxed max-w-xs">{step.description}</p>
           </div>
-          <h3 className="font-semibold text-lg mb-2">apply</h3>
-          <p className="text-gray-300 max-w-xs">
-            Fill out our short application form and tell us about yourself, your interests, and what you’d like to contribute to RoboTUM.
-          </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-xl bg-[#0F1E3C] text-4xl font-bold flex items-center justify-center mb-4">
-            2
-          </div>
-          <h3 className="font-semibold text-lg mb-2">Interview</h3>
-          <p className="text-gray-300 max-w-xs">
-            If your application matches one of our open spots, we’ll invite you to a short interview. It’s a casual conversation – we just want to get to know you better!
-          </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-xl bg-[#0F1E3C] text-4xl font-bold flex items-center justify-center mb-4">
-            3
-          </div>
-          <h3 className="font-semibold text-lg mb-2">Welcome!</h3>
-          <p className="text-gray-300 max-w-xs">
-            If it’s a fit on both sides – welcome to the RoboTUM team! We’ll onboard you, introduce you to your project group, and get you started.
-          </p>
-        </div>
+        ))}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default ApplicationSection;
+export default ApplicationSection
