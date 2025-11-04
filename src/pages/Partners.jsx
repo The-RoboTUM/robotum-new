@@ -1,25 +1,31 @@
-// general imports
-import Navbar from '@components/sections/common-sections/Navbar';
-import FooterSection from '@components/sections/common-sections/FooterSection';
+// Above-the-fold imports
+import Navbar from '@components/sections/common-sections/Navbar'
+import FooterSection from '@components/sections/common-sections/FooterSection'
 
-// specific imports
-// import HeroSection from '@components/sections/join-us-sections/HeroSection';
+// Lazy-load below-the-fold content for performance
+import React, { lazy, Suspense, useEffect } from 'react'
+const PartnersSection = lazy(() => import('@components/sections/homepage-sections/PartnersSection'))
 
+export default function Partners() {
+  useEffect(() => {
+    document.title = 'Partners | RoboTUM'
+  }, [])
 
-import { useEffect } from 'react';
+  return (
+    <>
+      <Navbar />
 
-const Partners = () => {
-    useEffect(() => {
-        document.title = 'Partners | RoboTUM';
-    }, []);
+      <Suspense
+        fallback={
+          <div className="w-full min-h-[40vh] flex items-center justify-center text-white/70">
+            Loading…
+          </div>
+        }
+      >
+        <PartnersSection />
+      </Suspense>
 
-    return (
-        <>
-            <Navbar />
-            {/* <HeroSection /> */}
-            <FooterSection />
-        </>
-    );
+      <FooterSection />
+    </>
+  )
 }
-
-export default Partners;
