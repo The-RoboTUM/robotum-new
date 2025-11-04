@@ -22,6 +22,7 @@
   --text-h2:      clamp(2rem, 3vw + 0.5rem, 3.25rem);
   --text-text1:   clamp(1.125rem, 1.1vw + 0.25rem, 1.5rem);
   --text-text2:   clamp(0.9375rem, 0.6vw + 0.2rem, 1.125rem);
+  --tracking-headings: 0.05em; /* ≈ 3.2px tracking at 64px (Figma) */
 }
 
 /* Optional shared variables (used by legacy backgrounds) */
@@ -33,7 +34,29 @@
 /* ==========================================================================
    BASE
    ========================================================================== */
-body { font-family: "Exo", system-ui, sans-serif; }
+body {
+  font-family: "Exo", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY HELPERS (Headings)
+   - Apply Figma-like heading styling across hero / h1 / h2
+   - Uses Exo, bold (700), and ~3.2px letter-spacing at 64px (~0.05em)
+   ========================================================================= */
+.heading {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: var(--tracking-headings, 0.05em);
+  text-wrap: balance;
+}
+
+/* Size presets (compose with .heading) */
+.heading-display { font-size: var(--text-hero); } /* or use text-hero directly in HTML */
+.heading-h1 { font-size: var(--text-h1); }
+.heading-h2 { font-size: var(--text-h2); }
 
 /* ==========================================================================
    NAVIGATION (glass look)

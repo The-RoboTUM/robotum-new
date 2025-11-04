@@ -6,9 +6,9 @@ export default function JoinUsSection() {
   return (
     <section
       id="join"
-      className="w-full px-6 py-24 text-white font-sans surface-1 edge-fade-top"
+      className="w-full px-6 md:px-16 py-20 md:py-28 text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
     >
-      <div className="max-w-7xl mx-auto flex flex-col gap-16">
+      <div className="max-w-7xl mx-auto flex flex-col gap-20 md:gap-24">
         {/* Become a Member */}
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2 w-full">
@@ -23,12 +23,12 @@ export default function JoinUsSection() {
             />
           </div>
           <div className="md:w-1/2 w-full space-y-6">
-            <h2 className="text-4xl font-bold">Become a Member</h2>
-            <p className="text-slate-300">
+            <h2 id="apply" className="heading heading-h2 font-bold leading-tight">Become a Member</h2>
+            <p className="text-text2 md:text-text1 text-white/80 leading-relaxed">
               Join RoboTUM and shape the future of robotics with us. Attend our events,
               participate in projects, and grow your skills alongside passionate innovators.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <Button variant="primary" as="link" to="#apply">Apply Now</Button>
               <Button variant="secondary" as="link" to="#learn-more">Learn More</Button>
             </div>
@@ -49,12 +49,12 @@ export default function JoinUsSection() {
             />
           </div>
           <div className="md:w-1/2 w-full space-y-6">
-            <h2 className="text-4xl font-bold">Become a Partner</h2>
-            <p className="text-slate-300">
+            <h2 id="partner" className="heading heading-h2 font-bold leading-tight">Become a Partner</h2>
+            <p className="text-text2 md:text-text1 text-white/80 leading-relaxed">
               Collaborate with RoboTUM to sponsor innovation, support future engineers,
               and gain visibility in our events and projects.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <Button variant="primary" as="link" to="#partner">Become a Partner</Button>
               <Button variant="secondary" as="link" to="#view-partners">View Partners</Button>
             </div>

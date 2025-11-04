@@ -118,7 +118,7 @@ export default function ProjectSection() {
   return (
     <section
       id="projects"
-      className="w-full px-6 py-24 text-white font-sans surface-1 edge-fade-top"
+      className="w-full px-6 py-24 text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 px-2 sm:px-4">
         {/* Left side */}
@@ -126,13 +126,15 @@ export default function ProjectSection() {
           <div
             key={current}
             className="transition-all duration-700 ease-in-out opacity-0 translate-x-6 animate-fadeIn"
+            aria-live="polite"
+            aria-atomic="true"
           >
-            <h2 className="text-[1.75rem] sm:text-[2rem] md:text-h2 font-bold mb-3 md:mb-4 text-balance leading-tight">
+            <h2 className="heading heading-h2 font-bold mb-3 md:mb-4 leading-tight text-balance">
               {projects[current].title}
             </h2>
 
             {/* Show description only on md and up */}
-            <p className="text-text2 sm:text-text1 text-white/80 mb-4 md:mb-6 leading-relaxed line-clamp-5 md:line-clamp-none">
+            <p className="text-text2 sm:text-text1 text-white/80 mb-4 md:mb-6 leading-relaxed line-clamp-5 md:line-clamp-none" aria-live="polite">
               {projects[current].description}
             </p>
 
@@ -154,9 +156,10 @@ export default function ProjectSection() {
         <div className="md:w-1/2 relative flex flex-col items-center">
           <div
             key={current}
+            id={`project-slide-${current}`}
             className="transition-opacity duration-700 ease-in-out animate-fadeIn w-full"
           >
-            <div className="relative w-full max-w-sm sm:max-w-md mx-auto px-2">
+            <div className="relative w-full max-w-sm sm:max-w-md mx-auto px-6 sm:px-8">
               <ImageFrame
                 src={projects[current].image}
                 alt={projects[current].title}
@@ -170,14 +173,14 @@ export default function ProjectSection() {
               <button
                 onClick={prevProject}
                 aria-label="Previous project"
-                className="flex items-center justify-center absolute left-1 sm:left-2 md:-left-10 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full transition-all z-10"
+                className="flex items-center justify-center absolute left-2 sm:left-3 -translate-y-1/2 top-1/2 bg-white/10 hover:bg-white/20 text-white w-10 h-10 sm:w-11 sm:h-11 rounded-full transition-all z-10 backdrop-blur-md"
               >
                 ←
               </button>
               <button
                 onClick={nextProject}
                 aria-label="Next project"
-                className="flex items-center justify-center absolute right-1 sm:right-2 md:-right-10 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full transition-all z-10"
+                className="flex items-center justify-center absolute right-2 sm:right-3 -translate-y-1/2 top-1/2 bg-white/10 hover:bg-white/20 text-white w-10 h-10 sm:w-11 sm:h-11 rounded-full transition-all z-10 backdrop-blur-md"
               >
                 →
               </button>
@@ -199,14 +202,21 @@ export default function ProjectSection() {
       </div>
 
       {/* Dots indicator */}
-      <div className="mt-8 sm:mt-10 flex justify-center gap-2">
+      <div className="mt-8 sm:mt-10 flex justify-center gap-2" role="tablist" aria-label="Project slides">
         {projects.map((_, i) => (
-          <div
+          <button
             key={i}
-            className={`w-3 h-3 rounded-full ${
-              i === current ? 'bg-white' : 'bg-gray-400/40'
+            type="button"
+            role="tab"
+            aria-selected={i === current}
+            aria-controls={`project-slide-${i}`}
+            onClick={() => setCurrent(i)}
+            className={`w-3.5 h-3.5 rounded-full transition-colors ${
+              i === current ? 'bg-white' : 'bg-white/30 hover:bg-white/50'
             }`}
-          />
+          >
+            <span className="sr-only">Go to slide {i + 1}</span>
+          </button>
         ))}
       </div>
     </section>

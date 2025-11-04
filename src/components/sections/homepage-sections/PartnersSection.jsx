@@ -1,37 +1,52 @@
 import * as assets from '@assets'
 
 const sponsors = [
-    { name: 'LIMX Dynamics', image: assets.limx, tier: 'Lead Sponsor' },
-    { name: 'Maxon', image: assets.maxon, tier: 'Lead Sponsor' },
-    { name: 'Reply Roboverse', image: assets.reply, tier: 'Lead Sponsor' },
-    { name: 'CubeMars', image: assets.cubemars, tier: 'Sponsor' },
-    { name: 'Olive Robotics', image: assets.olive, tier: 'Sponsor' }
+  { name: 'LIMX Dynamics', image: assets.limx, tier: 'Lead Sponsor' },
+  { name: 'Maxon', image: assets.maxon, tier: 'Lead Sponsor' },
+  { name: 'Reply Roboverse', image: assets.reply, tier: 'Lead Sponsor' },
+  { name: 'CubeMars', image: assets.cubemars, tier: 'Sponsor' },
+  { name: 'Olive Robotics', image: assets.olive, tier: 'Sponsor' },
 ]
 
 export default function PartnersSection() {
-    return (
-        <section className="w-full py-10 font-sans surface-light edge-fade-top flex justify-center">
-            <div className="w-full rounded-lg overflow-hidden">
-                <div className="flex gap-8 py-3 px-4 whitespace-nowrap overflow-hidden">
-                    <div className="flex gap-12 animate-marquee">
-                        {[...sponsors, ...sponsors].map((sponsor, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col items-center justify-center min-w-[160px]"
-                            >
-                                <span className="mb-1 px-3 py-0.5 border border-blue-500 text-xs rounded-full text-blue-500">
-                                    {sponsor.tier}
-                                </span>
-                                <img
-                                    src={sponsor.image}
-                                    alt={sponsor.name}
-                                    className="h-8 sm:h-10 object-contain"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
+  return (
+    <section
+      className="w-full py-8 md:py-10 font-sans surface-light edge-fade-top edge-fade-bottom flex justify-center"
+      role="region"
+      aria-labelledby="partners-heading"
+    >
+      <div className="relative w-full max-w-7xl overflow-hidden">
+        {/* Accessible heading (visually hidden) */}
+        <h2 id="partners-heading" className="sr-only">Our Sponsors & Partners</h2>
+
+        {/* Left/Right gradient fades to soften edges */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 md:w-24 bg-linear-to-r from-white to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 md:w-24 bg-linear-to-l from-white to-transparent" />
+
+        {/* Marquee lane */}
+        <div className="flex gap-8 py-3 px-4 whitespace-nowrap overflow-hidden">
+          <div className="flex gap-12 items-center animate-marquee" role="list" aria-label="Sponsor logos">
+            {[...sponsors, ...sponsors].map((sponsor, index) => (
+              <div
+                key={`${sponsor.name}-${index}`}
+                role="listitem"
+                className="flex flex-col items-center justify-center min-w-[140px] sm:min-w-40"
+              >
+                <span className="mb-1 px-3 py-0.5 border border-accent text-xs rounded-full text-accent bg-accent/5">
+                  {sponsor.tier}
+                </span>
+                <img
+                  src={sponsor.image}
+                  alt={sponsor.name}
+                  className="h-8 sm:h-10 md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }

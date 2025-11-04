@@ -2,10 +2,9 @@ import * as assets from '@assets'
 import Button from '@components/ui/Button'
 
 /**
- * HeroSection — fully aligned with global design system
- * - Uses surface-1 background, edge fades, and pattern overlay
- * - Responsive typography mapped to tokens (display / hero / text1)
- * - Improved spacing, adaptive height, and visual hierarchy
+ * HeroSection — refined with global typography and Figma-like heading tracking
+ * - Uses .heading class for Exo bold style with tracking
+ * - Consistent surfaces, adaptive height, and spacing
  */
 export default function HeroSection({
   title = 'Shaping the Future of Robotics',
@@ -22,7 +21,7 @@ export default function HeroSection({
       aria-labelledby="hero-heading"
       className="relative w-full min-h-[70vh] lg:min-h-screen flex flex-col items-center justify-center px-6 md:px-12 py-20 md:py-28 lg:py-32 text-white font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
     >
-      {/* Background overlay for readability */}
+      {/* Background overlay */}
       <div className="pointer-events-none absolute inset-0 bg-black/30" />
 
       {/* Content container */}
@@ -39,7 +38,7 @@ export default function HeroSection({
         {/* Heading */}
         <h1
           id="hero-heading"
-          className="text-display md:text-hero font-bold leading-tight tracking-tight text-balance"
+          className="heading heading-display text-hero md:text-display leading-tight tracking-(--tracking-headings text-balance"
         >
           {title}
         </h1>
