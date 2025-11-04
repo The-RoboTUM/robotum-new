@@ -39,16 +39,6 @@ export default function HeroSection({
             decoding="async"
           />
 
-
-
-
-          {/* TEST */}
-          <div className="bg-testpink w-16 h-16">Test</div>
-          {/* TEST */}
-
-
-
-
           {/* Heading */}
           <h1
             id="hero-heading"
