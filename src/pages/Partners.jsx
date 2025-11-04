@@ -4,7 +4,7 @@ import FooterSection from '@components/sections/common-sections/FooterSection'
 
 // Lazy-load below-the-fold content for performance
 import React, { lazy, Suspense, useEffect } from 'react'
-const PartnersSection = lazy(() => import('@components/sections/homepage-sections/PartnersSection'))
+// const PartnersSection = lazy(() => import('@components/sections/homepage-sections/PartnersSection'))
 
 export default function Partners() {
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Partners() {
           </div>
         }
       >
-        <PartnersSection />
+        {/* <PartnersSection /> */}
       </Suspense>
 
       <FooterSection />

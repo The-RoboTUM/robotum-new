@@ -220,9 +220,8 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`md:hidden px-4 navbar-gradient transition-all duration-400 ${
-          open ? 'opacity-100 max-h-screen pb-3 overflow-y-auto' : 'opacity-0 max-h-0 overflow-hidden'
-        }`}
+        className={`md:hidden px-4 navbar-gradient transition-all duration-400 ${open ? 'opacity-100 max-h-screen pb-3 overflow-y-auto' : 'opacity-0 max-h-0 overflow-hidden'
+          }`}
       >
         <ul className="flex flex-col gap-1">
           {links.map(l => {
