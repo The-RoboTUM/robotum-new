@@ -59,7 +59,7 @@ export default function AboutHero() {
 
   return (
     <section
-      className="text-white pt-28 pb-16 px-6 min-h-screen font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern"
+      className="text-white px-6 md:px-16 py-20 md:py-28 min-h-[70vh] lg:min-h-screen font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern"
       aria-labelledby="about-hero-heading"
     >
       <div className="max-w-7xl mx-auto">
@@ -68,11 +68,11 @@ export default function AboutHero() {
           <div className="md:w-1/2">
             <h1
               id="about-hero-heading"
-              className="font-bold leading-tight text-balance text-hero"
+              className="heading heading-h1 leading-tight text-balance"
             >
               More than a<br /> student club!
             </h1>
-            <p className="mt-4 text-text1 text-white/80">
+            <p className="mt-4 text-text2 md:text-text1 text-white/80 leading-relaxed">
               We bring together students from all disciplines to turn ideas into real
               robots — hands on and driven by passion.
             </p>
@@ -97,24 +97,25 @@ export default function AboutHero() {
         <div
           ref={statsRef}
           className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-8 text-center"
+          role="list"
           aria-label="RoboTUM key figures"
         >
-          <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm">
-            <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-blue-100 leading-none">
+          <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
+            <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
               +<Counter target={100} inView={statsInView} />
             </p>
             <p className="mt-2 text-text2 text-white/75">active members</p>
           </div>
 
-          <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm">
-            <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-blue-100 leading-none">
+          <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
+            <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
               +<Counter target={21} inView={statsInView} />
             </p>
             <p className="mt-2 text-text2 text-white/75">partners &amp; sponsors</p>
           </div>
 
-          <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm">
-            <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-blue-100 leading-none">
+          <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
+            <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
               +<Counter target={3} inView={statsInView} />
             </p>
             <p className="mt-2 text-text2 text-white/75">projects in development</p>

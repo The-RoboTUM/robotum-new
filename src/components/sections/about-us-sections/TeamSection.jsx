@@ -43,7 +43,7 @@ export default function TeamSection() {
       <div className="max-w-7xl mx-auto">
         <h2
           id="team-heading"
-          className="text-h1 font-bold leading-tight text-balance mb-10 text-center"
+          className="heading heading-h1 leading-tight text-balance mb-10 text-center"
         >
           Meet Our Team
         </h2>
