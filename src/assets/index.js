@@ -19,13 +19,35 @@ export { default as allMembersImg } from './images/foundations-team.jpg'
 export { default as eventsHero } from './images/eventsHero.png'
 
 // Partners 
-export { default as ansys } from './images/partners/ansys.png'
-export { default as cubemars } from './images/partners/cubemars.png'
-export { default as maytec } from './images/partners/maytec.png'
+// Lead Sponsors
+export { default as limx } from './images/partners/limx.png'
 export { default as maxon } from './images/partners/maxon.svg'
 export { default as reply } from './images/partners/roboverse-reply.svg'
-export { default as limx } from './images/partners/limx.png'
-export { default as olive } from './images/partners/olive-robotics.png'
+
+// Sponsors
+export { default as cubemars } from './images/partners/cubemars.png'
+export { default as cadfem } from './images/partners/cadfem.png'
+export { default as fort } from './images/partners/fort.png'
+export { default as maytec } from './images/partners/maytec.png'
+
+// Industry Collaborators
+export { default as nvidia } from './images/partners/nvidia.png'
+export { default as uvc } from './images/partners/uvc-partners.jpg'
+export { default as threeDConnexion } from './images/partners/3d-connexion.png'
+export { default as ansys } from './images/partners/ansys.png'
+export { default as gate } from './images/partners/gate.svg'
+export { default as makerspace } from './images/partners/makerspace.png'
+export { default as siemens } from './images/partners/siemens.png'
+
+// Academic Collaborators
+export { default as tum } from './images/partners/tum.svg'
+export { default as maxPlanck } from './images/partners/max-planck-institute.png'
+export { default as appliedMechanics } from './images/partners/applied-mechanics.png'
+export { default as tumVenture } from './images/partners/tum-venture-labs.png'
+export { default as mirmi } from './images/partners/mirmi.webp'
+export { default as kuLeuven } from './images/partners/ku-leuven.svg'
+
+export { default as nextPrototypes } from './images/partners/next-prototypes.svg'
 
 // Projects
 export { default as humanoidImg } from './images/projects/humanoid-project.png'

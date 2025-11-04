@@ -1,11 +1,33 @@
 import * as assets from '@assets'
 
-const sponsors = [
+const partners = [
+  // Lead Sponsors
   { name: 'LIMX Dynamics', image: assets.limx, tier: 'Lead Sponsor' },
   { name: 'Maxon', image: assets.maxon, tier: 'Lead Sponsor' },
   { name: 'Reply Roboverse', image: assets.reply, tier: 'Lead Sponsor' },
+
+  // Sponsors
   { name: 'CubeMars', image: assets.cubemars, tier: 'Sponsor' },
-  { name: 'Olive Robotics', image: assets.olive, tier: 'Sponsor' },
+  { name: 'Cadfem', image: assets.cadfem, tier: 'Sponsor' },
+  { name: 'Fort', image: assets.fort, tier: 'Sponsor' },
+  { name: 'Maytec', image: assets.maytec, tier: 'Sponsor' },
+
+  // Industry Collaborators
+  { name: 'NVIDIA', image: assets.nvidia, tier: 'Industry Collaborator' },
+  { name: 'UVC', image: assets.uvc, tier: 'Industry Collaborator' },
+  { name: '3Dconnexion', image: assets.threeDConnexion, tier: 'Industry Collaborator' },
+  { name: 'Ansys', image: assets.ansys, tier: 'Industry Collaborator' },
+  { name: 'GATE', image: assets.gate, tier: 'Industry Collaborator' },
+  { name: 'Makerspace', image: assets.makerspace, tier: 'Industry Collaborator' },
+  { name: 'Siemens', image: assets.siemens, tier: 'Industry Collaborator' },
+
+  // Academic Collaborators
+  { name: 'TUM', image: assets.tum, tier: 'Academic Collaborator' },
+  { name: 'Max Planck Institute', image: assets.maxPlanck, tier: 'Academic Collaborator' },
+  { name: 'Applied Mechanics', image: assets.appliedMechanics, tier: 'Academic Collaborator' },
+  { name: 'TUM Venture Labs', image: assets.tumVenture, tier: 'Academic Collaborator' },
+  { name: 'MIRMI', image: assets.mirmi, tier: 'Academic Collaborator' },
+  { name: 'KU Leuven', image: assets.kuLeuven, tier: 'Academic Collaborator' },
 ]
 
 export default function PartnersSection() {
@@ -26,18 +48,18 @@ export default function PartnersSection() {
         {/* Marquee lane */}
         <div className="flex gap-8 py-3 px-4 whitespace-nowrap overflow-hidden">
           <div className="flex gap-12 items-center animate-marquee" role="list" aria-label="Sponsor logos">
-            {[...sponsors, ...sponsors].map((sponsor, index) => (
+            {[...partners, ...partners].map((partner, index) => (
               <div
-                key={`${sponsor.name}-${index}`}
+                key={`${partner.name}-${index}`}
                 role="listitem"
                 className="flex flex-col items-center justify-center min-w-[140px] sm:min-w-40"
               >
                 <span className="mb-1 px-3 py-0.5 border border-accent text-xs rounded-full text-accent bg-accent/5">
-                  {sponsor.tier}
+                  {partner.tier}
                 </span>
                 <img
-                  src={sponsor.image}
-                  alt={sponsor.name}
+                  src={partner.image}
+                  alt={partner.name}
                   className="h-8 sm:h-10 md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity"
                   loading="lazy"
                   decoding="async"
