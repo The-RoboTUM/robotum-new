@@ -33,21 +33,27 @@ const partners = [
 export default function PartnersSection() {
   return (
     <section
-      className="w-full py-8 md:py-10 font-sans surface-light edge-fade-top edge-fade-bottom flex justify-center"
+      className="w-full py-12 md:py-16 font-sans surface-light edge-fade-top edge-fade-bottom flex justify-center"
       role="region"
       aria-labelledby="partners-heading"
     >
       <div className="relative w-full max-w-7xl overflow-hidden">
         {/* Accessible heading (visually hidden) */}
-        <h2 id="partners-heading" className="sr-only">Our Sponsors & Partners</h2>
+        <h2 id="partners-heading" className="sr-only">
+          Our Sponsors & Partners
+        </h2>
 
         {/* Left/Right gradient fades to soften edges */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-12 md:w-24 bg-linear-to-r from-white to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-12 md:w-24 bg-linear-to-l from-white to-transparent" />
 
         {/* Marquee lane */}
-        <div className="flex gap-8 py-3 px-4 whitespace-nowrap overflow-hidden">
-          <div className="flex gap-12 items-center animate-marquee" role="list" aria-label="Sponsor logos">
+        <div className="flex gap-10 py-4 px-4 whitespace-nowrap overflow-hidden">
+          <div
+            className="flex gap-12 items-center animate-marquee animate-marquee-slow"
+            role="list"
+            aria-label="Sponsor logos"
+          >
             {[...partners, ...partners].map((partner, index) => (
               <div
                 key={`${partner.name}-${index}`}
