@@ -51,10 +51,9 @@ const FaqSection = () => {
               {/* Question */}
               <button
                 onClick={() => toggleAnswer(index)}
-                className="w-full text-left text-text1 font-semibold bg-transparent hover:text-accent transition-colors duration-300 flex items-center justify-between"
+                className="w-full text-left text-text1 font-semibold bg-transparent hover:text-accent hover:cursor-pointer transition-colors duration-300 flex items-center justify-between"
               >
                 <span>{item.question}</span>
-                {/* Chevron icon for expand/collapse */}
                 {openIndex === index ? (
                   <ChevronUpIcon className="h-5 w-5 text-accent" />
                 ) : (
