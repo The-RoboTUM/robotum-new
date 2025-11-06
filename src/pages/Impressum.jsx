@@ -4,6 +4,7 @@ import FooterSection from '@components/sections/common-sections/FooterSection'
 
 export default function Impressum() {
   useEffect(() => { document.title = 'Impressum | RoboTUM' }, [])
+
   return (
     <>
       <Navbar />
@@ -14,24 +15,48 @@ export default function Impressum() {
           <section className="mb-8">
             <h2 className="text-text1 font-semibold">Angaben gemäß § 5 TMG</h2>
             <p>
-              RoboTUM – Student Initiative at Technische Universität München (TUM)<br/>
-              Street & Nr., PLZ City, Germany<br/>
-              E-Mail: contact@robotum.de<br/>
-              Vertretungsberechtigt: Vorstands-/Leitungsteam
+              NEXT Prototypes e.V.<br/>
+              Lichtenbergstr. 4a<br/>
+              85748 Garching bei München<br/>
+              Deutschland
+            </p>
+            <p>
+              Vereinsregister: VR 208020<br/>
+              Registergericht: Amtsgericht München
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-text1 font-semibold">Haftungsausschluss</h2>
-            <p>Inhalte wurden mit größter Sorgfalt erstellt; für Richtigkeit, Vollständigkeit und Aktualität übernehmen wir keine Gewähr.</p>
+            <h2 className="text-text1 font-semibold">Kontakt</h2>
+            <p>
+              Telefon: +49 (0) 15222178503<br/>
+              E-Mail: outreach@robotum.info
+            </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-text1 font-semibold">Urheberrecht</h2>
-            <p>Die durch RoboTUM erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.</p>
+            <h2 className="text-text1 font-semibold">Haftung für Inhalte</h2>
+            <p>
+              Als Dienstanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. 
+              Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen 
+              zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung 
+              oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung 
+              ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden 
+              Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+            </p>
           </section>
 
-          <p className="text-white/60 mt-10 text-sm">Letzte Aktualisierung: {new Date().toLocaleDateString()}</p>
+          <section className="mb-8">
+            <h2 className="text-text1 font-semibold">Haftung für Links</h2>
+            <p>
+              Unsere Seiten enthalten Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben und für die wir 
+              keine Haftung übernehmen können.
+            </p>
+          </section>
+
+          <p className="text-white/60 mt-10 text-sm">
+            Letzte Aktualisierung: {new Date().toLocaleDateString('de-DE')}
+          </p>
         </article>
       </main>
       <FooterSection />
