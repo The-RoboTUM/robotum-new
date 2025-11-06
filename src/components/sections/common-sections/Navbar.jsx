@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import * as assets from '@assets'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Button from '@components/ui/Button'
 
 const links = [
@@ -8,7 +8,7 @@ const links = [
   { label: 'About us', href: '/about' },
   {
     label: 'Projects',
-    href: '#projects',
+    href: '/projects',
     dropdown: true,
     subLinks: ['Technical', 'Operations', 'Innovation & Entrepreneurship'],
   },
@@ -26,16 +26,16 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick }) {
         onMouseLeave={onLeave}
       >
         {['Technical', 'Operations', 'Innovation & Entrepreneurship'].map(item => (
-          <Link
+          <button
             key={item}
-            to="#projects"
+            type="button"
             role="menuitem"
-            tabIndex="0"
-            className="block px-3 py-2 text-[14px] tracking-[0.8px] rounded text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 cursor-pointer"
-            onClick={onItemClick}
+            tabIndex={0}
+            className="w-full text-left block px-3 py-2 text-[14px] tracking-[0.8px] rounded text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 cursor-pointer"
+            onClick={() => { onItemClick(); scrollToProjects(); }}
           >
             {item}
-          </Link>
+          </button>
         ))}
       </div>
     )
@@ -51,6 +51,29 @@ export default function Navbar() {
   const hoverTimer = useRef(null)
   const { hash: currentHash } = useLocation()
   const navRef = useRef(null)
+
+  const navigate = useNavigate()
+
+  const scrollToProjects = useCallback(() => {
+    // Close any open menus first
+    setOpen(false)
+    setProjectsOpen(false)
+    setProjectsMobileOpen(false)
+
+    const doScroll = () => {
+      const el = document.getElementById('projects')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+
+    // If already on home, just scroll
+    if (window.location.pathname === '/') {
+      doScroll()
+    } else {
+      // Navigate home, then scroll shortly after mount
+      navigate('/', { replace: false })
+      setTimeout(doScroll, 50)
+    }
+  }, [navigate])
 
   const handleProjectsEnter = useCallback(() => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
@@ -251,17 +274,13 @@ export default function Navbar() {
                     <ul className="ml-4 mt-2 bg-[#06142B]/95 rounded-md p-2">
                       {l.subLinks.map(sub => (
                         <li key={sub}>
-                          <Link
-                            to="#projects"
-                            className="block px-4 py-2 text-[13px] text-white hover:bg-white/10 rounded cursor-pointer"
-                            onClick={() => {
-                              setOpen(false)
-                              setProjectsOpen(false)
-                              setProjectsMobileOpen(false)
-                            }}
+                          <button
+                            type="button"
+                            className="w-full text-left block px-4 py-2 text-[13px] text-white hover:bg-white/10 rounded cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                            onClick={scrollToProjects}
                           >
                             {sub}
-                          </Link>
+                          </button>
                         </li>
                       ))}
                     </ul>
