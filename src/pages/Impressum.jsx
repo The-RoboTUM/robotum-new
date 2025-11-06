@@ -1,6 +1,8 @@
+// General imports
+import Navbar from '@components/sections/common-sections/Navbar';
+import FooterSection from '@components/sections/common-sections/FooterSection';
+
 import React, { useEffect } from 'react'
-import Navbar from '@components/sections/common-sections/Navbar'
-import FooterSection from '@components/sections/common-sections/FooterSection'
 
 export default function Impressum() {
   useEffect(() => { document.title = 'Impressum | RoboTUM' }, [])

@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react'
+// General imports
 import Navbar from '@components/sections/common-sections/Navbar'
 import FooterSection from '@components/sections/common-sections/FooterSection'
+
+import React, { useEffect } from 'react'
 
 export default function GenderAndDiversity() {
   useEffect(() => { document.title = 'Gender & Biodiversity | RoboTUM' }, [])
