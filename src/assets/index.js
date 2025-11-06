@@ -1,9 +1,9 @@
 // Icons
-export { default as instagramIcon } from './icons/instagram.svg'
-export { default as linkedinIcon } from './icons/linkedin.svg'
-export { default as emailIcon } from './icons/email.svg'
-export { default as whatsappIcon } from './icons/whatsapp.svg'
-export { default as telegramIcon } from './icons/telegram.png'
+export { default as instagramIcon } from './icons/social-media/instagram.svg'
+export { default as linkedinIcon } from './icons/social-media/linkedin.svg'
+export { default as emailIcon } from './icons/social-media/email.svg'
+export { default as whatsappIcon } from './icons/social-media/whatsapp.svg'
+export { default as telegramIcon } from './icons/social-media/telegram.png'
 export { default as handsOnIcon } from './icons/hands-on.png'
 export { default as teamsIcon } from './icons/teams.png'
 export { default as eventsIcon } from './icons/events.png'
@@ -48,6 +48,12 @@ export { default as mirmi } from './images/partners/mirmi.webp'
 export { default as kuLeuven } from './images/partners/ku-leuven.svg'
 
 export { default as nextPrototypes } from './images/partners/next-prototypes.svg'
+
+//Offers
+export { default as roboticsIcon } from './icons/offers/robotics.png'
+export { default as marketingIcon } from './icons/offers/marketing.png'
+export { default as collaborationIcon } from './icons/offers/collaboration.png'
+export { default as networkingIcon } from './icons/offers/networking.png'
 
 // Projects
 export { default as humanoidImg } from './images/projects/humanoid-project.png'

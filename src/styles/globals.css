@@ -211,3 +211,8 @@ body {
 
 /* Disabled state */
 .btn:disabled { @apply opacity-50 cursor-not-allowed; }
+
+
+.icon-white {
+  filter: invert(1) brightness(2);
+}
