@@ -12,7 +12,7 @@ export const projects = [
     description: 'Longer copy for the detail page…',
     cover: assets.humanoid,
     tags: ['control', 'locomotion', 'hardware'],
-    links: [{label: 'GitHub', href: '#'}],
+    // links: [{label: 'GitHub', href: '#'}],
   },
   {
     slug: 'creative-robotics',
@@ -28,7 +28,8 @@ export const projects = [
     category: 'technical',
     summary: 'RoboTUM website and tooling.',
     cover: assets.websiteDevelopment,
-    tags: ['frontend', 'infra']
+    tags: ['frontend', 'infra'], 
+    links: [{label: 'GitHub', href: '#'}],
   },
   {
     slug: 'itq-plastix',
