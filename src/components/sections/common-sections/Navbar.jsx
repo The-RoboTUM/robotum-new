@@ -17,24 +17,30 @@ const links = [
   { label: 'Join us', href: '/join' },
 ]
 
-function ProjectDropdown({ open, onEnter, onLeave, onItemClick }) {
+const PROJECT_TABS = [
+  { label: 'Technical', key: 'technical' },
+  { label: 'Operations', key: 'operations' },
+  { label: 'Innovation & Entrepreneurship', key: 'innovation' },
+]
+
+function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) {
   return (
     open && (
       <div
-        className="absolute left-0 top-full min-w-40 rounded-md bg-[#06142B] px-2 py-2 shadow-lg ring-1 ring-white/10 z-50"
+        className="absolute left-0 top-full min-w-44 rounded-md bg-[#0E1C3D]/90 px-2 py-2 shadow-[0_0_25px_rgba(0,0,0,0.5)] ring-1 ring-white/10 z-50 backdrop-blur-sm"
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
       >
-        {['Technical', 'Operations', 'Innovation & Entrepreneurship'].map(item => (
+        {PROJECT_TABS.map(tab => (
           <button
-            key={item}
+            key={tab.key}
             type="button"
             role="menuitem"
             tabIndex={0}
-            className="w-full text-left block px-3 py-2 text-[14px] tracking-[0.8px] rounded text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 cursor-pointer"
-            onClick={() => { onItemClick(); scrollToProjects(); }}
+            className="w-full text-left block px-3 py-2 text-[14px] tracking-[0.8px] rounded text-white/90 hover:bg-white/10 hover:text-white transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 cursor-pointer"
+            onClick={() => { onItemClick(); onSelectType?.(tab.key); }}
           >
-            {item}
+            {tab.label}
           </button>
         ))}
       </div>
@@ -49,31 +55,10 @@ export default function Navbar() {
   const [projectsMobileOpen, setProjectsMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const hoverTimer = useRef(null)
-  const { hash: currentHash } = useLocation()
+  const { hash: currentHash, pathname } = useLocation()
   const navRef = useRef(null)
 
   const navigate = useNavigate()
-
-  const scrollToProjects = useCallback(() => {
-    // Close any open menus first
-    setOpen(false)
-    setProjectsOpen(false)
-    setProjectsMobileOpen(false)
-
-    const doScroll = () => {
-      const el = document.getElementById('projects')
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-
-    // If already on home, just scroll
-    if (window.location.pathname === '/') {
-      doScroll()
-    } else {
-      // Navigate home, then scroll shortly after mount
-      navigate('/', { replace: false })
-      setTimeout(doScroll, 50)
-    }
-  }, [navigate])
 
   const handleProjectsEnter = useCallback(() => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
@@ -84,6 +69,13 @@ export default function Navbar() {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
     hoverTimer.current = setTimeout(() => setProjectsOpen(false), 150)
   }, [])
+
+  const handleSelectProjectsType = useCallback((key) => {
+    navigate(`/projects?type=${key}`)
+    setProjectsOpen(false)
+    setOpen(false)
+    setProjectsMobileOpen(false)
+  }, [navigate])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -130,23 +122,23 @@ export default function Navbar() {
       ref={navRef}
       role="navigation"
       aria-label="Main"
-      className={`fixed top-0 left-0 right-0 z-50 font-sans transition-all duration-500 backdrop-blur-md bg-primary/70 border-b border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.25)] ${scrolled ? 'backdrop-blur-lg bg-primary/80' : 'backdrop-blur-md bg-primary/60'}`}
+      className={`fixed top-0 left-0 right-0 z-50 font-sans transition-all duration-500 backdrop-blur-xl bg-primary/40 border-b border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)] ${scrolled ? 'backdrop-blur-2xl bg-primary/60' : 'backdrop-blur-xl bg-primary/40'}`}
     >
       <div className="mx-auto max-w-7xl w-full px-2 sm:px-4 pt-3 pb-1.5">
-        <div className="flex w-full justify-between">
+        <div className="flex w-full justify-between items-center">
           <Link
             to="/"
-            className="pl-3 pr-3 flex"
+            className="pl-3 pr-3 flex items-center"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <img
               src={assets.navLogo}
               alt="RoboTUM logo"
-              className="w-[130px] h-10 object-contain"
+              className="w-[120px] h-8 object-contain opacity-90 hover:opacity-100 transition-opacity"
             />
           </Link>
 
-          <ul className="hidden md:flex items-start gap-0">
+          <ul className="hidden md:flex items-center gap-0">
             {links.map(l => {
               if (l.dropdown) {
                 return (
@@ -161,7 +153,7 @@ export default function Navbar() {
                       onClick={() => setProjectsOpen(o => !o)}
                       aria-haspopup="true"
                       aria-expanded={projectsOpen}
-                      className={`${itemBase} rounded-md`}
+                      className={`${itemBase} rounded-md ${pathname.startsWith('/projects') ? 'text-indigo-300' : ''}`}
                     >
                       {l.label.toUpperCase()}
                       <svg
@@ -185,6 +177,7 @@ export default function Navbar() {
                       onEnter={handleProjectsEnter}
                       onLeave={handleProjectsLeave}
                       onItemClick={() => setProjectsOpen(false)}
+                      onSelectType={handleSelectProjectsType}
                     />
                   </li>
                 )
@@ -277,7 +270,9 @@ export default function Navbar() {
                           <button
                             type="button"
                             className="w-full text-left block px-4 py-2 text-[13px] text-white hover:bg-white/10 rounded cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                            onClick={scrollToProjects}
+                            onClick={() => handleSelectProjectsType(
+                              PROJECT_TABS.find(t => t.label === sub)?.key || 'technical'
+                            )}
                           >
                             {sub}
                           </button>

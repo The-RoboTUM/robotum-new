@@ -10,6 +10,8 @@ const Partners = lazy(() => import('@pages/Partners'))
 const Impressum = lazy(() => import('@pages/Impressum'))
 const PrivacyPolicy = lazy(() => import('@pages/PrivacyPolicy'))
 const GenderAndDiversity = lazy(() => import('@pages/GenderAndDiversity'))
+const Projects = lazy(() => import('@pages/Projects'))
+const ProjectDetail = lazy(() => import('@pages/ProjectDetail'))
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/gender-and-diversity" element={<GenderAndDiversity />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
       </Routes>
     </Suspense>
   )
