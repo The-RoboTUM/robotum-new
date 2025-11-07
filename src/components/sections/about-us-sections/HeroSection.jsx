@@ -116,7 +116,7 @@ export default function AboutHero() {
 
           <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
             <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
-              +<Counter target={3} inView={statsInView} />
+              +<Counter target={14} inView={statsInView} />
             </p>
             <p className="mt-2 text-text2 text-white/75">projects in development</p>
           </div>

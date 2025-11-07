@@ -56,7 +56,7 @@ export default function JoinUsSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <Button variant="primary" as="link" to="#partner">Become a Partner</Button>
-              <Button variant="secondary" as="link" to="#view-partners">View Partners</Button>
+              <Button variant="secondary" as="link" to="/partners">View Partners</Button>
             </div>
           </div>
         </div>
