@@ -87,7 +87,7 @@ export const projects = [
     title: 'Generation Robotics: EFR',
     category: 'innovation',
     summary: 'European Federation of Robotics Organizations.',
-    cover: assets.innovEfr,
+    cover: assets.generation,
     tags: ['ecosystem']
   },
   {
@@ -95,7 +95,7 @@ export const projects = [
     title: 'Robotics Student Precelerator',
     category: 'innovation',
     summary: 'From concept to pilot.',
-    cover: assets.studentPrecelerator,
+    cover: assets.precelerator,
     tags: ['startup']
   },
   {
@@ -119,7 +119,7 @@ export const projects = [
     title: 'ROBO SPARK SUMMIT',
     category: 'innovation',
     summary: 'Summit for founders & researchers.',
-    cover: assets.roboSparkSummit,
+    cover: assets.robospark,
     tags: ['summit']
   },
 ];
