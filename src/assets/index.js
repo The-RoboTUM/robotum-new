@@ -9,14 +9,14 @@ export { default as teamsIcon } from './icons/others/teams.png'
 export { default as eventsIcon } from './icons/others/events.png'
 
 // General images
-export { default as speakerImg } from './images/speaker.png'
-export { default as navLogo } from './images/robotum-logo-blue-white.svg'
-export { default as memberImg } from './images/foundations-team.jpg'
-export { default as partnerImg } from './images/foundations-team.jpg' 
-export { default as logo } from './images/robotum-logo-blue-white.svg'
-export { default as auditoryImg } from './images/auditory.png'
-export { default as allMembersImg } from './images/foundations-team.jpg'
-export { default as eventsHero } from './images/eventsHero.png'
+export { default as speakerImg } from './images/others/speaker.png'
+export { default as navLogo } from './images/robotum-logos/robotum-logo-blue-white.svg'
+export { default as memberImg } from './images/others/foundations-team.jpg'
+export { default as partnerImg } from './images/others/foundations-team.jpg'
+export { default as logo } from './images/robotum-logos/robotum-logo-blue-white.svg'
+export { default as auditoryImg } from './images/others/auditory.png'
+export { default as allMembersImg } from './images/others/foundations-team.jpg'
+export { default as eventsHero } from './images/others/eventsHero.png'
 
 // Partners 
 // Lead Sponsors
