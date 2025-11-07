@@ -6,31 +6,31 @@ import ImageFrame from '@components/ui/ImageFrame'
 const projects = [
   {
     title: 'Humanoid Project',
+    slug: 'humanoid-project',
     description:
       "Building the world's fastest and most energy-efficient Bipedal Robot. Design, test, and iterate on hardware systems, work on our RL learning in Simulation, or come up with business proposals for its use cases.",
     image: assets.humanoid,
-    link: '#humanoid',
   },
   {
     title: 'Creative Robotics',
+    slug: 'creative-robotics',
     description:
       'Building awesome robotics projects — cocktail mixing robots, self-positioning trash bins, or anything else that comes to mind.',
     image: assets.creativeRobotics,
-    link: '#creative-robotics',
   },
   {
     title: 'Website Development',
+    slug: 'website-dev',
     description:
       "Help shape RoboTUM's online presence and work on your web development skills!",
     image: assets.websiteDevelopment,
-    link: '#website-development',
   },
   {
     title: 'ITQ Plastix Project',
+    slug: 'itq-plastix',
     description:
       'Work with ITQ to clean beaches from plastic using autonomous drones and wheeled robots.',
     image: assets.itqPlastix,
-    link: '#itq-plastix-project',
   },
 ]
 
@@ -77,7 +77,7 @@ export default function ProjectSection() {
             <p className="text-text1 text-white/80 mb-6 leading-relaxed">
               {projects[current].description}
             </p>
-            <Button variant="secondary" as="link" to={projects[current].link}>
+            <Button variant="secondary" as="link" to={`/projects/${projects[current].slug}`}>
               View more →
             </Button>
           </div>
@@ -153,7 +153,7 @@ export default function ProjectSection() {
                 <p className="text-text2 text-white/80 text-sm leading-relaxed mb-4 line-clamp-4">
                   {p.description}
                 </p>
-                <Button variant="secondary" as="link" to={p.link} className="text-sm px-4 py-2">
+                <Button variant="secondary" as="link" to={`/projects/${p.slug}`} className="text-sm px-4 py-2">
                   View more →
                 </Button>
               </div>
@@ -171,7 +171,7 @@ export default function ProjectSection() {
             role="tab"
             aria-selected={i === current}
             onClick={() => setCurrent(i)}
-            className={`w-3.5 h-3.5 rounded-full transition-colors ${i === current ? 'bg-white' : 'bg-white/30 hover:bg-white/50'
+            className={`cursor-pointer w-3.5 h-3.5 rounded-full transition-colors ${i === current ? 'bg-white' : 'bg-white/30 hover:bg-white/50'
               }`}
           >
             <span className="sr-only">Go to slide {i + 1}</span>
