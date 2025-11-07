@@ -18,7 +18,7 @@ export default function Button({
       to={to}
       disabled={disabled}
       className={clsx(
-        'btn', // base style from globals.css
+        'btn cursor-pointer', // base style from globals.css + ensure pointer cursor
         {
           'btn-primary': variant === 'primary',
           'btn-secondary': variant === 'secondary',

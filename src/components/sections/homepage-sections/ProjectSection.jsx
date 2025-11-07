@@ -1,38 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import * as assets from '@assets'
+import { projects } from '@data/projects'
 import Button from '@components/ui/Button'
 import ImageFrame from '@components/ui/ImageFrame'
-
-const projects = [
-  {
-    title: 'Humanoid Project',
-    slug: 'humanoid-project',
-    description:
-      "Building the world's fastest and most energy-efficient Bipedal Robot. Design, test, and iterate on hardware systems, work on our RL learning in Simulation, or come up with business proposals for its use cases.",
-    image: assets.humanoid,
-  },
-  {
-    title: 'Creative Robotics',
-    slug: 'creative-robotics',
-    description:
-      'Building awesome robotics projects — cocktail mixing robots, self-positioning trash bins, or anything else that comes to mind.',
-    image: assets.creativeRobotics,
-  },
-  {
-    title: 'Website Development',
-    slug: 'website-dev',
-    description:
-      "Help shape RoboTUM's online presence and work on your web development skills!",
-    image: assets.websiteDevelopment,
-  },
-  {
-    title: 'ITQ Plastix Project',
-    slug: 'itq-plastix',
-    description:
-      'Work with ITQ to clean beaches from plastic using autonomous drones and wheeled robots.',
-    image: assets.itqPlastix,
-  },
-]
 
 export default function ProjectSection() {
   const [current, setCurrent] = useState(0)
@@ -75,7 +44,7 @@ export default function ProjectSection() {
               {projects[current].title}
             </h2>
             <p className="text-text1 text-white/80 mb-6 leading-relaxed">
-              {projects[current].description}
+              {projects[current].summary}
             </p>
             <Button variant="secondary" as="link" to={`/projects/${projects[current].slug}`}>
               View more →
@@ -92,7 +61,7 @@ export default function ProjectSection() {
                 className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
               >
                 <ImageFrame
-                  src={p.image}
+                  src={p.cover}
                   alt={p.title}
                   aspect="3/2"
                   fit="cover"
@@ -141,7 +110,7 @@ export default function ProjectSection() {
                 className="rt-slide snap-center shrink-0 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-5 w-80 sm:w-96 text-center flex flex-col items-center justify-between"
               >
                 <ImageFrame
-                  src={p.image}
+                  src={p.cover}
                   alt={p.title}
                   aspect="3/2"
                   fit="cover"
