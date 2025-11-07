@@ -8,7 +8,7 @@ const projects = [
     title: 'Humanoid Project',
     description:
       "Building the world's fastest and most energy-efficient Bipedal Robot. Design, test, and iterate on hardware systems, work on our RL learning in Simulation, or come up with business proposals for its use cases.",
-    image: assets.humanoidImg,
+    image: assets.humanoid,
     link: '#humanoid',
   },
   {
