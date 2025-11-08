@@ -29,7 +29,7 @@ export default function JoinUsSection() {
               participate in projects, and grow your skills alongside passionate innovators.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
-              <Button variant="primary" as="link" to="#apply">Apply Now</Button>
+              <Button variant="primary" as="link" to="/join">Apply Now</Button>
               <Button variant="secondary" as="link" to="#learn-more">Learn More</Button>
             </div>
           </div>
