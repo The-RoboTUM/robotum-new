@@ -115,6 +115,24 @@ export default function Navbar() {
     };
   }, [open]);
 
+  // Click-outside handler for closing mobile menu
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!open) return
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setOpen(false)
+        setProjectsOpen(false)
+        setProjectsMobileOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [open])
+
   const itemBase =
     'inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-normal text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 hover:text-indigo-300 cursor-pointer';
 
@@ -238,8 +256,20 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Blurred clickable overlay for mobile menu */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 md:hidden bg-black/40 backdrop-blur-md transition-opacity duration-300"
+          onClick={() => {
+            setOpen(false)
+            setProjectsOpen(false)
+            setProjectsMobileOpen(false)
+          }}
+          aria-hidden="true"
+        />
+      )}
       <div
-        className={`md:hidden px-4 navbar-gradient transition-all duration-400 ${
+        className={`md:hidden relative z-50 px-4 navbar-gradient transition-all duration-400 ${
           open ? 'opacity-100 max-h-screen pb-3 overflow-y-auto' : 'opacity-0 max-h-0 overflow-hidden'
         }`}
       >
