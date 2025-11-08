@@ -45,8 +45,8 @@ export default function Projects() {
   return (
     <>
       <Navbar />
-      <section className="surface-1 min-h-screen px-6 md:px-12 py-24 md:py-32 text-white font-sans edge-fade-bottom surface-wrap surface-pattern">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-container surface-1 min-h-screen text-white font-sans edge-fade-bottom surface-wrap surface-pattern">
+        <div>
           <header className="mb-8">
             <h1 className="heading heading-h1">Projects</h1>
             <p className="text-text1 text-white/80 mt-3">Explore our initiatives across engineering, operations, and entrepreneurship.</p>

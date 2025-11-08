@@ -19,7 +19,7 @@ export default function HeroSection({
       id="hero"
       role="region"
       aria-labelledby="hero-heading"
-      className="relative w-full min-h-screen flex flex-col items-center justify-center px-6 md:px-12 py-20 md:py-28 lg:py-32 text-white font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
+      className="section-container relative min-h-screen flex flex-col items-center justify-center text-white font-sans surface-1 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
     >
       {/* Background overlay */}
       <div className="pointer-events-none absolute inset-0 bg-black/30" />

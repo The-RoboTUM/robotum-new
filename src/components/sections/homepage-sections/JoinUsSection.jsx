@@ -6,9 +6,9 @@ export default function JoinUsSection() {
   return (
     <section
       id="join"
-      className="w-full px-6 md:px-16 py-20 md:py-28 text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
+      className="section-container text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
     >
-      <div className="max-w-7xl mx-auto flex flex-col gap-20 md:gap-24">
+      <div className="flex flex-col gap-20 md:gap-24">
         {/* Become a Member */}
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2 w-full">

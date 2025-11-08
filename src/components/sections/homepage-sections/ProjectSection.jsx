@@ -30,7 +30,7 @@ export default function ProjectSection() {
   return (
     <section
       id="projects"
-      className="w-full px-6 py-24 text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
+      className="section-container text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
     >
       {/* Heading */}
       <h2 className="heading heading-h1 font-bold leading-tight mb-10 md:mb-14 text-center md:text-left">

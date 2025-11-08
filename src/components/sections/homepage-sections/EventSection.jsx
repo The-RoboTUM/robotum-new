@@ -40,7 +40,7 @@ export default function EventSection() {
   return (
     <section
       id="events"
-      className="w-full px-6 py-24 font-sans text-white surface-2 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
+      className="section-container font-sans text-white surface-2 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left side - image and title */}

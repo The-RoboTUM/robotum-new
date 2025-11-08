@@ -28,9 +28,9 @@ const WhatWeOffer = () => {
   return (
     <section
       id="what-we-offer"
-      className="surface-2 edge-fade-top edge-fade-bottom py-24 px-6 text-center font-sans"
+      className="section-container surface-2 edge-fade-top edge-fade-bottom text-center font-sans"
     >
-      <div className="max-w-7xl mx-auto">
+      <div>
         <h2 className="heading heading-h2 font-bold mb-12 text-white animate-fadeIn">
           What We Offer
         </h2>
@@ -43,7 +43,7 @@ const WhatWeOffer = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex flex-col items-center">
-                <div className="relative w-20 h-20 mb-6 flex items-center justify-center rounded-full bg-white/10 border border-white/20 shadow-inner group-hover:bg-linear-to-br group-hover:from-[#2563EB]/40 group-hover:to-[#7C3AED]/40 transition-all duration-500">
+                <div className="relative w-20 h-20 mb-6 flex items-center justify-center rounded-full bg-white/10 border border-white/20 shadow-inner group-hover:bg-linear-to-br group-hover:from-accent/40 group-hover:to-[#7C3AED]/40 transition-all duration-500">
                   <img
                     src={offer.icon}
                     alt={offer.title}

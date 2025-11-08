@@ -11,9 +11,9 @@ export default function MissionSection() {
   return (
     <section
       id="mission"
-      className="w-full text-white font-sans surface-2 edge-fade-top edge-fade-bottom px-6 md:px-16 py-20 md:py-28 surface-wrap surface-pattern"
+      className="section-container text-white font-sans surface-2 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
     >
-      <div className="max-w-7xl mx-auto">
+      <div>
         {/* Heading */}
         <h2 className="heading heading-h1 font-bold leading-tight mb-10 md:mb-14 text-center md:text-left">
           Foundations of RoboTUM

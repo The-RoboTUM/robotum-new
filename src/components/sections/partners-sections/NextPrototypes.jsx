@@ -6,11 +6,11 @@ const NextPrototypes = () => {
   return (
     <section
       id="next-prototypes"
-      className="surface-2 edge-fade-top edge-fade-bottom text-center py-16 px-6 font-sans overflow-hidden"
+      className="section-container surface-2 edge-fade-top edge-fade-bottom text-center font-sans overflow-hidden"
       role="region"
       aria-labelledby="next-prototypes-heading"
     >
-      <div className="max-w-4xl mx-auto animate-fadeIn">
+      <div className="animate-fadeIn">
         <h3
           id="next-prototypes-heading"
           className="heading heading-h2 mb-8 text-white drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)]"

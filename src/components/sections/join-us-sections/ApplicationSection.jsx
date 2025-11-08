@@ -24,8 +24,8 @@ const steps = [
 
 const ApplicationSection = () => {
   return (
-    <section className="w-full px-6 md:px-16 py-20 md:py-28 font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern" aria-labelledby="application-heading" role="region">
-      <div className="max-w-6xl mx-auto text-center mb-16">
+    <section className="section-container font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern" aria-labelledby="application-heading" role="region">
+      <div className="text-center mb-16">
         <h2 id="application-heading" className="heading heading-h1 font-bold leading-tight text-balance mb-6">
           Application Process
         </h2>
@@ -37,7 +37,7 @@ const ApplicationSection = () => {
       </div>
 
       {/* Steps grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 max-w-6xl mx-auto text-center" role="list" aria-label="Application steps">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 text-center" role="list" aria-label="Application steps">
         {steps.map((step) => (
           <article
             key={step.number}

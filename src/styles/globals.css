@@ -232,3 +232,7 @@ body {
   pointer-events: none;
   transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
 }
+
+.section-container {
+  @apply w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-24;
+}

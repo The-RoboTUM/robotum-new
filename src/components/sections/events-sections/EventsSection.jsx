@@ -63,11 +63,11 @@ export default function EventsSection() {
 
   return (
     <section
-      className="w-full px-6 py-20 md:py-28 font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
+      className="section-container font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
       aria-labelledby="events-section-heading"
       role="region"
     >
-      <div className="max-w-7xl mx-auto">
+      <div>
         {/* Heading */}
         <h2 id="events-section-heading" className="heading heading-h1 leading-tight mb-8 text-center md:text-left">
           Upcoming Events

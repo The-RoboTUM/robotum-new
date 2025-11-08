@@ -46,8 +46,8 @@ const partnerTypes = [
 
 const PartnerCategories = () => {
   return (
-    <section className="surface-light surface-wrap edge-fade-y px-6 md:px-12 py-24">
-      <div className="max-w-6xl mx-auto space-y-24">
+    <section className="section-container surface-light surface-wrap edge-fade-y">
+      <div className="space-y-24">
         {partnerTypes.map((type, idx) => (
           <div
             key={idx}

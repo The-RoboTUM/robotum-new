@@ -13,14 +13,14 @@ const HeroSection = () => {
   return (
     <section
       id="partners-hero"
-      className="surface-1 text-white surface-wrap edge-fade-bottom min-h-screen flex items-center px-6 md:px-12 py-20 md:py-28"
+      className="section-container surface-1 text-white surface-wrap edge-fade-bottom min-h-screen flex items-center"
       aria-labelledby="partners-hero-heading"
       role="region"
     >
       {/* Optional subtle pattern overlay */}
       <div className="surface-pattern opacity-40 absolute inset-0" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto max-w-6xl">
+      <div className="relative z-10">
 
         {/* Headline + Subcopy */}
         <header className="max-w-3xl">

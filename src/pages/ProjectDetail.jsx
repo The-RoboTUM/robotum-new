@@ -38,8 +38,8 @@ export default function ProjectDetail() {
   return (
     <>
       <Navbar />
-      <section className="surface-1 min-h-screen px-6 md:px-12 py-20 md:py-28 text-white font-sans surface-wrap surface-pattern">
-        <div className="max-w-6xl mx-auto grid gap-10 md:grid-cols-2">
+      <section className="section-container surface-1 min-h-screen text-white font-sans surface-wrap surface-pattern">
+        <div className="grid gap-10 md:grid-cols-2">
           <div>
             <ImageFrame src={project.cover} alt={project.title} aspect="16/9" fit="cover" variant="border" vignette className="w-full" />
           </div>

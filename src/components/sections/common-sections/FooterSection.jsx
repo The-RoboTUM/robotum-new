@@ -2,8 +2,8 @@ import * as assets from '@assets'
 
 export default function FooterSection() {
   return (
-    <footer className="bg-primary text-white px-6 pt-16 pb-10 font-exo">
-      <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between gap-8 text-center md:text-left">
+    <footer className="bg-primary text-white section-container pt-16 pb-10 font-exo">
+      <div className="flex flex-wrap justify-center md:justify-between gap-8 text-center md:text-left">
 
         {/* Logo and Description */}
         <div className="flex flex-col gap-4 items-center md:items-start min-w-40">
@@ -83,7 +83,7 @@ export default function FooterSection() {
       <hr className="my-8 border-gray-700" />
 
       {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 text-center gap-2">
+      <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 text-center gap-2">
         <span>© 2025 RoboTUM. All rights reserved.</span>
         <span>Built with ❤️ by RoboTUM Team</span>
       </div>

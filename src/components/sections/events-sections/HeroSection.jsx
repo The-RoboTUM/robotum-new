@@ -12,10 +12,10 @@ import ImageFrame from '@components/ui/ImageFrame'
 const HeroSection = () => {
   return (
     <section
-      className="w-full min-h-[70vh] lg:min-h-screen px-6 md:px-16 py-20 md:py-28 lg:py-32 font-sans text-white surface-2 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
+      className="section-container min-h-[70vh] lg:min-h-screen font-sans text-white surface-2 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
       aria-labelledby="events-hero-heading"
     >
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-14">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-14">
         {/* Visual */}
         <div className="w-full lg:w-1/2">
           <ImageFrame

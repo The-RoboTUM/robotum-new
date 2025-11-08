@@ -13,11 +13,11 @@ export default function WhatIsRobotum({ illustration }) {
   return (
     <section
       id="what-is-robotum"
-      className="surface-2 edge-fade-top edge-fade-bottom px-6 md:px-12 py-20 md:py-28 font-sans"
+      className="section-container surface-2 edge-fade-top edge-fade-bottom font-sans"
       aria-labelledby="what-robotum-heading"
       role="region"
     >
-      <div className="max-w-7xl mx-auto grid gap-12 lg:gap-16 md:grid-cols-2 items-center">
+      <div className="grid gap-12 lg:gap-16 md:grid-cols-2 items-center">
         {/* Copy column */}
         <div className="animate-fadeIn">
           <p className="mb-3 text-sm tracking-[0.15em] uppercase text-white/70">Student initiative @ TUM</p>

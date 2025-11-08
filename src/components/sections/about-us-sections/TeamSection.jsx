@@ -38,10 +38,10 @@ export default function TeamSection() {
 
   return (
     <section
-      className="w-full px-6 md:px-16 py-20 md:py-28 text-white font-sans surface-2 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
+      className="section-container text-white font-sans surface-2 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
       aria-labelledby="team-heading"
     >
-      <div className="max-w-7xl mx-auto">
+      <div>
         <h2
           id="team-heading"
           className="heading heading-h1 leading-tight text-balance mb-10 text-center"

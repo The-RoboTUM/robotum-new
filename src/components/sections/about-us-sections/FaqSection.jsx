@@ -42,8 +42,8 @@ const FaqSection = () => {
   }
 
   return (
-    <section className="w-full px-6 md:px-16 py-20 md:py-28 font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern">
-      <div className="max-w-7xl mx-auto">
+    <section className="section-container font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern">
+      <div>
         <h2 className="heading heading-h2 font-bold text-center mb-8">Frequently Asked Questions</h2>
         <div className="space-y-6">
           {faqItems.map((item, index) => (
