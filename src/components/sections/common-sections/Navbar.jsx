@@ -29,6 +29,7 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) 
 
   return (
     <div
+      role="menu"
       className="absolute left-0 top-full min-w-44 rounded-md bg-[#0E1C3D]/90 px-2 py-2 shadow-[0_0_25px_rgba(0,0,0,0.5)] ring-1 ring-white/10 z-50 backdrop-blur-sm"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
@@ -60,6 +61,7 @@ export default function Navbar() {
   const hoverTimer = useRef(null);
   const { hash: currentHash, pathname } = useLocation();
   const navRef = useRef(null);
+  const mobileMenuRef = useRef(null);
   const navigate = useNavigate();
 
   const handleProjectsEnter = useCallback(() => {
@@ -104,14 +106,14 @@ export default function Navbar() {
     const body = document.body;
     if (open) {
       body.style.overflow = 'hidden';
-      body.classList.add('blurred-overlay');
+      body.classList.add('blurred-overlay', 'menu-open');
     } else {
       body.style.overflow = 'auto';
-      body.classList.remove('blurred-overlay');
+      body.classList.remove('blurred-overlay', 'menu-open');
     }
     return () => {
       body.style.overflow = 'auto';
-      body.classList.remove('blurred-overlay');
+      body.classList.remove('blurred-overlay', 'menu-open');
     };
   }, [open]);
 
@@ -133,6 +135,36 @@ export default function Navbar() {
     }
   }, [open])
 
+  useEffect(() => {
+    if (!open || !mobileMenuRef.current) return;
+    const root = mobileMenuRef.current;
+    const focusable = root.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    // focus first focusable
+    first && first.focus();
+
+    function handleKey(e) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last && last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first && first.focus();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [open]);
+
   const itemBase =
     'inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-normal text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 hover:text-indigo-300 cursor-pointer';
 
@@ -141,11 +173,11 @@ export default function Navbar() {
       ref={navRef}
       role="navigation"
       aria-label="Main"
-      className={`fixed top-0 left-0 right-0 z-50 font-sans transition-all duration-500 backdrop-blur-xl bg-primary/40 border-b border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)] ${
+      className={`fixed top-0 left-0 right-0 z-60 font-sans transition-all duration-500 backdrop-blur-xl bg-primary/40 border-b border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)] ${
         scrolled ? 'backdrop-blur-2xl bg-primary/60' : 'backdrop-blur-xl bg-primary/40'
       }`}
     >
-      <div className="mx-auto max-w-7xl w-full px-2 sm:px-4 pt-3 pb-1.5">
+      <div className="mx-auto max-w-7xl w-full px-3 sm:px-4 pt-3 pb-1.5">
         <div className="flex w-full justify-between items-center">
           <Link
             to="/"
@@ -231,10 +263,11 @@ export default function Navbar() {
           <button
             className="md:hidden inline-flex items-center justify-center w-10 h-10 mr-2 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             aria-expanded={open}
-            aria-label="Toggle navigation menu"
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
             onClick={() => setOpen(o => !o)}
           >
-            <span className="sr-only">Menu</span>
+            <span className="sr-only">Toggle navigation</span>
             {open ? (
               <svg
                 className="h-6 w-6 text-white"
@@ -246,7 +279,7 @@ export default function Navbar() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <div className="space-y-1">
+              <div className="space-y-1" aria-hidden="true">
                 <span className="block h-0.5 w-6 bg-white" />
                 <span className="block h-0.5 w-6 bg-white" />
                 <span className="block h-0.5 w-6 bg-white" />
@@ -259,19 +292,29 @@ export default function Navbar() {
       {/* Blurred clickable overlay for mobile menu */}
       {open && (
         <div
-          className="fixed inset-0 z-40 md:hidden bg-black/40 backdrop-blur-md transition-opacity duration-300"
+          className="fixed inset-0 z-40 md:hidden bg-black/60 backdrop-blur-sm transition-opacity duration-300 pointer-events-auto"
           onClick={() => {
-            setOpen(false)
-            setProjectsOpen(false)
-            setProjectsMobileOpen(false)
+            setOpen(false);
+            setProjectsOpen(false);
+            setProjectsMobileOpen(false);
           }}
           aria-hidden="true"
-        />
+        >
+          {/* Prevent clicks on background */}
+          <div className="absolute inset-0 pointer-events-none" />
+        </div>
       )}
       <div
-        className={`md:hidden relative z-50 px-4 navbar-gradient transition-all duration-400 ${
-          open ? 'opacity-100 max-h-screen pb-3 overflow-y-auto' : 'opacity-0 max-h-0 overflow-hidden'
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Main navigation"
+        className={`md:hidden relative z-70 px-4 navbar-gradient transition-all duration-300 ease-out ${
+          open
+            ? 'opacity-100 translate-y-0 max-h-[80vh] pb-3 overflow-y-auto pointer-events-auto'
+            : 'opacity-0 -translate-y-2 max-h-0 overflow-hidden pointer-events-none'
         }`}
+        ref={mobileMenuRef}
       >
         <ul className="flex flex-col gap-1">
           {links.map(l => {
