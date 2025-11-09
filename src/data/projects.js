@@ -12,7 +12,6 @@ export const projects = [
     description: 'Building the world\'s fastest and most energy-efficient Bipedal Robot. Design, Test, and iterate on hardware systems, work on our RL learning in Simulation, or come up with business proposals for its use cases. The Humanoid project needs every kind of background, from Tech to Marketing and Business! Help push the main technical Project of RoboTUM and revolutionize Humanoids!',
     cover: assets.humanoid,
     tags: ['control', 'locomotion', 'hardware'],
-    // links: [{label: 'GitHub', href: '#'}],
   },
   {
     slug: 'creative-robotics',
