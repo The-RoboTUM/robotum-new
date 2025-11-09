@@ -234,5 +234,5 @@ body {
 }
 
 .section-container {
-  @apply w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-24;
+  @apply w-full px-6 sm:px-8 lg:px-16 py-24;
 }
