@@ -28,6 +28,7 @@ export default function EventsSection() {
 
   return (
     <section
+      id="upcoming-events"
       className="section-container font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
       aria-labelledby="events-section-heading"
       role="region"

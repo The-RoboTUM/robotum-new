@@ -4,20 +4,51 @@ import Button from '@components/ui/Button'
 import ImageFrame from '@components/ui/ImageFrame'
 
 /**
- * Events → Hero Section
- * - Uses global heading helpers and design tokens
- * - Matches the typography tracking from Figma (via .heading)
- * - Consistent surfaces, spacing, and accessibility
+ * Events → Hero Section (Refined)
+ * - Consistent with design system
+ * - Full screen on all devices
+ * - Balanced text and visuals
+ * - Improved readability and spacing
  */
 const HeroSection = () => {
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id)
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <section
-      className="section-container min-h-[70vh] lg:min-h-screen font-sans text-white surface-2 edge-fade-bottom surface-wrap surface-pattern overflow-hidden"
+      className="w-full min-h-screen font-sans text-white surface-2 edge-fade-bottom surface-wrap surface-pattern overflow-hidden flex items-center"
       aria-labelledby="events-hero-heading"
     >
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-14">
-        {/* Visual */}
-        <div className="w-full lg:w-1/2">
+      <div className="section-container flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-20">
+        {/* Text Content */}
+        <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
+          <h1
+            id="events-hero-heading"
+            className="heading heading-h1 font-bold leading-tight text-balance"
+          >
+            Where ideas <span className="text-accent">connect</span> and grow
+          </h1>
+
+          <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            Join thought‑provoking events that bring together students, professionals, and innovators. From inspiring keynotes to interactive workshops and networking — each event offers a space for exchange, reflection, and growth.
+          </p>
+
+          <div className="pt-2 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center lg:justify-start">
+            <Button variant="primary" onClick={() => scrollToSection('upcoming-events')}>
+              View upcoming events
+            </Button>
+            <Button variant="secondary" as="link" to="/events#past">
+              See past highlights
+            </Button>
+          </div>
+        </div>
+
+        {/* Hero Image */}
+        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
           <ImageFrame
             src={assets.eventsHero}
             alt="Robot and speaker at event"
@@ -25,31 +56,8 @@ const HeroSection = () => {
             fit="cover"
             variant="soft"
             rounded="2xl"
-            className="w-full"
+            className="w-full max-w-lg lg:max-w-xl"
           />
-        </div>
-
-        {/* Copy + CTAs */}
-        <div className="w-full lg:w-1/2 text-center lg:text-left">
-          <h1
-            id="events-hero-heading"
-            className="heading heading-h1 font-bold leading-tight text-balance mb-6 md:mb-8"
-          >
-            Where ideas <br /> connect and grow!
-          </h1>
-
-          <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-6 md:mb-8">
-            Join thought‑provoking events that bring together students, professionals, and innovators. From inspiring keynotes to interactive workshops and networking — each event offers space for exchange, reflection, and growth.
-          </p>
-
-          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center lg:justify-start">
-            <Button variant="primary" as="link" to="/events#upcoming">
-              View upcoming events
-            </Button>
-            <Button variant="secondary" as="link" to="/events#past" className="sm:ml-2">
-              See past highlights
-            </Button>
-          </div>
         </div>
       </div>
     </section>
