@@ -1,41 +1,33 @@
-import * as assets from '@assets'
+import { events } from '@data'
 import ImageFrame from '@components/ui/ImageFrame'
 import Button from '@components/ui/Button'
 
-const events = [
-  {
-    title: 'Robotics Expo 2025',
-    date: 'February 2025',
-    image: assets.event1,
-    link: '#',
-  },
-  {
-    title: 'AI and Robotics Summit',
-    date: 'March 2025',
-    image: assets.event2,
-    link: '#',
-  },
-  {
-    title: 'Hackathon 2025',
-    date: 'April 2025',
-    image: assets.event3,
-    link: '#',
-  },
-]
-
 const PreviousEventsSection = () => {
+  // Filter and sort past events (most recent first)
+  const pastEvents = events
+    .filter(event => event.past)
+    .sort((a, b) => new Date(b.end) - new Date(a.end))
+
+  // Format date for display (e.g., "February 2025")
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr)
+    return date.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+  }
+
   return (
     <section className="section-container font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern">
       <h2 className="heading heading-h2 font-bold text-center mb-8">Previous Events</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {events.map((event, index) => (
+        {pastEvents.map((event, index) => (
           <a
             key={index}
-            href={event.link}
+            href={event.links?.register || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex flex-col items-center bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center transition-all duration-300 hover:bg-white/10"
           >
             <ImageFrame
-              src={event.image}
+              src={event.cover}
               alt={event.title}
               aspect="3/2"
               fit="cover"
@@ -44,7 +36,7 @@ const PreviousEventsSection = () => {
               className="w-full mb-6"
             />
             <h3 className="text-text1 font-semibold mb-2">{event.title}</h3>
-            <p className="text-text2 text-white/80">{event.date}</p>
+            <p className="text-text2 text-white/80">{formatDate(event.end)}</p>
           </a>
         ))}
       </div>
