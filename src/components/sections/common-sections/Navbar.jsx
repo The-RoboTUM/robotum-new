@@ -30,7 +30,7 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) 
   return (
     <div
       role="menu"
-      className="absolute left-0 top-full min-w-44 rounded-md bg-[#0E1C3D]/90 px-2 py-2 shadow-[0_0_25px_rgba(0,0,0,0.5)] ring-1 ring-white/10 z-50 backdrop-blur-sm"
+      className="absolute left-0 top-full mt-2 min-w-52 rounded-xl bg-[#0E1C3D]/90 px-2.5 py-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.45)] ring-1 ring-white/10 z-50 backdrop-blur-md"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
@@ -40,7 +40,7 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) 
           type="button"
           role="menuitem"
           tabIndex={0}
-          className="w-full text-left block px-3 py-2 text-[14px] tracking-[0.8px] rounded text-white/90 hover:bg-white/10 hover:text-white transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 cursor-pointer"
+          className="w-full text-left block px-3 py-2.5 text-[14px] tracking-[0.8px] rounded-lg text-white/90 hover:bg-white/10 hover:text-white transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 cursor-pointer"
           onClick={() => {
             onItemClick();
             onSelectType?.(tab.key);
@@ -166,18 +166,19 @@ export default function Navbar() {
   }, [open]);
 
   const itemBase =
-    'inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-normal text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 hover:text-indigo-300 cursor-pointer';
+    'relative group inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white';
 
   return (
     <nav
       ref={navRef}
       role="navigation"
       aria-label="Main"
-      className={`fixed top-0 left-0 right-0 z-60 font-sans transition-all duration-500 backdrop-blur-xl bg-primary/40 border-b border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)] ${
-        scrolled ? 'backdrop-blur-2xl bg-primary/60' : 'backdrop-blur-xl bg-primary/40'
+      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      className={`fixed top-0 left-0 right-0 z-60 h-14 md:h-16 font-sans flex items-center transition-colors duration-500 backdrop-blur-xl bg-[#0B1530]/50 supports-backdrop-filter:bg-[#0B1530]/40 border-b border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] ${
+        scrolled ? 'backdrop-blur-2xl bg-[#0B1530]/70' : 'backdrop-blur-xl bg-[#0B1530]/50'
       }`}
     >
-      <div className="mx-auto max-w-7xl w-full px-3 sm:px-4 pt-3 pb-1.5">
+      <div className="section-container py-0 px-4 sm:px-6">
         <div className="flex w-full justify-between items-center relative z-60">
           <Link
             to="/"
@@ -187,7 +188,7 @@ export default function Navbar() {
             <img
               src={assets.navLogo}
               alt="RoboTUM logo"
-              className="w-[120px] h-11 object-contain opacity-90 hover:opacity-100 transition-opacity"
+              className="w-[92px] h-8 md:w-[116px] md:h-10 object-contain opacity-90 hover:opacity-100 transition-opacity"
             />
           </Link>
 
@@ -206,7 +207,7 @@ export default function Navbar() {
                       onClick={() => setProjectsOpen(o => !o)}
                       aria-haspopup="true"
                       aria-expanded={projectsOpen}
-                      className={`${itemBase} rounded-md ${pathname.startsWith('/projects') ? 'text-indigo-300' : ''}`}
+                      className={`${itemBase} rounded-md ${pathname.startsWith('/projects') ? 'text-accent' : ''}`}
                     >
                       {l.label.toUpperCase()}
                       <svg
@@ -215,14 +216,9 @@ export default function Navbar() {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <path
-                          d="M1.5 1.5L6 6L10.5 1.5"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                        <path d="M1.5 1.5L6 6L10.5 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
+                      <span aria-hidden className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${pathname.startsWith('/projects') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
                     </button>
                     <ProjectDropdown
                       open={projectsOpen}
@@ -243,17 +239,30 @@ export default function Navbar() {
                   </li>
                 );
               }
+              // Desktop NavLink with underline and active color
               return (
-                <li key={l.label}>
+                <li key={l.label} className="px-0.5">
                   <NavLink
                     to={l.href}
                     className={({ isActive }) =>
                       `${itemBase} rounded-md ${
-                        isActive || currentHash === l.href ? 'text-indigo-300' : ''
+                        isActive ||
+                        currentHash === l.href ||
+                        (l.href !== '/' && pathname.startsWith(l.href))
+                          ? 'text-accent'
+                          : ''
                       }`
                     }
                   >
                     {l.label.toUpperCase()}
+                    <span
+                      aria-hidden
+                      className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${
+                        (pathname === l.href || (l.href !== '/' && pathname.startsWith(l.href)) || currentHash === l.href)
+                          ? 'scale-x-100'
+                          : 'scale-x-0 group-hover:scale-x-100'
+                      }`}
+                    />
                   </NavLink>
                 </li>
               );
@@ -261,7 +270,7 @@ export default function Navbar() {
           </ul>
 
           <button
-            className="md:hidden inline-flex items-center justify-center w-10 h-10 mr-2 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            className="md:hidden inline-flex items-center justify-center w-9 h-9 mr-2 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
@@ -297,7 +306,7 @@ export default function Navbar() {
       {/* Blurred clickable overlay for mobile menu */}
       {open && (
         <div
-          className="fixed inset-0 z-30 md:hidden bg-black/60 backdrop-blur-sm transition-opacity duration-300 pointer-events-auto"
+          className="fixed inset-0 z-30 md:hidden bg-black/60 backdrop-blur-sm supports-backdrop-filter:backdrop-blur-md transition-opacity duration-300 pointer-events-auto"
           onClick={() => {
             setOpen(false);
             setProjectsOpen(false);
@@ -311,9 +320,9 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Main navigation"
-        className={`md:hidden relative z-40 px-4 navbar-gradient transition-all duration-300 ease-out ${
+        className={`md:hidden fixed top-14 left-0 right-0 z-40 px-4 bg-[#0E1C3D]/90 backdrop-blur-md border-t border-white/10 transition-all duration-300 ease-out ${
           open
-            ? 'opacity-100 translate-y-0 max-h-[80vh] pb-3 overflow-y-auto pointer-events-auto'
+            ? 'opacity-100 translate-y-0 max-h-[calc(100vh-56px)] pb-3 overflow-y-auto pointer-events-auto'
             : 'opacity-0 -translate-y-2 max-h-0 overflow-hidden pointer-events-none'
         }`}
         ref={mobileMenuRef}
