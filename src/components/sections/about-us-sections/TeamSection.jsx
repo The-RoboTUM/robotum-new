@@ -1,40 +1,15 @@
 import React, { useState } from 'react'
 import * as assets from '@assets'
 import ImageFrame from '@components/ui/ImageFrame'
-
-const teamData = [
-  {
-    name: 'Loren Ipsum',
-    position: 'Founder',
-    category: 'Founders',
-    image: assets.member,
-    linkedin: '#'
-  },
-  {
-    name: 'Loren Ipsum',
-    position: 'Lead',
-    category: 'Departments Leads',
-    image: assets.member,
-    linkedin: '#'
-  },
-  {
-    name: 'Loren Ipsum',
-    position: 'Project Manager',
-    category: 'Projects',
-    image: assets.member,
-    linkedin: '#'
-  },
-]
-
-const categories = ['All', 'Founders', 'Departments Leads', 'Projects']
+import { members, MEMBER_CATEGORIES } from '@data/members.js'
 
 export default function TeamSection() {
   const [selectedCategory, setSelectedCategory] = useState('All')
 
   const filteredTeam =
     selectedCategory === 'All'
-      ? teamData
-      : teamData.filter((member) => member.category === selectedCategory)
+      ? members
+      : members.filter((member) => member.category === selectedCategory)
 
   return (
     <section
@@ -51,7 +26,7 @@ export default function TeamSection() {
 
         {/* Category Buttons */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12">
-          {categories.map((category) => {
+          {MEMBER_CATEGORIES.map((category) => {
             const active = selectedCategory === category
             return (
               <button
@@ -78,7 +53,7 @@ export default function TeamSection() {
             >
               <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-white/10 border border-white/5">
                 <ImageFrame
-                  src={member.image}
+                  src={member.photo}
                   alt={member.name}
                   variant="soft"
                   rounded="xl"
@@ -94,7 +69,7 @@ export default function TeamSection() {
 
               <div className="mt-3 flex justify-center">
                 <a
-                  href={member.linkedin}
+                  href={member.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Open ${member.name} LinkedIn`}
