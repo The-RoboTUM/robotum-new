@@ -12,7 +12,7 @@ export default function HeroSection({
   ctaPrimary = 'Become a Member',
   ctaPrimaryTo = '/join',
   ctaSecondary = 'Become a Partner',
-  ctaSecondaryTo = '/partners',
+  ctaSecondaryTo = '/partners#contact',
 }) {
   return (
     <section

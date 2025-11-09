@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import ScrollToHashElement from '@components/ui/ScrollToHashElement'
 
 // Lazy-load route components for better performance (code-splitting)
 const Home = lazy(() => import('@pages/Home'))
@@ -22,6 +23,7 @@ export default function App() {
         </div>
       }
     >
+      <ScrollToHashElement />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
