@@ -97,7 +97,7 @@ export default function EventsSection() {
       </div>
 
       {/* Filters Row */}
-      <div className="-mx-6 sm:mx-0 sticky top-16 z-10 bg-transparent/0 backdrop-blur-[1px]">
+      <div className="sm:mx-0 mt-2 mb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3">
           {/* Category chips (plural labels from EVENT_CATEGORIES) */}
           <div className="flex flex-wrap gap-2 sm:gap-3">

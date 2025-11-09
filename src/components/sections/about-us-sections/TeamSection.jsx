@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import * as assets from '@assets'
 import ImageFrame from '@components/ui/ImageFrame'
+import Button from '@components/ui/Button'
 import { members, MEMBER_CATEGORIES } from '@data'
 
 export default function TeamSection() {
@@ -29,17 +30,18 @@ export default function TeamSection() {
           {MEMBER_CATEGORIES.map((category) => {
             const active = selectedCategory === category
             return (
-              <button
+              <Button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-5 py-2 rounded-full transition-all duration-300 text-sm md:text-base font-medium hover:cursor-pointer
-                  ${active
+                variant={active ? 'primary' : 'secondary'}
+                className={`rounded-full text-sm md:text-base font-medium px-5 py-2 transition-all duration-300 ${
+                  active
                     ? 'bg-accent text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] scale-[1.05]'
                     : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white hover:scale-[1.03]'
-                  }`}
+                }`}
               >
                 {category}
-              </button>
+              </Button>
             )
           })}
         </div>
