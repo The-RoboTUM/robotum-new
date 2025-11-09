@@ -2,6 +2,12 @@ import * as assets from '@assets'
 
 export const PROJECT_CATEGORIES = ['technical', 'operations', 'innovation'];
 
+export const TABS = [
+  { key: 'technical', label: 'Technical' },
+  { key: 'operations', label: 'Operations' },
+  { key: 'innovation', label: 'Innovation & Entrepreneurship' },
+]
+
 export const projects = [
   // TECHNICAL
   {
