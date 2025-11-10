@@ -104,7 +104,7 @@ export default function ProjectSection() {
             ref={trackRef}
             className="flex gap-6 min-w-full"
           >
-            {projects.map((p, i) => (
+            {projects.map((p) => (
               <div
                 key={p.title}
                 className="rt-slide snap-center shrink-0 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-5 w-80 sm:w-96 text-center flex flex-col items-center justify-between"
