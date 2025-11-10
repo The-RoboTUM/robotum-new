@@ -1,2 +1,41 @@
-node_modules
+# ================================
+# Node & Build
+# ================================
+node_modules/
 dist/
+build/
+.cache/
+.tmp/
+
+# Vite cache
+vite.config.timestamp-*
+.vite/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
+
+# Editor-specific
+.idea/
+.vscode/
+*.swp
+
+# TypeScript / lint caches
+*.tsbuildinfo
+.eslintcache
+
+# Dependency analyzers or tooling output
+coverage/
+report/
+__pycache__/
