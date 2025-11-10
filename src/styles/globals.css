@@ -2,9 +2,6 @@
 
 /* ==========================================================================
    THEME TOKENS (Tailwind v4)
-   - Typography scale (text-* utilities)
-   - Brand colors (bg-*, text-*, border-*)
-   - Font family (font-sans)
    ========================================================================== */
 @theme {
   /* Font family so `font-sans` resolves to Exo */
@@ -28,14 +25,8 @@
   --tracking-headings: 0.05em; /* ≈ 3.2px tracking at 64px (Figma) */
 }
 
-/* Optional shared variables (used by legacy backgrounds) */
-:root {
-  --hero-from: #020035;
-  --hero-to: #000000;
-}
-
 /* ==========================================================================
-   BASE
+   BASE STYLES
    ========================================================================== */
 body {
   font-family: "Exo", system-ui, sans-serif;
@@ -46,9 +37,7 @@ body {
 
 /* ==========================================================================
    TYPOGRAPHY HELPERS (Headings)
-   - Apply Figma-like heading styling across hero / h1 / h2
-   - Uses Exo, bold (700), and ~3.2px letter-spacing at 64px (~0.05em)
-   ========================================================================= */
+   ========================================================================== */
 .heading {
   font-family: var(--font-sans);
   font-weight: 700;
@@ -56,13 +45,12 @@ body {
   text-wrap: balance;
 }
 
-/* Size presets (compose with .heading) */
-.heading-display { font-size: var(--text-hero); } /* or use text-hero directly in HTML */
-.heading-h1 { font-size: var(--text-h1); }
-.heading-h2 { font-size: var(--text-h2); }
+.heading-display { font-size: var(--text-hero); }
+.heading-h1      { font-size: var(--text-h1); }
+.heading-h2      { font-size: var(--text-h2); }
 
 /* ==========================================================================
-   NAVIGATION (glass look)
+   NAVIGATION (Glass Look)
    ========================================================================== */
 .navbar-gradient {
   background-color: rgba(0,12,33,0.85);
@@ -77,20 +65,19 @@ body {
 }
 
 /* ==========================================================================
-   SECTION SURFACES + TRANSITIONS
-   - Alternate .surface-1 / .surface-2 for rhythm
-   - Use .surface-light for logo/partner sections
-   - Add .edge-fade-* for smooth cuts
+   SECTION SURFACES & TRANSITIONS
    ========================================================================== */
-.surface-wrap { position: relative; }
+.surface-wrap {
+  position: relative;
+}
 
-/* Optional ultra-subtle grid pattern overlay.
-   Use alongside .surface-wrap on the same element. */
+/* Ultra-subtle grid pattern overlay */
 .surface-pattern::before {
   content: "";
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-  opacity: 0.03; /* 3% */
+  opacity: 0.03;
   background-image:
     repeating-linear-gradient(0deg, rgba(255,255,255,0.9) 0 1px, transparent 1px 24px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.9) 0 1px, transparent 1px 24px);
@@ -112,7 +99,6 @@ body {
   color: #EAF2FF;
 }
 
-/* Light breather for logos/partners or white cards */
 .surface-light {
   background:
     radial-gradient(60rem 50rem at 50% 10%, rgba(0,0,0,0.04), transparent 60%),
@@ -120,26 +106,30 @@ body {
   color: #0B1B2E;
 }
 
-/* Smooth feathered cuts using mask-image */
+/* Feathered cuts using mask-image */
 .edge-fade-top {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 32px, black 100%);
           mask-image: linear-gradient(to bottom, transparent 0, black 32px, black 100%);
 }
+
 .edge-fade-bottom {
   -webkit-mask-image: linear-gradient(to top, transparent 0, black 32px, black 100%);
           mask-image: linear-gradient(to top, transparent 0, black 32px, black 100%);
 }
+
 .edge-fade-y {
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 32px, black calc(100% - 32px), transparent);
           mask-image: linear-gradient(to bottom, transparent, black 32px, black calc(100% - 32px), transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .surface-pattern::before { display: none; }
+  .surface-pattern::before {
+    display: none;
+  }
 }
 
 /* ==========================================================================
-   ANIMATIONS (shared)
+   ANIMATIONS (Shared)
    ========================================================================== */
 @keyframes rotate-gradient {
   0%   { background-position: 0% 50%; }
@@ -147,25 +137,29 @@ body {
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
+  0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
 .animate-marquee-slow {
   animation: marquee 40s linear infinite;
 }
-.animate-marquee:hover { animation-play-state: paused; }
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateX(24px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-.animate-fadeIn { animation: fadeIn 0.6s ease-out forwards; }
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
 
 /* ==========================================================================
    BUTTONS
-   - Base `.btn` + variants
-   - Primary for CTAs, Secondary for neutral, Ghost for links
    ========================================================================== */
 .btn {
   @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-medium transition-all duration-200 select-none cursor-pointer;
@@ -180,22 +174,31 @@ body {
   @apply hover:scale-[1.03] active:scale-[0.98];
   @apply focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-0;
 }
+
 .btn-primary:hover {
   box-shadow: 0 0 24px rgba(59,130,246,0.4), 0 0 48px rgba(124,58,237,0.3);
 }
 
 /* Secondary (animated border) */
 .btn-secondary {
-  position: relative; isolation: isolate;
+  position: relative;
+  isolation: isolate;
   @apply px-6 py-3 rounded-full font-semibold text-white overflow-hidden transition-transform duration-300;
 }
+
 .btn-secondary::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
   background: linear-gradient(90deg, #2563EB, #7C3AED, #2563EB);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude; -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
   animation: rotate-gradient 3s linear infinite;
 }
+
 .btn-secondary:hover {
   transform: scale(1.03);
   box-shadow: 0 0 20px rgba(59,130,246,0.2), 0 0 40px rgba(124,58,237,0.25);
@@ -210,18 +213,23 @@ body {
 }
 
 /* Disabled state */
-.btn:disabled { @apply opacity-50 cursor-not-allowed; }
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
 
-
+/* ==========================================================================
+   ICONS & UTILITIES
+   ========================================================================== */
 .icon-white {
   filter: invert(1) brightness(2);
 }
 
-/* Use the dynamic viewport height variable for mobile correctness */
+/* Use dynamic viewport height variable for mobile correctness */
 .full-screen {
-  height: 100dvh; /* instead of min-h-screen or 100vh */
+  height: 100dvh;
 }
 
+/* Blurred overlay for modals or overlays */
 .blurred-overlay::before {
   content: "";
   position: fixed;
@@ -233,6 +241,7 @@ body {
   transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
 }
 
+/* Section container with consistent padding */
 .section-container {
   @apply w-full px-6 sm:px-8 lg:px-16 py-24;
 }
