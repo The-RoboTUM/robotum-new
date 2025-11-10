@@ -1,30 +1,36 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import Button from '@components/ui/Button';
-import * as assets from '@assets';
+import Button from "@components/ui/Button";
+import * as assets from "@assets";
 
 const links = [
-  { label: 'Home', href: '/' },
-  { label: 'About us', href: '/about' },
+  { label: "Home", href: "/" },
+  { label: "About us", href: "/about" },
   {
-    label: 'Projects',
-    href: '/projects',
+    label: "Projects",
+    href: "/projects",
     dropdown: true,
-    subLinks: ['Technical', 'Operations', 'Innovation & Entrepreneurship'],
+    subLinks: ["Technical", "Operations", "Innovation & Entrepreneurship"],
   },
-  { label: 'Events', href: '/events' },
-  { label: 'Partners', href: '/partners' },
-  { label: 'Join us', href: '/join' },
+  { label: "Events", href: "/events" },
+  { label: "Partners", href: "/partners" },
+  { label: "Join us", href: "/join" },
 ];
 
 const PROJECT_TABS = [
-  { label: 'Technical', key: 'technical' },
-  { label: 'Operations', key: 'operations' },
-  { label: 'Innovation & Entrepreneurship', key: 'innovation' },
+  { label: "Technical", key: "technical" },
+  { label: "Operations", key: "operations" },
+  { label: "Innovation & Entrepreneurship", key: "innovation" },
 ];
 
-function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) {
+function ProjectDropdown({
+  open,
+  onEnter,
+  onLeave,
+  onItemClick,
+  onSelectType,
+}) {
   if (!open) return null;
 
   return (
@@ -34,7 +40,7 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) 
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
-      {PROJECT_TABS.map(tab => (
+      {PROJECT_TABS.map((tab) => (
         <button
           key={tab.key}
           type="button"
@@ -75,71 +81,71 @@ export default function Navbar() {
   }, []);
 
   const handleSelectProjectsType = useCallback(
-    key => {
+    (key) => {
       navigate(`/projects?type=${key}`);
       setProjectsOpen(false);
       setOpen(false);
       setProjectsMobileOpen(false);
     },
-    [navigate]
+    [navigate],
   );
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
 
-    const handleKeyDown = e => {
-      if (e.key === 'Escape') {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
         setOpen(false);
         setProjectsOpen(false);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
   useEffect(() => {
     const body = document.body;
     if (open) {
-      body.style.overflow = 'hidden';
-      body.classList.add('blurred-overlay', 'menu-open');
+      body.style.overflow = "hidden";
+      body.classList.add("blurred-overlay", "menu-open");
     } else {
-      body.style.overflow = 'auto';
-      body.classList.remove('blurred-overlay', 'menu-open');
+      body.style.overflow = "auto";
+      body.classList.remove("blurred-overlay", "menu-open");
     }
     return () => {
-      body.style.overflow = 'auto';
-      body.classList.remove('blurred-overlay', 'menu-open');
+      body.style.overflow = "auto";
+      body.classList.remove("blurred-overlay", "menu-open");
     };
   }, [open]);
 
   // Click-outside handler for closing mobile menu
   useEffect(() => {
     function handleClickOutside(e) {
-      if (!open) return
+      if (!open) return;
       if (navRef.current && !navRef.current.contains(e.target)) {
-        setOpen(false)
-        setProjectsOpen(false)
-        setProjectsMobileOpen(false)
+        setOpen(false);
+        setProjectsOpen(false);
+        setProjectsMobileOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    document.addEventListener('touchstart', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('touchstart', handleClickOutside)
-    }
-  }, [open])
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open || !mobileMenuRef.current) return;
     const root = mobileMenuRef.current;
     const focusable = root.querySelectorAll(
-      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -147,7 +153,7 @@ export default function Navbar() {
     first && first.focus();
 
     function handleKey(e) {
-      if (e.key !== 'Tab') return;
+      if (e.key !== "Tab") return;
       if (e.shiftKey) {
         if (document.activeElement === first) {
           e.preventDefault();
@@ -161,21 +167,23 @@ export default function Navbar() {
       }
     }
 
-    document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
   const itemBase =
-    'relative group inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white';
+    "relative group inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white";
 
   return (
     <nav
       ref={navRef}
       role="navigation"
       aria-label="Main"
-      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       className={`fixed top-0 left-0 right-0 z-60 h-14 md:h-16 font-sans flex items-center transition-colors duration-500 backdrop-blur-xl bg-[#0B1530]/50 supports-backdrop-filter:bg-[#0B1530]/40 border-b border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] ${
-        scrolled ? 'backdrop-blur-2xl bg-[#0B1530]/70' : 'backdrop-blur-xl bg-[#0B1530]/50'
+        scrolled
+          ? "backdrop-blur-2xl bg-[#0B1530]/70"
+          : "backdrop-blur-xl bg-[#0B1530]/50"
       }`}
     >
       <div className="section-container py-0 px-4 sm:px-6">
@@ -183,7 +191,7 @@ export default function Navbar() {
           <Link
             to="/"
             className="pl-3 pr-3 flex items-center"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <img
               src={assets.navLogo}
@@ -193,7 +201,7 @@ export default function Navbar() {
           </Link>
 
           <ul className="hidden md:flex items-center gap-0">
-            {links.map(l => {
+            {links.map((l) => {
               if (l.dropdown) {
                 return (
                   <li
@@ -204,21 +212,30 @@ export default function Navbar() {
                   >
                     <button
                       type="button"
-                      onClick={() => setProjectsOpen(o => !o)}
+                      onClick={() => setProjectsOpen((o) => !o)}
                       aria-haspopup="true"
                       aria-expanded={projectsOpen}
-                      className={`${itemBase} rounded-md ${pathname.startsWith('/projects') ? 'text-accent' : ''}`}
+                      className={`${itemBase} rounded-md ${pathname.startsWith("/projects") ? "text-accent" : ""}`}
                     >
                       {l.label.toUpperCase()}
                       <svg
-                        className={`ml-2 h-3 w-3 transition-transform ${projectsOpen ? 'rotate-180' : ''}`}
+                        className={`ml-2 h-3 w-3 transition-transform ${projectsOpen ? "rotate-180" : ""}`}
                         viewBox="0 0 12 8"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <path d="M1.5 1.5L6 6L10.5 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path
+                          d="M1.5 1.5L6 6L10.5 1.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
-                      <span aria-hidden className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${pathname.startsWith('/projects') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
+                      <span
+                        aria-hidden
+                        className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${pathname.startsWith("/projects") ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                      />
                     </button>
                     <ProjectDropdown
                       open={projectsOpen}
@@ -230,10 +247,15 @@ export default function Navbar() {
                   </li>
                 );
               }
-              if (l.label === 'Join us') {
+              if (l.label === "Join us") {
                 return (
                   <li key={l.label}>
-                    <Button variant="primary" as="link" to="/join" className="ml-2 text-sm px-4 py-2">
+                    <Button
+                      variant="primary"
+                      as="link"
+                      to="/join"
+                      className="ml-2 text-sm px-4 py-2"
+                    >
                       {l.label.toUpperCase()}
                     </Button>
                   </li>
@@ -248,9 +270,9 @@ export default function Navbar() {
                       `${itemBase} rounded-md ${
                         isActive ||
                         currentHash === l.href ||
-                        (l.href !== '/' && pathname.startsWith(l.href))
-                          ? 'text-accent'
-                          : ''
+                        (l.href !== "/" && pathname.startsWith(l.href))
+                          ? "text-accent"
+                          : ""
                       }`
                     }
                   >
@@ -258,9 +280,11 @@ export default function Navbar() {
                     <span
                       aria-hidden
                       className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${
-                        (pathname === l.href || (l.href !== '/' && pathname.startsWith(l.href)) || currentHash === l.href)
-                          ? 'scale-x-100'
-                          : 'scale-x-0 group-hover:scale-x-100'
+                        pathname === l.href ||
+                        (l.href !== "/" && pathname.startsWith(l.href)) ||
+                        currentHash === l.href
+                          ? "scale-x-100"
+                          : "scale-x-0 group-hover:scale-x-100"
                       }`}
                     />
                   </NavLink>
@@ -273,25 +297,30 @@ export default function Navbar() {
             className="md:hidden inline-flex items-center justify-center w-9 h-9 mr-2 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
-            onClick={() => setOpen(o => !o)}
+            aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+            onClick={() => setOpen((o) => !o)}
           >
             <span className="sr-only">Toggle navigation</span>
             <div className="relative w-6 h-6 transition-transform duration-300 ease-in-out">
               <svg
                 className={`absolute inset-0 w-6 h-6 text-white transition-all duration-300 ease-in-out transform ${
-                  open ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
+                  open ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"
                 }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
               <div
                 className={`absolute inset-0 flex flex-col justify-center space-y-1 transition-all duration-300 ease-in-out ${
-                  open ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
+                  open ? "opacity-0 rotate-90" : "opacity-100 rotate-0"
                 }`}
               >
                 <span className="block h-0.5 w-6 bg-white rounded" />
@@ -322,45 +351,58 @@ export default function Navbar() {
         aria-label="Main navigation"
         className={`md:hidden fixed top-14 left-0 right-0 z-40 px-4 bg-[#0E1C3D]/90 backdrop-blur-md border-t border-white/10 transition-all duration-300 ease-out ${
           open
-            ? 'opacity-100 translate-y-0 max-h-[calc(100vh-56px)] pb-3 overflow-y-auto pointer-events-auto'
-            : 'opacity-0 -translate-y-2 max-h-0 overflow-hidden pointer-events-none'
+            ? "opacity-100 translate-y-0 max-h-[calc(100vh-56px)] pb-3 overflow-y-auto pointer-events-auto"
+            : "opacity-0 -translate-y-2 max-h-0 overflow-hidden pointer-events-none"
         }`}
         ref={mobileMenuRef}
       >
         <ul className="flex flex-col gap-1">
-          {links.map(l => {
+          {links.map((l) => {
             if (l.subLinks) {
               return (
                 <li key={l.label}>
                   <button
-                    onClick={() => setProjectsMobileOpen(v => !v)}
+                    onClick={() => setProjectsMobileOpen((v) => !v)}
                     className="w-full flex items-center justify-between px-4 py-3 rounded-md bg-[#112238] text-white hover:bg-[#1A2E49] transition-colors focus:outline-none"
                     aria-expanded={projectsMobileOpen}
                   >
-                    <span className="text-[14px] tracking-[0.8px] font-medium">{l.label.toUpperCase()}</span>
+                    <span className="text-[14px] tracking-[0.8px] font-medium">
+                      {l.label.toUpperCase()}
+                    </span>
                     <svg
-                      className={`h-4 w-4 ml-2 transition-transform ${projectsMobileOpen ? 'rotate-180' : ''}`}
+                      className={`h-4 w-4 ml-2 transition-transform ${projectsMobileOpen ? "rotate-180" : ""}`}
                       viewBox="0 0 12 8"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M1.5 1.5L6 6L10.5 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path
+                        d="M1.5 1.5L6 6L10.5 1.5"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </button>
 
                   <div
                     className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                      projectsMobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                      projectsMobileOpen
+                        ? "max-h-96 opacity-100"
+                        : "max-h-0 opacity-0"
                     }`}
                   >
                     <ul className="ml-4 mt-2 bg-[#06142B]/95 rounded-md p-2">
-                      {l.subLinks.map(sub => (
+                      {l.subLinks.map((sub) => (
                         <li key={sub}>
                           <button
                             type="button"
                             className="w-full text-left block px-4 py-2 text-[13px] text-white hover:bg-white/10 rounded cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                             onClick={() =>
-                              handleSelectProjectsType(PROJECT_TABS.find(t => t.label === sub)?.key || 'technical')
+                              handleSelectProjectsType(
+                                PROJECT_TABS.find((t) => t.label === sub)
+                                  ?.key || "technical",
+                              )
                             }
                           >
                             {sub}
@@ -373,7 +415,7 @@ export default function Navbar() {
               );
             }
 
-            if (l.label === 'Join us') {
+            if (l.label === "Join us") {
               return (
                 <li key={l.label}>
                   <Button
@@ -402,7 +444,9 @@ export default function Navbar() {
                   }}
                   className={({ isActive }) =>
                     `block w-full px-4 py-3 text-[14px] tracking-[0.8px] rounded-md bg-[#112238] hover:bg-[#1A2E49] transition-colors focus:outline-none text-white ${
-                      isActive || currentHash === l.href ? 'text-indigo-300' : ''
+                      isActive || currentHash === l.href
+                        ? "text-indigo-300"
+                        : ""
                     }`
                   }
                 >

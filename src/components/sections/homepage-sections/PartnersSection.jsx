@@ -1,34 +1,54 @@
-import * as assets from '@assets'
+import * as assets from "@assets";
 
 const partners = [
   // Lead Sponsors
-  { name: 'LIMX Dynamics', image: assets.limx, tier: 'Lead Sponsor' },
-  { name: 'Maxon', image: assets.maxon, tier: 'Lead Sponsor' },
-  { name: 'Reply Roboverse', image: assets.reply, tier: 'Lead Sponsor' },
+  { name: "LIMX Dynamics", image: assets.limx, tier: "Lead Sponsor" },
+  { name: "Maxon", image: assets.maxon, tier: "Lead Sponsor" },
+  { name: "Reply Roboverse", image: assets.reply, tier: "Lead Sponsor" },
 
   // Sponsors
-  { name: 'CubeMars', image: assets.cubemars, tier: 'Sponsor' },
-  { name: 'Cadfem', image: assets.cadfem, tier: 'Sponsor' },
-  { name: 'Fort', image: assets.fort, tier: 'Sponsor' },
-  { name: 'Maytec', image: assets.maytec, tier: 'Sponsor' },
+  { name: "CubeMars", image: assets.cubemars, tier: "Sponsor" },
+  { name: "Cadfem", image: assets.cadfem, tier: "Sponsor" },
+  { name: "Fort", image: assets.fort, tier: "Sponsor" },
+  { name: "Maytec", image: assets.maytec, tier: "Sponsor" },
 
   // Industry Collaborators
-  { name: 'NVIDIA', image: assets.nvidia, tier: 'Industry Collaborator' },
-  { name: 'UVC', image: assets.uvc, tier: 'Industry Collaborator' },
-  { name: '3Dconnexion', image: assets.threeDConnexion, tier: 'Industry Collaborator' },
-  { name: 'Ansys', image: assets.ansys, tier: 'Industry Collaborator' },
-  { name: 'GATE', image: assets.gate, tier: 'Industry Collaborator' },
-  { name: 'Makerspace', image: assets.makerspace, tier: 'Industry Collaborator' },
-  { name: 'Siemens', image: assets.siemens, tier: 'Industry Collaborator' },
+  { name: "NVIDIA", image: assets.nvidia, tier: "Industry Collaborator" },
+  { name: "UVC", image: assets.uvc, tier: "Industry Collaborator" },
+  {
+    name: "3Dconnexion",
+    image: assets.threeDConnexion,
+    tier: "Industry Collaborator",
+  },
+  { name: "Ansys", image: assets.ansys, tier: "Industry Collaborator" },
+  { name: "GATE", image: assets.gate, tier: "Industry Collaborator" },
+  {
+    name: "Makerspace",
+    image: assets.makerspace,
+    tier: "Industry Collaborator",
+  },
+  { name: "Siemens", image: assets.siemens, tier: "Industry Collaborator" },
 
   // Academic Collaborators
-  { name: 'TUM', image: assets.tum, tier: 'Academic Collaborator' },
-  { name: 'Max Planck Institute', image: assets.maxPlanck, tier: 'Academic Collaborator' },
-  { name: 'Applied Mechanics', image: assets.appliedMechanics, tier: 'Academic Collaborator' },
-  { name: 'TUM Venture Labs', image: assets.tumVenture, tier: 'Academic Collaborator' },
-  { name: 'MIRMI', image: assets.mirmi, tier: 'Academic Collaborator' },
-  { name: 'KU Leuven', image: assets.kuLeuven, tier: 'Academic Collaborator' },
-]
+  { name: "TUM", image: assets.tum, tier: "Academic Collaborator" },
+  {
+    name: "Max Planck Institute",
+    image: assets.maxPlanck,
+    tier: "Academic Collaborator",
+  },
+  {
+    name: "Applied Mechanics",
+    image: assets.appliedMechanics,
+    tier: "Academic Collaborator",
+  },
+  {
+    name: "TUM Venture Labs",
+    image: assets.tumVenture,
+    tier: "Academic Collaborator",
+  },
+  { name: "MIRMI", image: assets.mirmi, tier: "Academic Collaborator" },
+  { name: "KU Leuven", image: assets.kuLeuven, tier: "Academic Collaborator" },
+];
 
 export default function PartnersSection() {
   return (
@@ -76,5 +96,5 @@ export default function PartnersSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,15 +1,12 @@
-import ImageFrame from '@components/ui/ImageFrame'
-import { partners } from '@data'
+import ImageFrame from "@components/ui/ImageFrame";
+import { partners } from "@data";
 
 const PartnerCategories = () => {
   return (
     <section className="section-container surface-light surface-wrap edge-fade-y py-20">
       <div className="space-y-24">
         {partners.map((type, idx) => (
-          <div
-            key={idx}
-            className="text-center relative animate-fadeIn"
-          >
+          <div key={idx} className="text-center relative animate-fadeIn">
             {/* Decorative divider with gradient */}
             {idx > 0 && (
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-3/5 h-px bg-linear-to-r from-transparent via-accent/40 to-transparent"></div>
@@ -49,7 +46,7 @@ const PartnerCategories = () => {
       {/* Subtle flowing background accent */}
       <div className="absolute inset-0 -z-10 opacity-[0.08] bg-[radial-gradient(circle_at_50%_20%,#2563EB_0%,transparent_70%)]"></div>
     </section>
-  )
-}
+  );
+};
 
-export default PartnerCategories
+export default PartnerCategories;

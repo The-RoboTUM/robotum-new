@@ -1,61 +1,61 @@
-import * as assets from '@assets'
-import ImageFrame from '@components/ui/ImageFrame'
-import { useEffect, useRef, useState } from 'react'
+import * as assets from "@assets";
+import ImageFrame from "@components/ui/ImageFrame";
+import { useEffect, useRef, useState } from "react";
 
 /** Smooth counter that starts when `inView` is true */
 const Counter = ({ target, duration = 2000, inView = true }) => {
-  const [value, setValue] = useState(0)
-  const rafRef = useRef(null)
-  const startRef = useRef(null)
+  const [value, setValue] = useState(0);
+  const rafRef = useRef(null);
+  const startRef = useRef(null);
 
   useEffect(() => {
-    if (!inView) return
-    const start = 0
-    const end = Number(target) || 0
-    const d = Math.max(600, duration)
+    if (!inView) return;
+    const start = 0;
+    const end = Number(target) || 0;
+    const d = Math.max(600, duration);
 
     const step = (ts) => {
-      if (!startRef.current) startRef.current = ts
-      const elapsed = ts - startRef.current
-      const progress = Math.min(1, elapsed / d)
+      if (!startRef.current) startRef.current = ts;
+      const elapsed = ts - startRef.current;
+      const progress = Math.min(1, elapsed / d);
       // easeOutCubic
-      const eased = 1 - Math.pow(1 - progress, 3)
-      const current = Math.round(start + (end - start) * eased)
-      setValue(current)
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(start + (end - start) * eased);
+      setValue(current);
       if (progress < 1) {
-        rafRef.current = requestAnimationFrame(step)
+        rafRef.current = requestAnimationFrame(step);
       }
-    }
-    rafRef.current = requestAnimationFrame(step)
+    };
+    rafRef.current = requestAnimationFrame(step);
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      startRef.current = null
-    }
-  }, [inView, target, duration])
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      startRef.current = null;
+    };
+  }, [inView, target, duration]);
 
-  return <span>{value}</span>
-}
+  return <span>{value}</span>;
+};
 
 export default function AboutHero() {
-  const statsRef = useRef(null)
-  const [statsInView, setStatsInView] = useState(false)
+  const statsRef = useRef(null);
+  const [statsInView, setStatsInView] = useState(false);
 
   // Start counters when the stats block enters viewport
   useEffect(() => {
-    const node = statsRef.current
-    if (!node) return
+    const node = statsRef.current;
+    if (!node) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setStatsInView(true)
-          observer.disconnect()
+          setStatsInView(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.3 }
-    )
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
+      { threshold: 0.3 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
@@ -72,8 +72,8 @@ export default function AboutHero() {
             More than a<br /> student club!
           </h1>
           <p className="mt-4 text-text2 md:text-text1 text-white/80 leading-relaxed">
-            We bring together students from all disciplines to turn ideas into real
-            robots — hands on and driven by passion.
+            We bring together students from all disciplines to turn ideas into
+            real robots — hands on and driven by passion.
           </p>
         </div>
 
@@ -99,27 +99,40 @@ export default function AboutHero() {
         role="list"
         aria-label="RoboTUM key figures"
       >
-        <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
+        <div
+          className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm"
+          role="listitem"
+        >
           <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
             +<Counter target={100} inView={statsInView} />
           </p>
           <p className="mt-2 text-text2 text-white/75">active members</p>
         </div>
 
-        <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
+        <div
+          className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm"
+          role="listitem"
+        >
           <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
             +<Counter target={21} inView={statsInView} />
           </p>
-          <p className="mt-2 text-text2 text-white/75">partners &amp; sponsors</p>
+          <p className="mt-2 text-text2 text-white/75">
+            partners &amp; sponsors
+          </p>
         </div>
 
-        <div className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm" role="listitem">
+        <div
+          className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm"
+          role="listitem"
+        >
           <p className="text-[2.5rem] md:text-[3.25rem] font-semibold text-accent/90 leading-none">
             +<Counter target={14} inView={statsInView} />
           </p>
-          <p className="mt-2 text-text2 text-white/75">projects in development</p>
+          <p className="mt-2 text-text2 text-white/75">
+            projects in development
+          </p>
         </div>
       </div>
     </section>
-  )
+  );
 }

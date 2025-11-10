@@ -1,5 +1,5 @@
-import * as assets from '@assets'
-import Button from '@components/ui/Button'
+import * as assets from "@assets";
+import Button from "@components/ui/Button";
 
 /**
  * HeroSection — refined with global typography and Figma-like heading tracking
@@ -7,12 +7,12 @@ import Button from '@components/ui/Button'
  * - Consistent surfaces, adaptive height, and spacing
  */
 export default function HeroSection({
-  title = 'Shaping the Future of Robotics',
-  subtitle = 'Connecting academia and industry to push robotics innovation forward.',
-  ctaPrimary = 'Become a Member',
-  ctaPrimaryTo = '/join',
-  ctaSecondary = 'Become a Partner',
-  ctaSecondaryTo = '/partners#contact',
+  title = "Shaping the Future of Robotics",
+  subtitle = "Connecting academia and industry to push robotics innovation forward.",
+  ctaPrimary = "Become a Member",
+  ctaPrimaryTo = "/join",
+  ctaSecondary = "Become a Partner",
+  ctaSecondaryTo = "/partners#contact",
 }) {
   return (
     <section
@@ -63,5 +63,5 @@ export default function HeroSection({
         </div>
       </div>
     </section>
-  )
+  );
 }

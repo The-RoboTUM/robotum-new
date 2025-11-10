@@ -1,6 +1,6 @@
-import * as assets from '@assets'
-import Button from '@components/ui/Button'
-import ImageFrame from '@components/ui/ImageFrame'
+import * as assets from "@assets";
+import Button from "@components/ui/Button";
+import ImageFrame from "@components/ui/ImageFrame";
 
 /**
  * Events → Hero Section (Refined)
@@ -11,11 +11,11 @@ import ImageFrame from '@components/ui/ImageFrame'
  */
 const HeroSection = () => {
   const scrollToSection = (id) => {
-    const section = document.getElementById(id)
+    const section = document.getElementById(id);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' })
+      section.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <section
@@ -33,11 +33,17 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0">
-            Join thought‑provoking events that bring together students, professionals, and innovators. From inspiring keynotes to interactive workshops and networking — each event offers a space for exchange, reflection, and growth.
+            Join thought‑provoking events that bring together students,
+            professionals, and innovators. From inspiring keynotes to
+            interactive workshops and networking — each event offers a space for
+            exchange, reflection, and growth.
           </p>
 
           <div className="pt-2 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center lg:justify-start">
-            <Button variant="primary" onClick={() => scrollToSection('upcoming-events')}>
+            <Button
+              variant="primary"
+              onClick={() => scrollToSection("upcoming-events")}
+            >
               View upcoming events
             </Button>
             <Button variant="secondary" as="link" to="/events#past">
@@ -60,7 +66,7 @@ const HeroSection = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;

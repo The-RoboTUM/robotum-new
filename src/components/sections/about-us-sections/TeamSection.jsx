@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import * as assets from '@assets'
-import ImageFrame from '@components/ui/ImageFrame'
-import Button from '@components/ui/Button'
-import { members, MEMBER_CATEGORIES } from '@data'
+import { useState } from "react";
+import * as assets from "@assets";
+import ImageFrame from "@components/ui/ImageFrame";
+import Button from "@components/ui/Button";
+import { members, MEMBER_CATEGORIES } from "@data";
 
 export default function TeamSection() {
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredTeam =
-    selectedCategory === 'All'
+    selectedCategory === "All"
       ? members
-      : members.filter((member) => member.category === selectedCategory)
+      : members.filter((member) => member.category === selectedCategory);
 
   return (
     <section
@@ -28,21 +28,21 @@ export default function TeamSection() {
         {/* Category Buttons */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12">
           {MEMBER_CATEGORIES.map((category) => {
-            const active = selectedCategory === category
+            const active = selectedCategory === category;
             return (
               <Button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                variant={active ? 'primary' : 'secondary'}
+                variant={active ? "primary" : "secondary"}
                 className={`rounded-full text-sm md:text-base font-medium px-5 py-2 transition-all duration-300 ${
                   active
-                    ? 'bg-accent text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] scale-[1.05]'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white hover:scale-[1.03]'
+                    ? "bg-accent text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] scale-[1.05]"
+                    : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white hover:scale-[1.03]"
                 }`}
               >
                 {category}
               </Button>
-            )
+            );
           })}
         </div>
 
@@ -86,5 +86,5 @@ export default function TeamSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

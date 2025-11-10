@@ -1,6 +1,6 @@
-import * as assets from '@assets'
-import Button from '@components/ui/Button'
-import ImageFrame from '@components/ui/ImageFrame'
+import * as assets from "@assets";
+import Button from "@components/ui/Button";
+import ImageFrame from "@components/ui/ImageFrame";
 
 const HeroSection = () => {
   return (
@@ -11,7 +11,8 @@ const HeroSection = () => {
           Get inspired, <br /> get involved!
         </h1>
         <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0">
-          We are an interdisciplinary student club at TUM focused on robotics, innovation, and teamwork.
+          We are an interdisciplinary student club at TUM focused on robotics,
+          innovation, and teamwork.
         </p>
         <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
           <Button variant="primary" as="link" to="/apply">
@@ -36,7 +37,7 @@ const HeroSection = () => {
         />
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;

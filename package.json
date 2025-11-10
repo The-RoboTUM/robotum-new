@@ -7,7 +7,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "rebuild": "npm run clean && npm run build",
     "preview": "vite preview",
+    "clean": "rm -rf dist node_modules && npm install",
+    "format": "eslint . --fix --fix-type=layout",
+    "format:check": "eslint . --max-warnings=0",
+    "format:prettier": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:clean": "npm run build && npm run css:purge",
     "css:purge": "purgecss --css 'dist/assets/*.css' --content 'index.html' 'src/**/*.{js,jsx}' --safelist 'html,body,#root,nav,section,header,footer' --output dist/assets",
@@ -21,7 +26,7 @@
     "url": "git+https://github.com/ermawqa/robotum-frontend.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Yermukhamed Shakhman <yermukhamed.shakhman@robotum.info>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ermawqa/robotum-frontend/issues"
@@ -36,6 +41,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-unused-imports": "^4.3.0",
+    "prettier": "^3.6.2",
     "purgecss": "^7.0.2",
     "vite": "^5.4.10"
   },

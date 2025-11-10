@@ -1,22 +1,27 @@
-import { useState } from 'react'
-import ImageFrame from '@components/ui/ImageFrame'
-import Button from '@components/ui/Button'
-import * as assets from '@assets'
+import { useState } from "react";
+import ImageFrame from "@components/ui/ImageFrame";
+import Button from "@components/ui/Button";
+import * as assets from "@assets";
 
 export default function ContactUsSection() {
-  const [formData, setFormData] = useState({ name: '', company: '', email: '', message: '' })
+  const [formData, setFormData] = useState({
+    name: "",
+    company: "",
+    email: "",
+    message: "",
+  });
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We will get back to you soon.')
-    setFormData({ name: '', company: '', email: '', message: '' })
-  }
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    alert("Thank you for your message! We will get back to you soon.");
+    setFormData({ name: "", company: "", email: "", message: "" });
+  };
 
   return (
     <section id="contact" className="surface-2 edge-fade-top edge-fade-bottom">
@@ -25,12 +30,18 @@ export default function ContactUsSection() {
         <div>
           <h2 className="heading heading-h2 mb-6">Become a Partner</h2>
           <p className="text-text2 text-white/80 mb-8 max-w-prose">
-            Interested in collaborating with RoboTUM? Fill out the form below and we’ll get in touch soon.
+            Interested in collaborating with RoboTUM? Fill out the form below
+            and we’ll get in touch soon.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-white/90 mb-1">Name</label>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-white/90 mb-1"
+              >
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
@@ -44,7 +55,12 @@ export default function ContactUsSection() {
             </div>
 
             <div>
-              <label htmlFor="company" className="block text-sm font-medium text-white/90 mb-1">Company</label>
+              <label
+                htmlFor="company"
+                className="block text-sm font-medium text-white/90 mb-1"
+              >
+                Company
+              </label>
               <input
                 type="text"
                 id="company"
@@ -58,7 +74,12 @@ export default function ContactUsSection() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-1">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white/90 mb-1"
+              >
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -72,7 +93,12 @@ export default function ContactUsSection() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-white/90 mb-1">Message</label>
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-white/90 mb-1"
+              >
+                Message
+              </label>
               <textarea
                 id="message"
                 name="message"
@@ -91,7 +117,14 @@ export default function ContactUsSection() {
           </form>
 
           <p className="text-sm text-white/60 mt-6">
-            *Alternatively, write to <a href="mailto:outreach@robotum.info" className="underline text-accent hover:text-blue-400">outreach@robotum.info</a>.
+            *Alternatively, write to{" "}
+            <a
+              href="mailto:outreach@robotum.info"
+              className="underline text-accent hover:text-blue-400"
+            >
+              outreach@robotum.info
+            </a>
+            .
           </p>
         </div>
 
@@ -109,5 +142,5 @@ export default function ContactUsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

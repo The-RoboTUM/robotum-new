@@ -1,4 +1,4 @@
-import Button from '@components/ui/Button'
+import Button from "@components/ui/Button";
 
 /**
  * MissionSection — unified with global design system
@@ -26,7 +26,13 @@ export default function MissionSection() {
               Vision
             </h3>
             <p className="text-text2 md:text-text1 text-black/80 leading-relaxed">
-              To establish <span className="text-accent font-semibold">Munich</span> as a global <span className="text-accent font-semibold">robotics hub</span>, comparable to <span className="text-accent font-semibold">Boston</span> or <span className="text-accent font-semibold">Switzerland</span>.
+              To establish{" "}
+              <span className="text-accent font-semibold">Munich</span> as a
+              global{" "}
+              <span className="text-accent font-semibold">robotics hub</span>,
+              comparable to{" "}
+              <span className="text-accent font-semibold">Boston</span> or{" "}
+              <span className="text-accent font-semibold">Switzerland</span>.
             </p>
           </div>
 
@@ -36,7 +42,17 @@ export default function MissionSection() {
               Mission
             </h3>
             <p className="text-text2 md:text-text1 text-black/80 leading-relaxed">
-              To bridge the gap between <span className="text-accent font-semibold">robotic industry</span> and <span className="text-accent font-semibold">academia</span>, driving <span className="text-accent font-semibold">innovation</span> and <span className="text-accent font-semibold">entrepreneurship</span>.
+              To bridge the gap between{" "}
+              <span className="text-accent font-semibold">
+                robotic industry
+              </span>{" "}
+              and <span className="text-accent font-semibold">academia</span>,
+              driving{" "}
+              <span className="text-accent font-semibold">innovation</span> and{" "}
+              <span className="text-accent font-semibold">
+                entrepreneurship
+              </span>
+              .
             </p>
             <div className="mt-6">
               <Button variant="primary" as="link" to="/about">
@@ -47,5 +63,5 @@ export default function MissionSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

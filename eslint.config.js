@@ -1,9 +1,9 @@
 // eslint.config.js
-import js from "@eslint/js"
-import react from "eslint-plugin-react"
-import reactHooks from "eslint-plugin-react-hooks"
-import unusedImports from "eslint-plugin-unused-imports"
-import globals from "globals"
+import js from "@eslint/js";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import unusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
 
 export default [
   // Ignore build output and dependencies
@@ -51,4 +51,4 @@ export default [
       "react-hooks/exhaustive-deps": "warn",
     },
   },
-]
+];

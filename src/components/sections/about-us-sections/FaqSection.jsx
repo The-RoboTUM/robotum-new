@@ -1,18 +1,20 @@
-import { useState } from 'react'
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline' // Importing Chevron icons from Heroicons
-import { faqs } from '@data'
+import { useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline"; // Importing Chevron icons from Heroicons
+import { faqs } from "@data";
 
 const FaqSection = () => {
-  const [openIndex, setOpenIndex] = useState(null)
+  const [openIndex, setOpenIndex] = useState(null);
 
-  const toggleAnswer = index => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
+  const toggleAnswer = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <section className="section-container font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern">
       <div>
-        <h2 className="heading heading-h2 font-bold text-center mb-10">Frequently Asked Questions</h2>
+        <h2 className="heading heading-h2 font-bold text-center mb-10">
+          Frequently Asked Questions
+        </h2>
         <div className="space-y-8">
           {faqs.map((item, index) => (
             <div key={index} className="space-y-3">
@@ -32,17 +34,21 @@ const FaqSection = () => {
               {/* Answer with smooth sliding animation */}
               <div
                 className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  openIndex === index
+                    ? "max-h-96 opacity-100"
+                    : "max-h-0 opacity-0"
                 }`}
               >
-                <p className="text-text2 text-white/80 leading-relaxed mt-2">{item.answer}</p>
+                <p className="text-text2 text-white/80 leading-relaxed mt-2">
+                  {item.answer}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default FaqSection
+export default FaqSection;
