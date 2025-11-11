@@ -1,11 +1,10 @@
 /**
- * Smoothly scrolls to a specific section by ID.
- * @param {string} id - The ID of the target element.
+ * Smoothly scrolls to a section by its element ID.
+ * Example: scrollToSection("contact")
  */
-export const scrollToSection = (id) => {
-  if (typeof window === 'undefined') return; // guard for SSR
-  const section = document.getElementById(id);
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth' });
+export default function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-};
+}

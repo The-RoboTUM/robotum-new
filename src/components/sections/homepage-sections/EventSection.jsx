@@ -75,7 +75,7 @@ export default function EventSection() {
           </h2>
         </div>
         <div className="hidden md:block">
-          <Button as="link" to="/events" variant="secondary">
+          <Button as="link" to="/events#all-events" variant="secondary">
             View all events →
           </Button>
         </div>
@@ -97,7 +97,7 @@ export default function EventSection() {
           <div className="mt-6 md:hidden">
             <Button
               as="link"
-              to="/events"
+              to="/events#all-events"
               variant="secondary"
               className="w-full justify-center"
             >

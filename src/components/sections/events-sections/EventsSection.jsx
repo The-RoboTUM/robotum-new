@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { events, EVENT_CATEGORIES } from "@data";
@@ -19,6 +20,19 @@ const normalizeCategory = (label) => {
 export default function EventsSection() {
   const [activeCategory, setActiveCategory] = useState("All"); // from EVENT_CATEGORIES (plural)
   const [timeframe, setTimeframe] = useState("All"); // 'All' | 'Upcoming' | 'Past'
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const id = hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    }
+  }, [hash]);
 
   // Derived lists
   const { filteredEvents, counts } = useMemo(() => {
@@ -87,7 +101,7 @@ export default function EventsSection() {
 
   return (
     <section
-      id="upcoming-events"
+      id="all-events"
       className="section-container font-sans text-white surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern pb-12"
       aria-labelledby="events-section-heading"
       role="region"
