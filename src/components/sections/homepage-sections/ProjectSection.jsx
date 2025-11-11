@@ -39,7 +39,9 @@ export default function ProjectSection() {
     >
       {/* Section header */}
       <div className="mb-10 md:mb-14">
-        <p className="text-xs tracking-widest text-white/60 uppercase mb-2">Featured projects</p>
+        <p className="text-xs tracking-widest text-white/60 uppercase mb-2">
+          Featured projects
+        </p>
         <h2 className="heading heading-h1 font-bold leading-tight text-center md:text-left">
           Main Project Showcase
         </h2>
@@ -148,11 +150,7 @@ export default function ProjectSection() {
             ))}
           </div>
           <div className="mt-6 flex justify-center">
-            <Button
-              variant="primary"
-              as="link"
-              to="/projects"
-            >
+            <Button variant="primary" as="link" to="/projects">
               View All Projects →
             </Button>
           </div>
@@ -172,19 +170,16 @@ export default function ProjectSection() {
             role="tab"
             aria-selected={i === current}
             onClick={() => setCurrent(i)}
-            className={`cursor-pointer w-3.5 h-3.5 rounded-full transition-colors ${i === current ? "bg-white" : "bg-white/30 hover:bg-white/50"
-              }`}
+            className={`cursor-pointer w-3.5 h-3.5 rounded-full transition-colors ${
+              i === current ? "bg-white" : "bg-white/30 hover:bg-white/50"
+            }`}
           >
             <span className="sr-only">Go to slide {i + 1}</span>
           </button>
         ))}
       </div>
       <div className="mt-10 hidden md:flex justify-center">
-        <Button
-          variant="primary"
-          as="link"
-          to="/projects"
-        >
+        <Button variant="primary" as="link" to="/projects">
           View All Projects →
         </Button>
       </div>

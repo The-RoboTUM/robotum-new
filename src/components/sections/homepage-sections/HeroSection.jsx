@@ -56,7 +56,7 @@ export default function HeroSection({
             {ctaPrimary}
           </Button>
           {ctaSecondary && (
-            <Button variant="secondary" to={ctaSecondaryTo} >
+            <Button variant="secondary" to={ctaSecondaryTo}>
               {ctaSecondary}
             </Button>
           )}

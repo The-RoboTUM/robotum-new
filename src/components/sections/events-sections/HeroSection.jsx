@@ -34,10 +34,7 @@ const HeroSection = () => {
           </p>
 
           <div className="pt-2 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center lg:justify-start">
-            <Button
-              variant="primary"
-              scrollTarget="all-events"
-            >
+            <Button variant="primary" scrollTarget="all-events">
               View all events
             </Button>
           </div>
