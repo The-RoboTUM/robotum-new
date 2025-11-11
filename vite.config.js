@@ -4,6 +4,7 @@ import path from "node:path";
 
 export default defineConfig({
   plugins: [react()],
+  base: "robotum-frontend",
   css: {
     postcss: {
       plugins: [tailwind()],
