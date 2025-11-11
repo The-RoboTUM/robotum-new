@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
           NPM_CONFIG_PRODUCTION: "false"
           NODE_ENV: "development"
       - run: npm run build
-      - run: cp dist/index.html dist/404.html   # SPA fallback
+      - run: cp dist/index.html dist/404.html # SPA fallback
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
       - run: npm ci --include=dev
