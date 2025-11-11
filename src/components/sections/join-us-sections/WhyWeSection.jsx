@@ -4,6 +4,7 @@ import Button from "@components/ui/Button";
 const WhyWeSection = () => {
   return (
     <section
+      id="why-we-section"
       className="section-container text-white font-sans surface-1 edge-fade-top edge-fade-bottom surface-wrap surface-pattern"
       aria-labelledby="why-heading"
     >
