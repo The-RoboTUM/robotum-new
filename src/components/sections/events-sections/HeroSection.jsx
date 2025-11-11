@@ -1,6 +1,7 @@
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
+import scrollToSection from "@utils/scrollToSection";
 
 /**
  * Events → Hero Section (Refined)
@@ -9,14 +10,8 @@ import ImageFrame from "@components/ui/ImageFrame";
  * - Balanced text and visuals
  * - Improved readability and spacing
  */
-const HeroSection = () => {
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
+const HeroSection = () => {
   return (
     <section
       className="w-full min-h-screen font-sans text-white surface-2 edge-fade-bottom surface-wrap surface-pattern overflow-hidden flex items-center"

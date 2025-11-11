@@ -15,7 +15,7 @@ const HeroSection = () => {
           innovation, and teamwork.
         </p>
         <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
-          <Button variant="primary" as="link" to="/apply">
+          <Button variant="primary" as="link" to="https://form.typeform.com/to/idCpmyGX?typeform-source=www.robotum.info" target="_blank">
             Apply Now →
           </Button>
           <Button variant="secondary" as="link" to="/about">
