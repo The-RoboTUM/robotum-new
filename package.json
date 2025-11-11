@@ -14,6 +14,7 @@
     "format": "eslint . --fix --fix-type=layout",
     "format:check": "eslint . --max-warnings=0",
     "format:prettier": "prettier --write .",
+    "depcheck": "depcheck --ignores='@tailwindcss/postcss' --skip-missing",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:cov": "vitest run --coverage",
@@ -24,10 +25,7 @@
     "css:purge": "purgecss --css 'dist/assets/*.css' --content 'index.html' 'src/**/*.{js,jsx}' --safelist 'html,body,#root,nav,section,header,footer' --output dist/assets",
     "css:report": "purgecss --css 'dist/assets/*.css' --content 'index.html' 'src/**/*.{js,jsx}' --rejected --output dist/purged && echo 'See dist/purged for purged CSS; rejected selectors are printed above.'",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "depcheck": "depcheck --ignores='@tailwindcss/postcss' --skip-missing",
-    "predeploy": "npm run build && cp dist/index.html dist/404.html",
-    "deploy": "gh-pages -d dist"
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
