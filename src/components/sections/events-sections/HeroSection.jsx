@@ -37,12 +37,9 @@ const HeroSection = () => {
           <div className="pt-2 flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center lg:justify-start">
             <Button
               variant="primary"
-              onClick={() => scrollToSection("upcoming-events")}
+              onClick={() => scrollToSection("all-events")}
             >
-              View upcoming events
-            </Button>
-            <Button variant="secondary" as="link" to="/events#past">
-              See past highlights
+              View all events
             </Button>
           </div>
         </div>
