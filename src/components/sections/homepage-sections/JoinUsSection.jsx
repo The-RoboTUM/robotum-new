@@ -36,9 +36,9 @@ export default function JoinUsSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <Button variant="primary" as="link" to="/join">
-                Apply Now
+                Apply Now →
               </Button>
-              <Button variant="secondary" as="link" to="#learn-more">
+              <Button variant="secondary" to="join" scrollTarget="why-we-section">
                 Learn More
               </Button>
             </div>
