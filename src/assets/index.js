@@ -32,7 +32,7 @@ export { default as maytec } from "./images/partners/maytec.png";
 
 // Industry Collaborators
 export { default as nvidia } from "./images/partners/nvidia.png";
-export { default as uvc } from "./images/partners/uvc-partners.jpg";
+export { default as uvc } from "./images/partners/uvc-partners.svg";
 export { default as threeDConnexion } from "./images/partners/3d-connexion.png";
 export { default as ansys } from "./images/partners/ansys.png";
 export { default as gate } from "./images/partners/gate.svg";
