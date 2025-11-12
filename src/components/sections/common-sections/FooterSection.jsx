@@ -13,8 +13,7 @@ export default function FooterSection() {
             className="h-10 mx-auto md:mx-0"
           />
           <p className="text-gray-400 text-sm max-w-xs">
-            RoboTUM is a student-driven robotics club exploring AI, design, and
-            engineering to push the limits of autonomous systems.
+            RoboTUM - Student Initiative at Technical University of Munich
           </p>
         </div>
 
