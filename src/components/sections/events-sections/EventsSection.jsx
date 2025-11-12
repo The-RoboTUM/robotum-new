@@ -34,6 +34,35 @@ export default function EventsSection() {
     }
   }, [hash]);
 
+  // Format event date range
+  const formatDateRange = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const sameMonth =
+      startDate.getMonth() === endDate.getMonth() &&
+      startDate.getFullYear() === endDate.getFullYear();
+
+    const startStr = startDate.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+    const endStr = endDate.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+
+    return sameMonth
+      ? `${startDate.getDate()}–${endDate.getDate()} ${startDate.toLocaleString(
+          "en-US",
+          {
+            month: "short",
+          },
+        )}, ${startDate.getFullYear()}`
+      : `${startStr} – ${endStr}`;
+  };
+
   // Derived lists
   const { filteredEvents, counts } = useMemo(() => {
     const now = new Date();
@@ -70,33 +99,80 @@ export default function EventsSection() {
     };
   }, [activeCategory, timeframe]);
 
-  // Format event date range
-  const formatDateRange = (start, end) => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const sameMonth =
-      startDate.getMonth() === endDate.getMonth() &&
-      startDate.getFullYear() === endDate.getFullYear();
+  // Reusable card used in both mobile + desktop layouts
+  const EventCard = ({ event }) => {
+    const isPast = new Date(event.end) < new Date();
 
-    const startStr = startDate.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-    const endStr = endDate.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    return (
+      <article
+        role="listitem"
+        className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-accent/80 hover:shadow-[0_8px_24px_rgba(59,130,246,0.18)] focus-within:shadow-[0_8px_24px_rgba(59,130,246,0.2)]"
+      >
+        {/* Media */}
+        <div className="relative">
+          <ImageFrame
+            src={event.cover}
+            alt={event.title}
+            aspect="4/3"
+            fit="cover"
+            variant="soft"
+            rounded="none"
+          />
+          {/* Type badge */}
+          <div className="absolute left-3 top-3 inline-flex items-center rounded-full border border-white/20 bg-black/30 backdrop-blur px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/90">
+            {event.type}
+          </div>
+          {/* Past badge */}
+          {isPast && (
+            <div className="absolute right-3 top-3 inline-flex items-center rounded-full border border-white/20 bg-white/10 backdrop-blur px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/80">
+              Past
+            </div>
+          )}
+        </div>
 
-    return sameMonth
-      ? `${startDate.getDate()}–${endDate.getDate()} ${startDate.toLocaleString(
-          "en-US",
-          {
-            month: "short",
-          },
-        )}, ${startDate.getFullYear()}`
-      : `${startStr} – ${endStr}`;
+        {/* Body */}
+        <div className="p-4 sm:p-5 flex flex-col grow text-left">
+          <h3 className="text-lg md:text-xl font-semibold mb-1 leading-snug text-white">
+            {event.title}
+          </h3>
+          <p className="text-sm text-white/70 mb-0.5">
+            {formatDateRange(event.start, event.end)}
+          </p>
+          <p className="text-sm text-white/50 italic mb-3">
+            {event.location}
+          </p>
+          <p className="text-text2 text-white/80 leading-relaxed mb-5 grow">
+            {event.blurb}
+          </p>
+
+          <div className="mt-auto flex items-center justify-between">
+            <Button
+              variant="secondary"
+              as="link"
+              to={event.links?.register || "/events"}
+              className="text-sm px-4 py-1.5"
+            >
+              {isPast ? "Details →" : "Register →"}
+            </Button>
+            <svg
+              className="h-5 w-5 text-white/60 group-hover:text-white transition-colors"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden
+            >
+              <path
+                d="M7 5l6 5-6 5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </article>
+    );
   };
 
   return (
@@ -116,7 +192,7 @@ export default function EventsSection() {
             id="events-section-heading"
             className="heading heading-h1 leading-tight"
           >
-            Upcoming & Past Events
+            Upcoming &amp; Past Events
           </h2>
         </div>
       </div>
@@ -178,9 +254,40 @@ export default function EventsSection() {
         </div>
       </div>
 
-      {/* Content: Visual + Grid */}
-      <div className="grid grid-cols-1 gap-8 items-start mt-4">
-        <div className="order-1 w-full">
+      {/* Content */}
+      <div className="mt-4">
+        {/* MOBILE: horizontal cards */}
+        <div className="sm:hidden">
+          {filteredEvents.length === 0 ? (
+            <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="min-w-[80%] h-56 rounded-2xl bg-white/5 border border-white/10 animate-pulse"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="-mx-6 px-6 pb-2">
+              <div
+                className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar"
+                role="list"
+              >
+                {filteredEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    className="snap-start flex-1 min-w-[80%] max-w-[85%]"
+                  >
+                    <EventCard event={event} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* DESKTOP / TABLET: grid */}
+        <div className="hidden sm:block">
           {filteredEvents.length === 0 ? (
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
               {[...Array(4)].map((_, i) => (
@@ -195,80 +302,9 @@ export default function EventsSection() {
               className="mt-2 grid gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
               role="list"
             >
-              {filteredEvents.map((event) => {
-                const isPast = new Date(event.end) < new Date();
-                return (
-                  <article
-                    key={event.id}
-                    role="listitem"
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-accent/80 hover:shadow-[0_8px_24px_rgba(59,130,246,0.18)] focus-within:shadow-[0_8px_24px_rgba(59,130,246,0.2)]"
-                  >
-                    {/* Media */}
-                    <div className="relative">
-                      <ImageFrame
-                        src={event.cover}
-                        alt={event.title}
-                        aspect="4/3"
-                        fit="cover"
-                        variant="soft"
-                        rounded="none"
-                      />
-                      {/* Type badge */}
-                      <div className="absolute left-3 top-3 inline-flex items-center rounded-full border border-white/20 bg-black/30 backdrop-blur px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/90">
-                        {event.type}
-                      </div>
-                      {/* Past badge */}
-                      {isPast && (
-                        <div className="absolute right-3 top-3 inline-flex items-center rounded-full border border-white/20 bg-white/10 backdrop-blur px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/80">
-                          Past
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Body */}
-                    <div className="p-4 sm:p-5 flex flex-col grow text-left">
-                      <h3 className="text-lg md:text-xl font-semibold mb-1 leading-snug text-white">
-                        {event.title}
-                      </h3>
-                      <p className="text-sm text-white/70 mb-0.5">
-                        {formatDateRange(event.start, event.end)}
-                      </p>
-                      <p className="text-sm text-white/50 italic mb-3">
-                        {event.location}
-                      </p>
-                      <p className="text-text2 text-white/80 leading-relaxed mb-5 grow">
-                        {event.blurb}
-                      </p>
-
-                      <div className="mt-auto flex items-center justify-between">
-                        <Button
-                          variant="secondary"
-                          as="link"
-                          to={event.links?.register || "/events"}
-                          className="text-sm px-4 py-1.5"
-                        >
-                          {isPast ? "Details →" : "Register →"}
-                        </Button>
-                        <svg
-                          className="h-5 w-5 text-white/60 group-hover:text-white transition-colors"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden
-                        >
-                          <path
-                            d="M7 5l6 5-6 5"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
+              {filteredEvents.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
             </div>
           )}
         </div>
