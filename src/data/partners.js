@@ -58,7 +58,6 @@ export const partners = [
         id: 'uvc', 
         name: 'UVC Partners', 
         logo: assets.uvc, 
-        className: "icon-black",
         link: '#'},
       {
         id: '3dconnexion',
