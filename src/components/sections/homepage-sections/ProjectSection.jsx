@@ -42,7 +42,7 @@ export default function ProjectSection() {
         <p className="text-xs tracking-widest text-white/60 uppercase mb-2">
           Featured projects
         </p>
-        <h2 className="heading heading-h1 font-bold leading-tight text-center md:text-left">
+        <h2 className="heading heading-h1 font-bold leading-tight text-left">
           Main Project Showcase
         </h2>
       </div>
