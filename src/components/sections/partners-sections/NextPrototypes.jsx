@@ -29,14 +29,6 @@ const NextPrototypes = () => {
             />
           </div>
         </div>
-
-        <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-2xl mx-auto">
-          We are proud to be part of{" "}
-          <span className="font-semibold text-[#60A5FA]">Next Prototypes</span>,
-          an innovative community pushing the boundaries of{" "}
-          <span className="text-[#7C3AED] font-semibold">technology</span> and{" "}
-          <span className="text-[#60A5FA] font-semibold">creativity</span>.
-        </p>
       </div>
     </section>
   );
