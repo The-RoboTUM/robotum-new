@@ -136,7 +136,7 @@ export default function WhatIsRobotum({ illustration }) {
 
       {/* Keywords marquee (subtle) */}
       <div className="mt-12 overflow-hidden">
-        <div className="flex items-center gap-4 animate-marquee-slow whitespace-nowrap opacity-80">
+        <div className="flex items-center gap-4 animate-marquee whitespace-nowrap opacity-80">
           {[
             "Humanoids",
             "ROS",

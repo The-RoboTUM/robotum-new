@@ -186,7 +186,7 @@ export default function Navbar() {
           : "backdrop-blur-xl bg-[#0B1530]/50"
       }`}
     >
-      <div className="section-container py-0 px-4 sm:px-6">
+      <div className="py-0 px-4 sm:px-6" style={{ width: "100%", maxWidth: "1280px", margin: "0 auto" }}>
         <div className="flex w-full justify-between items-center relative z-60">
           <Link
             to="/"
