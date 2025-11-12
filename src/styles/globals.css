@@ -5,7 +5,7 @@
    ========================================================================== */
 @theme {
   /* Font family so `font-sans` resolves to Exo */
-  --font-sans: "Exo", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
 
   /* Brand palette */
   --color-primary: #000c21;
@@ -29,7 +29,7 @@
    BASE STYLES
    ========================================================================== */
 body {
-  font-family: "Exo", system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -39,7 +39,7 @@ body {
    TYPOGRAPHY HELPERS (Headings)
    ========================================================================== */
 .heading {
-  font-family: var(--font-sans);
+  font-family: "Poppins", "Inter", sans-serif;
   font-weight: 700;
   letter-spacing: var(--tracking-headings, 0.05em);
   text-wrap: balance;

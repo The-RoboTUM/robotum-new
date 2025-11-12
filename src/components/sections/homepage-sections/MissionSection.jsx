@@ -14,7 +14,7 @@ export default function MissionSection() {
     >
       <div>
         {/* Heading */}
-        <h2 className="heading heading-h1 font-bold leading-tight mb-10 md:mb-14 text-center md:text-left">
+        <h2 className="heading heading-h1 font-bold leading-tight text-left mb-10 md:mb-14">
           Foundations of RoboTUM
         </h2>
 
