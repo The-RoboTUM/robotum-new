@@ -1,5 +1,4 @@
 import { partners as partnerGroups } from "@data";
-import ImageFrame from '@components/ui/ImageFrame';
 
 export default function PartnersSection() {
   // Flatten all categories into a single list while retaining the group title
@@ -44,7 +43,7 @@ export default function PartnersSection() {
                 <span className="mb-1 px-3 py-0.5 border border-accent text-xs rounded-full text-accent bg-accent/5">
                   {partner.groupTitle}
                 </span>
-                <ImageFrame
+                <img
                   src={partner.logo}
                   alt={partner.name}
                   className="h-8 sm:h-10 md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity"
