@@ -8,12 +8,11 @@ const HeroSection = () => {
       {/* Left side: text content */}
       <div className="w-full lg:w-1/2 order-2 lg:order-1 space-y-6 text-center lg:text-left">
         <h1 className="heading text-hero md:text-display leading-tight text-balance">
-          Get <span className="text-gradient">inspired</span> <br /> get{" "}
-          <span className="text-gradient">involved</span>!
+          Get <span className="text-gradient">inspired</span> <br /> Get{" "}
+          <span className="text-gradient">involved</span>
         </h1>
         <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0">
-          We are an interdisciplinary student club at TUM focused on robotics,
-          innovation, and teamwork
+          Hands-on. Future-focused. Together.
         </p>
         <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
           <Button
@@ -24,7 +23,7 @@ const HeroSection = () => {
             Apply Now →
           </Button>
           <Button variant="secondary" scrollTarget="why-we-section">
-            Learn More
+            Learn More ↓
           </Button>
         </div>
       </div>
