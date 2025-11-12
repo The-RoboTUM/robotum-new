@@ -266,6 +266,30 @@ body {
     0 0 48px rgba(124, 58, 237, 0.3);
 }
 
+/* Primary (on light background) */
+/* Primary (for light/white surfaces) */
+.btn-primary-light {
+  /* same base ergonomics as other buttons */
+  @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold select-none transition-all duration-300;
+  /* readable on white: indigo→violet gradient */
+  @apply text-white bg-linear-to-r from-[#3B82F6] to-[#7C3AED];
+  /* subtle border like other variants */
+  @apply border border-accent/20;
+  /* soft glow on light surfaces */
+  @apply shadow-[0_6px_18px_rgba(16,24,40,0.08)] hover:shadow-[0_10px_28px_rgba(16,24,40,0.12)];
+  /* micro-interactions */
+  @apply hover:scale-[1.02] active:scale-[0.98];
+  /* accessible focus state */
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-white;
+}
+
+.btn-primary-light:hover {
+  /* faint inner glow of the gradient on hover */
+  box-shadow:
+    0 10px 28px rgba(16, 24, 40, 0.12),
+    0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
 /* Secondary (animated border) */
 .btn-secondary {
   position: relative;

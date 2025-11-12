@@ -1,4 +1,5 @@
 import { partners as partnerGroups } from "@data";
+import Button from "@components/ui/Button";
 
 /**
  * PartnersSection
@@ -37,6 +38,11 @@ export default function PartnersSection() {
           >
             Our Sponsors &amp; Partners
           </h2>
+        </div>
+        <div>
+          <Button to="/partners" variant="primary-light">
+            View all partners →
+          </Button>
         </div>
       </div>
 
