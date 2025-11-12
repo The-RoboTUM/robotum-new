@@ -196,7 +196,7 @@ export default function Navbar() {
             <img
               src={assets.navLogo}
               alt="RoboTUM logo"
-              className="w-[92px] h-8 md:w-[116px] md:h-10 object-contain opacity-90 hover:opacity-100 transition-opacity"
+              className="w-[110px] h-9 md:w-[135px] md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity"
             />
           </Link>
 
