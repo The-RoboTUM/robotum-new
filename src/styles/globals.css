@@ -205,7 +205,7 @@ body {
   }
 }
 
-.animate-marquee-slow {
+.animate-marquee {
   animation: marquee 40s linear infinite;
 }
 

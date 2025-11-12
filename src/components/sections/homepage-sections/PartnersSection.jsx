@@ -27,7 +27,7 @@ export default function PartnersSection() {
         {/* Single marquee lane with all logos combined */}
         <div className="flex gap-10 py-4 px-4 whitespace-nowrap overflow-hidden">
           <div
-            className="flex gap-12 items-center animate-marquee-slow"
+            className="flex gap-12 items-center animate-marquee"
             role="list"
             aria-label="All partners logos"
           >
