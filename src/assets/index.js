@@ -33,7 +33,7 @@ export { default as maytec } from "./images/partners/maytec.png";
 // Industry Collaborators
 export { default as nvidia } from "./images/partners/nvidia.png";
 export { default as uvc } from "./images/partners/uvc-partners.svg";
-export { default as threeDConnexion } from "./images/partners/3d-connexion.png";
+export { default as threeDConnexion } from "./images/partners/3d-connexion.svg";
 export { default as ansys } from "./images/partners/ansys.png";
 export { default as gate } from "./images/partners/gate.svg";
 export { default as makerspace } from "./images/partners/makerspace.png";
@@ -44,7 +44,7 @@ export { default as tum } from "./images/partners/tum.svg";
 export { default as maxPlanck } from "./images/partners/max-planck-institute.png";
 export { default as appliedMechanics } from "./images/partners/applied-mechanics.png";
 export { default as tumVenture } from "./images/partners/tum-venture-labs.png";
-export { default as mirmi } from "./images/partners/mirmi.webp";
+export { default as mirmi } from "./images/partners/mirmi.svg";
 export { default as kuLeuven } from "./images/partners/ku-leuven.svg";
 
 export { default as nextPrototypes } from "./images/partners/next-prototypes.svg";
