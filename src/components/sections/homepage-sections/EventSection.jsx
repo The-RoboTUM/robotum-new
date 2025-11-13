@@ -5,10 +5,10 @@ import ImageFrame from "@components/ui/ImageFrame";
 import { events } from "@data";
 
 export default function EventSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
-  // Compute the 4 nearest events: upcoming first by start date; if fewer than 4, backfill with most recent past
-  const nearest4 = useMemo(() => {
+  // Compute the 3 nearest events: upcoming first by start date; if fewer than 3, backfill with most recent past
+  const nearestEvents = useMemo(() => {
     const now = new Date();
     const upcoming = events
       .filter((e) => new Date(e.end) >= now)
@@ -19,14 +19,10 @@ export default function EventSection() {
       .sort((a, b) => new Date(b.end) - new Date(a.end));
 
     const combined = [...upcoming, ...past];
-    return combined.slice(0, 4);
+    return combined.slice(0, 3);
   }, []);
 
-  // Clamp active index in case there are < 4 events
-  const safeActiveIndex = Math.min(
-    activeIndex,
-    Math.max(0, nearest4.length - 1),
-  );
+  const safeActiveIndex = activeIndex >= 0 ? activeIndex : null;
 
   // Format date range like: 10–14 Feb, 2025 or Feb 28, 2025 – Mar 2, 2025
   const formatDateRange = (start, end) => {
@@ -112,22 +108,22 @@ export default function EventSection() {
           role="list"
           aria-labelledby="events-section-heading"
         >
-          {nearest4.length === 0 && (
+          {nearestEvents.length === 0 && (
             <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-white/70">
               No events to show yet. Check back soon!
             </div>
           )}
 
           <ol className="space-y-4">
-            {nearest4.map((event, index) => {
+            {nearestEvents.map((event, index) => {
               const isActive = safeActiveIndex === index;
               const isPast = new Date(event.end) < new Date();
               return (
                 <li key={event.id} role="listitem">
                   <button
                     type="button"
-                    onClick={() => setActiveIndex(index)}
-                    aria-expanded={isActive}
+                    onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
+                    aria-expanded={isActive ? "true" : "false"}
                     aria-controls={`event-panel-${index}`}
                     className={`group w-full text-left cursor-pointer p-5 md:p-6 rounded-2xl border transition-all duration-400 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 ${
                       isActive
