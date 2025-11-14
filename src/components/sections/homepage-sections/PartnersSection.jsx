@@ -22,7 +22,7 @@ export default function PartnersSection() {
 
   return (
     <section
-      className="section-container font-sans surface-light edge-fade-top edge-fade-bottom"
+      className="section-container font-sans surface-light"
       role="region"
       aria-labelledby="partners-heading"
     >

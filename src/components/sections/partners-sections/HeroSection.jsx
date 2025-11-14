@@ -44,6 +44,13 @@ const HeroSection = () => {
           >
             Become a partner
           </Button>
+          <Button
+            scrollTarget="partner-categories"
+            variant="secondary"
+            className="w-full sm:w-auto"
+          >
+            View all partners ↓
+          </Button>
         </div>
 
         {/* Quick categories / chips */}

@@ -20,7 +20,6 @@
   --text-h2: clamp(2rem, 3vw + 0.5rem, 3.25rem);
   --text-text1: clamp(1.125rem, 1.1vw + 0.25rem, 1.5rem);
   --text-text2: clamp(0.9375rem, 0.6vw + 0.2rem, 1.125rem);
-  --tracking-headings: 0.05em; /* ≈ 3.2px tracking at 64px (Figma) */
 }
 
 /* ==========================================================================
@@ -31,6 +30,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* ==========================================================================
+    Global text highlight color
+   ========================================================================== */
+::selection {
+  background: var(--color-accent); /* your preferred highlight color */
+  color: white;        /* text color while highlighted */
+}
+
+/* For Firefox specifically */
+::-moz-selection {
+  background: var(--color-accent);
+  color: white;
 }
 
 /* ==========================================================================

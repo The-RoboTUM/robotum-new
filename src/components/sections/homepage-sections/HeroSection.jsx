@@ -90,7 +90,7 @@ export default function HeroSection({
         {/* Heading with gradient accent on 'Robotics' */}
         <h1
           id="hero-heading"
-          className="heading heading-display text-hero md:text-display leading-tight [letter-spacing:var(--tracking-headings)] text-balance hero-animate"
+          className="heading heading-display text-hero md:text-display leading-tight text-balance hero-animate"
         >
           Shaping the Future of <span className="text-gradient">Robotics</span>
         </h1>
