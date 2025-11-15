@@ -11,6 +11,13 @@ const EventsSection = lazy(
   () => import("@components/sections/events-sections/EventsSection"),
 );
 
+// FOR TESTING PURPOSES ONLY
+// const EventsSection = lazy(
+//   () => new Promise(resolve =>
+//     setTimeout(() => resolve(import("@components/sections/events-sections/EventsSection")), 5500)
+//   )
+// );
+
 const Events = () => {
   useEffect(() => {
     document.title = "Events | RoboTUM";
