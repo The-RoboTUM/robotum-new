@@ -3,6 +3,7 @@ import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { events } from "@data";
+import { formatEventDateRange } from "@utils/date-range"; 
 
 export default function EventSection() {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -23,32 +24,6 @@ export default function EventSection() {
   }, []);
 
   const safeActiveIndex = activeIndex >= 0 ? activeIndex : null;
-
-  // Format date range like: 10–14 Feb, 2025 or Feb 28, 2025 – Mar 2, 2025
-  const formatDateRange = (start, end) => {
-    const s = new Date(start);
-    const e = new Date(end);
-    const sameMonth =
-      s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear();
-    const startDay = s.getDate();
-    const endDay = e.getDate();
-    const monthShort = s.toLocaleString("en-US", { month: "short" });
-    const year = s.getFullYear();
-
-    if (sameMonth) return `${startDay}–${endDay} ${monthShort}, ${year}`;
-
-    const startStr = s.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-    const endStr = e.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-    return `${startStr} – ${endStr}`;
-  };
 
   return (
     <section
@@ -159,7 +134,7 @@ export default function EventSection() {
                             {event.title}
                           </div>
                           <div className="text-sm text-white/60 italic">
-                            {formatDateRange(event.start, event.end)} ·{" "}
+                            {formatEventDateRange(event.start, event.end)} ·{" "}
                             {event.location}
                           </div>
                         </div>

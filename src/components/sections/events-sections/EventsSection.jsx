@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { events, EVENT_CATEGORIES } from "@data";
+import { formatEventDateRange } from "@utils/date-range"; 
 
 // Map EVENT_CATEGORIES (plural) to event.type (singular) for correct filtering
 const normalizeCategory = (label) => {
@@ -34,34 +35,6 @@ export default function EventsSection() {
     }
   }, [hash]);
 
-  // Format event date range
-  const formatDateRange = (start, end) => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const sameMonth =
-      startDate.getMonth() === endDate.getMonth() &&
-      startDate.getFullYear() === endDate.getFullYear();
-
-    const startStr = startDate.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-    const endStr = endDate.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-
-    return sameMonth
-      ? `${startDate.getDate()}–${endDate.getDate()} ${startDate.toLocaleString(
-          "en-US",
-          {
-            month: "short",
-          },
-        )}, ${startDate.getFullYear()}`
-      : `${startStr} – ${endStr}`;
-  };
 
   // Derived lists
   const { filteredEvents, counts } = useMemo(() => {
@@ -136,7 +109,7 @@ export default function EventsSection() {
             {event.title}
           </h3>
           <p className="text-sm text-white/70 mb-0.5">
-            {formatDateRange(event.start, event.end)}
+            {formatEventDateRange(event.start, event.end)}
           </p>
           <p className="text-sm text-white/50 italic mb-3">{event.location}</p>
           <p className="text-text2 text-white/80 leading-relaxed mb-5 grow">
