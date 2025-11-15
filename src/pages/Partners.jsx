@@ -1,12 +1,11 @@
 // Above-the-fold imports
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
+import HeroSection from "@/components/sections/partners-sections/HeroSection";
+import PageLoader from "@components/sections/common-sections/PageLoader";
 
 // Lazy-load below-the-fold content for performance
 import { lazy, Suspense, useEffect } from "react";
-const HeroSection = lazy(
-  () => import("@components/sections/partners-sections/HeroSection"),
-);
 const PartnerCategories = lazy(
   () => import("@components/sections/partners-sections/PartnerCategories"),
 );
@@ -29,15 +28,9 @@ export default function Partners() {
   return (
     <>
       <Navbar />
+      <HeroSection />
 
-      <Suspense
-        fallback={
-          <div className="w-full min-h-[40vh] flex items-center justify-center text-white/70">
-            Loading…
-          </div>
-        }
-      >
-        <HeroSection />
+      <Suspense fallback={<PageLoader />}>
         <PartnerCategories />
         <NextPrototypes />
         <WhatWeOffer />

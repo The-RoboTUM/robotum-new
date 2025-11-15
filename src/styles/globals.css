@@ -303,11 +303,15 @@ body {
   position: relative;
   background:
     radial-gradient(
-      60rem 50rem at 50% 10%,
-      rgba(0, 0, 0, 0.04),
-      transparent 60%
+      70rem 60rem at 60% 0%,
+      rgba(0, 49, 135, 0.10),
+      transparent 65%
     ),
-    #ffffff;
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #eef4ff 100%
+    );
   color: #0b1b2e;
 
   -webkit-mask-image: linear-gradient(

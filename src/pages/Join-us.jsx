@@ -1,12 +1,11 @@
 // General imports
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
+import HeroSection from "@/components/sections/join-us-sections/HeroSection";
+import PageLoader from "@components/sections/common-sections/PageLoader";
 
 // Lazy load sections for performance
 import { lazy, Suspense, useEffect } from "react";
-const HeroSection = lazy(
-  () => import("@components/sections/join-us-sections/HeroSection"),
-);
 const WhyWeSection = lazy(
   () => import("@components/sections/join-us-sections/WhyWeSection"),
 );
@@ -26,14 +25,10 @@ const JoinUs = () => {
   return (
     <>
       <Navbar />
+      <HeroSection />
 
       {/* Lazy load sections */}
-      <Suspense
-        fallback={
-          <div className="w-full py-24 text-center text-white/70">Loading…</div>
-        }
-      >
-        <HeroSection />
+      <Suspense fallback={<PageLoader />}>
         <WhyWeSection />
         <MemberStoriesSection />
         <ApplicationSection />
