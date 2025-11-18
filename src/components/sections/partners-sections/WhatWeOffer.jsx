@@ -31,7 +31,7 @@ const WhatWeOffer = () => {
   return (
     <section
       id="what-we-offer"
-      className="section-container text-center font-sans section-dark-secondary"
+      className="section-container text-center font-sans section-dark-secondary surface-pattern"
     >
       <div>
         <h2 className="heading heading-h2 font-bold mb-12 text-white animate-fadeIn">

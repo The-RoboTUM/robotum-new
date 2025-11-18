@@ -12,7 +12,7 @@ export default function WhatIsRobotum({ illustration }) {
   return (
     <section
       id="what-is-robotum"
-      className="section-container font-sans section-dark-secondary"
+      className="section-container font-sans section-dark-secondary surface-pattern"
       aria-labelledby="what-robotum-heading"
       role="region"
     >

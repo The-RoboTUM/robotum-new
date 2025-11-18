@@ -35,7 +35,7 @@ export default function ProjectSection() {
   return (
     <section
       id="projects"
-      className="section-container text-white font-sans section-dark-secondary"
+      className="section-container text-white font-sans section-dark-secondary surface-pattern"
     >
       {/* Section header */}
       <div className="mb-10 md:mb-14">

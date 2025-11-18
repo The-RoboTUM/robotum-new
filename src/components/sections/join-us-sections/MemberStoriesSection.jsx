@@ -43,7 +43,7 @@ const STORIES = [
 
 export default function MemberStoriesSection() {
   return (
-    <section id="member-stories" className="section-dark-primary">
+    <section id="member-stories" className="section-dark-primary surface-pattern">
       <div className="section-container max-w-6xl">
         {/* Heading block */}
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">

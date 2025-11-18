@@ -55,7 +55,7 @@ export default function Projects() {
     <>
       <Navbar />
       <Suspense fallback={<PageLoader />}>
-        <section className="section-container surface-1 min-h-screen text-white font-sans edge-fade-bottom surface-wrap surface-pattern">
+        <section className="section-container surface-1 min-h-screen text-white font-sans section-dark-primary surface-pattern">
           <div>
             <header className="mb-8">
               <h1 className="heading heading-h1">Projects</h1>

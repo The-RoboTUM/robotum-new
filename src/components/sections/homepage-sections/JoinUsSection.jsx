@@ -6,7 +6,7 @@ export default function JoinUsSection() {
   return (
     <section
       id="join"
-      className="section-container text-white font-sans section-dark-secondary"
+      className="section-container text-white font-sans section-dark-secondary surface-pattern"
     >
       <div className="flex flex-col gap-20 md:gap-24">
         {/* Become a Member */}

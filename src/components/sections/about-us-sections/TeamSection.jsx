@@ -15,7 +15,7 @@ export default function TeamSection() {
   return (
     <section
       id="team-section"
-      className="section-container text-white font-sans section-dark-primary"
+      className="section-container text-white font-sans section-dark-primary surface-pattern"
       aria-labelledby="team-heading"
     >
       <div>

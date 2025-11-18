@@ -5,7 +5,7 @@ const PartnerCategories = () => {
   return (
     <section
       id="partner-categories"
-      className="section-container py-20 section-dark-secondary"
+      className="section-container py-20 section-dark-secondary surface-pattern"
     >
       <div className="space-y-24">
         {partners.map((type, idx) => (

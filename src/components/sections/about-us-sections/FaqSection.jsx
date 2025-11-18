@@ -10,7 +10,7 @@ const FaqSection = () => {
   };
 
   return (
-    <section className="section-container font-sans section-dark-primary">
+    <section className="section-container font-sans section-dark-primary surface-pattern">
       <div>
         <h2 className="heading heading-h2 font-bold text-center mb-10">
           Frequently Asked Questions

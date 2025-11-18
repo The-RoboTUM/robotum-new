@@ -22,7 +22,7 @@ const steps = [
 const ApplicationSection = () => {
   return (
     <section
-      className="section-container font-sans text-white section-dark-secondary"
+      className="section-container font-sans text-white section-dark-secondary surface-pattern"
       aria-labelledby="application-heading"
       role="region"
     >

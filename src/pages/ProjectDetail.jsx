@@ -27,7 +27,7 @@ export default function ProjectDetail() {
     return (
       <>
         <Navbar />
-        <section className="surface-1 min-h-screen px-6 md:px-12 py-20 text-white flex flex-col justify-center">
+        <section className="surface-1 min-h-screen px-6 md:px-12 py-20 text-white flex flex-col justify-center section-dark-primary surface-pattern">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="heading heading-h2 mb-6">Project not found</h1>
             <Button

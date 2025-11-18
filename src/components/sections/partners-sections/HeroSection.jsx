@@ -11,7 +11,7 @@ const HeroSection = () => {
   return (
     <section
       id="partners-hero"
-      className="section-container text-white min-h-screen flex items-center surface-1 edge-fade-bottom hero-orbit-bg"
+      className="section-container text-white min-h-screen flex items-center hero-orbit-bg section-dark-primary surface-pattern"
       aria-labelledby="partners-hero-heading"
       role="region"
     >

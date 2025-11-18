@@ -5,7 +5,7 @@ const WhyWeSection = () => {
   return (
     <section
       id="why-we-section"
-      className="section-container text-white font-sans section-dark-secondary"
+      className="section-container text-white font-sans section-dark-secondary surface-pattern"
       aria-labelledby="why-heading"
     >
       <div className="flex flex-col gap-20">

@@ -10,7 +10,7 @@ export default function MissionSection() {
   return (
     <section
       id="mission"
-      className="section-container text-white font-sans section-light "
+      className="section-container text-white font-sans section-dark-primary surface-pattern"
     >
       <div>
         {/* Heading */}
