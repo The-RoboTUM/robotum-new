@@ -36,12 +36,12 @@ body {
     Global text highlight color
    ========================================================================== */
 ::selection {
-  background: var(--color-primary); /* your preferred highlight color */
+  background: var(--color-accent); /* your preferred highlight color */
   color: white; /* text color while highlighted */
 }
 /* For Firefox specifically */
 ::-moz-selection {
-  background: var(--color-primary);
+  background: var(--color-accent);
   color: white;
 }
 
