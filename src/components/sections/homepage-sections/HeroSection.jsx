@@ -19,7 +19,7 @@ export default function HeroSection({
       id="hero"
       role="region"
       aria-labelledby="hero-heading"
-      className="relative w-full min-h-screen text-white font-sans surface-1 edge-fade-bottom hero-orbit-bg"
+      className="relative w-full min-h-screen text-white font-sans hero-orbit-bg"
     >
       {/* ===== Background: layered glows + subtle grid ===== */}
       {/* Base dark fill */}

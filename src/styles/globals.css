@@ -82,248 +82,197 @@ body {
 
 /* ==========================================================================
    SECTION SURFACES & TRANSITIONS
+   Futuristic dark + blueprint hybrid for RoboTUM
    ========================================================================== */
-/* Base helpers (can stay as-is) */
-.surface-wrap {
-  position: relative;
+
+/* Global dark canvas so fades never show white */
+body {
+  background-color: #020617; /* very dark navy */
 }
 
-/* Ultra-subtle grid pattern overlay */
+/* Base helpers */
+.surface-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Blueprint-style grid overlay (optional via .surface-pattern) */
 .surface-pattern::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.14;
   background-image:
     repeating-linear-gradient(
       0deg,
-      rgba(255, 255, 255, 0.9) 0 1px,
+      rgba(148, 163, 184, 0.22) 0 1px,
       transparent 1px 24px
     ),
     repeating-linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.9) 0 1px,
+      rgba(148, 163, 184, 0.22) 0 1px,
       transparent 1px 24px
     );
+  mix-blend-mode: soft-light;
 }
+
+/* Base surfaces — used conceptually, but you can also apply directly if needed */
 
 .surface-1 {
   background:
     radial-gradient(
-      40rem 30rem at 20% 20%,
-      rgba(0, 49, 135, 0.25),
+      1200px 800px at 0% 0%,
+      rgba(56, 189, 248, 0.22),
       transparent 60%
     ),
     radial-gradient(
-      60rem 50rem at 80% 10%,
-      rgba(0, 49, 135, 0.18),
-      transparent 70%
+      900px 700px at 80% 0%,
+      rgba(129, 140, 248, 0.24),
+      transparent 65%
     ),
-    var(--color-primary);
-  color: #eaf2ff;
+    radial-gradient(
+      900px 700px at 10% 90%,
+      rgba(34, 211, 238, 0.16),
+      transparent 65%
+    ),
+    #020617;
+  color: #e5f0ff;
 }
 
 .surface-2 {
   background:
     radial-gradient(
-      42rem 32rem at 75% 25%,
-      rgba(0, 49, 135, 0.22),
+      1100px 800px at 80% 0%,
+      rgba(129, 140, 248, 0.3),
       transparent 60%
     ),
     radial-gradient(
-      50rem 40rem at 10% 60%,
-      rgba(0, 49, 135, 0.16),
-      transparent 70%
+      900px 700px at 10% 20%,
+      rgba(56, 189, 248, 0.18),
+      transparent 65%
     ),
-    var(--color-secondary);
-  color: #eaf2ff;
+    #02081f;
+  color: #e5f0ff;
 }
 
+/* “Light” is still dark, but a softer blueprint-ish variant */
 .surface-light {
   background:
     radial-gradient(
-      60rem 50rem at 50% 10%,
-      rgba(0, 0, 0, 0.04),
-      transparent 60%
-    ),
-    #ffffff;
-  color: #0b1b2e;
-}
-
-/* Feathered cuts using mask-image */
-.edge-fade-top {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0,
-    black 32px,
-    black 100%
-  );
-  mask-image: linear-gradient(to bottom, transparent 0, black 32px, black 100%);
-}
-
-.edge-fade-bottom {
-  -webkit-mask-image: linear-gradient(
-    to top,
-    transparent 0,
-    black 32px,
-    black 100%
-  );
-  mask-image: linear-gradient(to top, transparent 0, black 32px, black 100%);
-}
-
-.edge-fade-y {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .surface-pattern::before {
-    display: none;
-  }
-}
-
-/* High-level section skins — PURE CSS, no @apply */
-
-.section-dark-primary {
-  position: relative;
-  background:
-    radial-gradient(
-      40rem 30rem at 20% 20%,
-      rgba(0, 49, 135, 0.25),
-      transparent 60%
-    ),
-    radial-gradient(
-      60rem 50rem at 80% 10%,
-      rgba(0, 49, 135, 0.18),
-      transparent 70%
-    ),
-    var(--color-primary);
-  color: #eaf2ff;
-
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-}
-
-.section-dark-primary::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.9) 0 1px,
-      transparent 1px 24px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.9) 0 1px,
-      transparent 1px 24px
-    );
-}
-
-.section-dark-secondary {
-  position: relative;
-  background:
-    radial-gradient(
-      42rem 32rem at 75% 25%,
-      rgba(0, 49, 135, 0.22),
-      transparent 60%
-    ),
-    radial-gradient(
-      50rem 40rem at 10% 60%,
-      rgba(0, 49, 135, 0.16),
-      transparent 70%
-    ),
-    var(--color-secondary);
-  color: #eaf2ff;
-
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-}
-
-.section-dark-secondary::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.9) 0 1px,
-      transparent 1px 24px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.9) 0 1px,
-      transparent 1px 24px
-    );
-}
-
-.section-light {
-  position: relative;
-  background:
-    radial-gradient(
-      70rem 60rem at 60% 0%,
-      rgba(0, 49, 135, 0.1),
+      1200px 900px at 50% 0%,
+      rgba(56, 189, 248, 0.18),
       transparent 65%
     ),
-    linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
-  color: #0b1b2e;
+    radial-gradient(
+      1000px 900px at 0% 100%,
+      rgba(15, 23, 42, 0.9),
+      transparent 70%
+    ),
+    #050b1b;
+  color: #e5e7eb;
+}
 
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 32px,
-    black calc(100% - 32px),
-    transparent
-  );
+/* Disable old mask-based fades (they caused white-ish seams on some setups) */
+.edge-fade-top,
+.edge-fade-bottom,
+.edge-fade-y {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* Optional: soft dark vignette at top/bottom for sections that still use edge-fade-y */
+.edge-fade-y {
+  position: relative;
+}
+
+.edge-fade-y::after {
+  content: "";
+  position: absolute;
+  inset: -40px 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(2, 6, 23, 1) 0%,
+      rgba(2, 6, 23, 0) 16%,
+      rgba(2, 6, 23, 0) 84%,
+      rgba(2, 6, 23, 1) 100%
+    );
+  z-index: 0;
+}
+
+/* Ensure content sits above overlays */
+.section-dark-primary,
+.section-dark-secondary,
+.section-light {
+  position: relative;
+  z-index: 1;
+}
+
+/* High-level section skins — plug directly into your JSX */
+
+/* Main deep futuristic surface (hero, key sections) */
+.section-dark-primary {
+  background:
+    radial-gradient(
+      1200px 800px at 0% 0%,
+      rgba(56, 189, 248, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 700px at 85% 0%,
+      rgba(129, 140, 248, 0.3),
+      transparent 65%
+    ),
+    radial-gradient(
+      1000px 800px at 15% 100%,
+      rgba(34, 211, 238, 0.18),
+      transparent 65%
+    ),
+    #020617;
+  color: #e5f0ff;
+}
+
+/* Slightly lighter / secondary dark surface (e.g. mission, events, partners) */
+.section-dark-secondary {
+  background:
+    radial-gradient(
+      1000px 800px at 80% 0%,
+      rgba(129, 140, 248, 0.3),
+      transparent 60%
+    ),
+    radial-gradient(
+      1100px 900px at 10% 30%,
+      rgba(56, 189, 248, 0.2),
+      transparent 60%
+    ),
+    #02081f;
+  color: #e5f0ff;
+}
+
+/* Dark blueprint-light surface (for “lighter” sections like Join / About) */
+.section-light {
+  background:
+    radial-gradient(
+      1200px 900px at 50% 0%,
+      rgba(56, 189, 248, 0.2),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 900px at 0% 110%,
+      rgba(15, 23, 42, 0.95),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #050b1b 0%, #020617 100%);
+  color: #e5e7eb;
+}
+
+/* Make grid optional but nice on dark sections */
+.section-dark-primary.surface-pattern::before,
+.section-dark-secondary.surface-pattern::before,
+.section-light.surface-pattern::before {
+  opacity: 0.18;
 }
 
 /* ========== HERO BACKGROUND ORBS (FASTER, STRONGER) ========== */

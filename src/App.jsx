@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import ScrollToHashElement from "@components/ui/ScrollToHashElement";
+import PageLoader from "@components/sections/common-sections/PageLoader";
 
 // Lazy-load route components for better performance (code-splitting)
 const Home = lazy(() => import("@pages/Home"));
@@ -17,11 +18,7 @@ const ProjectDetail = lazy(() => import("@pages/ProjectDetail"));
 export default function App() {
   return (
     <Suspense
-      fallback={
-        <div className="w-full min-h-[40vh] flex items-center justify-center text-white/70">
-          Loading…
-        </div>
-      }
+      fallback={<PageLoader />}
     >
       <ScrollToHashElement />
       <Routes>
