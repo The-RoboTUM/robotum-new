@@ -5,21 +5,22 @@ const PartnerCategories = () => {
   return (
     <section
       id="partner-categories"
-      className="section-container py-20 section-light"
+      className="section-container py-20 section-dark-secondary"
     >
       <div className="space-y-24">
         {partners.map((type, idx) => (
           <div key={idx} className="text-center relative animate-fadeIn">
             {/* Decorative divider with gradient */}
             {idx > 0 && (
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-3/5 h-px bg-linear-to-r from-transparent via-accent/40 to-transparent"></div>
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-2/3 h-px 
+                  bg-linear-to-r from-transparent via-white/30 to-transparent" />
             )}
 
-            <h2 className="heading heading-h2 text-[#0B1B2E] mb-12 font-semibold">
+            <h2 className="heading heading-h2 text-slate-50 mb-12 font-semibold">
               {type.title}
             </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10 place-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 sm:gap-10 place-items-center">
               {type.partners.map((p, i) => (
                 <a
                   key={i}
@@ -28,16 +29,20 @@ const PartnerCategories = () => {
                   rel="noopener noreferrer"
                   aria-label={p.name}
                   title={p.name}
-                  className="group relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center bg-white/50 border border-[#E0E7FF] rounded-xl shadow-sm hover:shadow-[0_0_15px_rgba(37,99,235,0.2)] transition-shadow duration-500 cursor-pointer overflow-hidden"
+                  className="group relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center 
+                 rounded-2xl bg-white/5 border border-white/10 backdrop-blur
+                 shadow-[0_18px_45px_rgba(15,23,42,0.55)]
+                 hover:border-accent/60 hover:bg-white/8
+                 transition-all duration-400 cursor-pointer overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-linear-to-tr from-accent/0 via-accent/5 to-[#7C3AED]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-linear-to-tr from-accent/0 via-accent/10 to-[#7C3AED]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                   <ImageFrame
                     src={p.logo}
                     alt={p.name}
                     fit="contain"
                     variant="none"
                     rounded="none"
-                    className="shadow-none max-w-[72%] max-h-[72%] transition-transform duration-500 group-hover:scale-110"
+                    className="shadow-none max-w-[70%] max-h-[70%] transition-transform duration-400 group-hover:scale-110"
                   />
                 </a>
               ))}

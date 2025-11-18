@@ -40,7 +40,7 @@ export default function EventSection() {
           </p>
           <h2
             id="events-section-heading"
-            className="heading heading-h1 font-bold leading-tight"
+            className="heading heading-h2 font-bold leading-tight"
           >
             Where<span className="text-gradient"> Minds Meet</span>
           </h2>
