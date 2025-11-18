@@ -15,7 +15,7 @@ export default function GenderAndDiversity() {
     <>
       <Navbar />
       <Suspense fallback={<PageLoader />}>
-        <main className="w-full px-6 md:px-16 py-16 font-sans surface-2 edge-fade-top edge-fade-bottom">
+        <main className="section-container w-full px-6 md:px-16 py-16 font-sans section-dark-primary surface-pattern">
           <article className="prose prose-invert max-w-3xl mx-auto">
             <h1 className="heading heading-h2 font-bold mb-6">
               Gender and Biodiversity

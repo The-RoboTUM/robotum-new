@@ -173,35 +173,6 @@ body {
   color: #e5e7eb;
 }
 
-/* Disable old mask-based fades (they caused white-ish seams on some setups) */
-.edge-fade-top,
-.edge-fade-bottom,
-.edge-fade-y {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-/* Optional: soft dark vignette at top/bottom for sections that still use edge-fade-y */
-.edge-fade-y {
-  position: relative;
-}
-
-.edge-fade-y::after {
-  content: "";
-  position: absolute;
-  inset: -40px 0;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(2, 6, 23, 1) 0%,
-      rgba(2, 6, 23, 0) 16%,
-      rgba(2, 6, 23, 0) 84%,
-      rgba(2, 6, 23, 1) 100%
-    );
-  z-index: 0;
-}
-
 /* Ensure content sits above overlays */
 .section-dark-primary,
 .section-dark-secondary,
@@ -272,7 +243,7 @@ body {
 .section-dark-primary.surface-pattern::before,
 .section-dark-secondary.surface-pattern::before,
 .section-light.surface-pattern::before {
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 /* ========== HERO BACKGROUND ORBS (FASTER, STRONGER) ========== */

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function FooterSection() {
   return (
-    <footer className="bg-primary text-white section-container pt-16 pb-10 font-exo">
+    <footer className="bg-secondary text-white section-container pt-16 pb-10 font-exo">
       <div className="flex flex-wrap justify-center md:justify-between gap-8 text-left md:text-left">
         {/* Logo and Description */}
         <div className="flex flex-col gap-4 items-center md:items-start min-w-40">
