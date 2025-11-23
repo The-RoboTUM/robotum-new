@@ -197,7 +197,14 @@ const ApplicationFormSection = () => {
                         We&apos;ll review your application and get back to you via email.
                         This usually takes a few days, especially during the main recruitment
                         phase. In the meantime, feel free to drop by our events or say hi on
-                        social media.
+                        social media. If you have any questions, reach out to{" "}
+                        <a
+                            href="mailto:operations@robotum.info"
+                            className="underline"
+                        >
+                            operations@robotum.info
+                        </a>
+                        .
                     </p>
                 </div>
             </section>
