@@ -68,10 +68,9 @@ const WhyWeSection = () => {
           </p>
           <Button
             variant="primary"
-            to="https://form.typeform.com/to/idCpmyGX?typeform-source=www.robotum.info"
-            target="_blank"
+            scrollTarget="application"
           >
-            Join Now →
+            Join Now ↓
           </Button>
         </div>
       </div>
