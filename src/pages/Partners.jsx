@@ -9,9 +9,6 @@ import { lazy, Suspense, useEffect } from "react";
 const PartnerCategories = lazy(
   () => import("@components/sections/partners-sections/PartnerCategories"),
 );
-const NextPrototypes = lazy(
-  () => import("@components/sections/partners-sections/NextPrototypes"),
-);
 const WhatWeOffer = lazy(
   () => import("@components/sections/partners-sections/WhatWeOffer"),
 );
@@ -32,7 +29,6 @@ export default function Partners() {
 
       <Suspense fallback={<PageLoader />}>
         <PartnerCategories />
-        <NextPrototypes />
         <WhatWeOffer />
         <ContactUsSection />
       </Suspense>
