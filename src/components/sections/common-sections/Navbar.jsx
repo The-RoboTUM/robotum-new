@@ -15,6 +15,7 @@ const links = [
   },
   { label: "Events", href: "/events" },
   { label: "Partners", href: "/partners" },
+  { label: "Q&A", href: "/faqs" },
   { label: "Join us", href: "/join" },
 ];
 

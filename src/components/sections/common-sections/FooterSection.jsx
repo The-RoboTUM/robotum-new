@@ -47,6 +47,11 @@ export default function FooterSection() {
               </Link>
             </li>
             <li>
+              <Link to="/faqs" className="hover:text-white">
+                Q&A
+              </Link>
+            </li>
+            <li>
               <Link to="/join" className="hover:text-white">
                 Join us
               </Link>

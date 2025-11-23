@@ -70,6 +70,5 @@ export const faqs = [
     question: "Who can I contact for further questions?",
     answer:
       "Please reach out to Swayam at operations@robotum.info should you have any questions about this form, the recruitment process, or RoboTUM in general. ",
-  }
-
+  },
 ];

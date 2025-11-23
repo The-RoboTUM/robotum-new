@@ -13,7 +13,7 @@ const FaqSection = () => {
     <section className="section-container font-sans section-dark-primary surface-pattern">
       <div>
         <h2 className="heading heading-h2 font-bold text-center mb-10">
-          Frequently Asked Questions
+          Frequently Asked <span className="text-gradient">Questions</span>
         </h2>
         <div className="space-y-8">
           {faqs.map((item, index) => (

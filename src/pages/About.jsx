@@ -15,9 +15,6 @@ const TeamSection = lazy(
 const PreviousEventsSection = lazy(
   () => import("@components/sections/about-us-sections/PreviousEventsSection"),
 );
-const FaqSection = lazy(
-  () => import("@components/sections/about-us-sections/FaqSection"),
-);
 
 const About = () => {
   useEffect(() => {
@@ -35,7 +32,6 @@ const About = () => {
         <WhatIsRobotum />
         <TeamSection />
         <PreviousEventsSection />
-        <FaqSection />
       </Suspense>
 
       <FooterSection />

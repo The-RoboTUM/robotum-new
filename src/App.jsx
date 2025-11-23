@@ -14,6 +14,7 @@ const PrivacyPolicy = lazy(() => import("@pages/PrivacyPolicy"));
 const GenderAndDiversity = lazy(() => import("@pages/GenderAndDiversity"));
 const Projects = lazy(() => import("@pages/Projects"));
 const ProjectDetail = lazy(() => import("@pages/ProjectDetail"));
+const Faqs = lazy(() => import("@pages/Faqs"));
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/gender-and-diversity" element={<GenderAndDiversity />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
+        <Route path="/faqs" element={<Faqs />} />
       </Routes>
     </Suspense>
   );
