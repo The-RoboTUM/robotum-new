@@ -15,6 +15,9 @@ const ApplicationSection = lazy(
 const MemberStoriesSection = lazy(
   () => import("@components/sections/join-us-sections/MemberStoriesSection"),
 );
+const ApplicationFormSection = lazy(
+  () => import("@components/sections/join-us-sections/ApplicationFormSection"),
+);
 
 const JoinUs = () => {
   useEffect(() => {
@@ -32,6 +35,7 @@ const JoinUs = () => {
         <WhyWeSection />
         <MemberStoriesSection />
         <ApplicationSection />
+        <ApplicationFormSection />
       </Suspense>
 
       <FooterSection />
