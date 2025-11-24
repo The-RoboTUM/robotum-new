@@ -12,6 +12,9 @@ export default function ContactUsSection() {
     email: "",
     message: "",
   });
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,6 +30,9 @@ export default function ContactUsSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
+    setErrorMessage("");
+
     emailjs
       .send(
         VITE_EMAILJS_SERVICE_ID,
@@ -40,14 +46,30 @@ export default function ContactUsSection() {
         VITE_EMAILJS_PUBLIC_KEY,
       )
       .then(() => {
-        alert("Message sent successfully!");
         setFormData({ name: "", company: "", email: "", message: "" });
+        setSubmitted(true);
+        setIsSubmitting(false);
       })
       .catch((error) => {
         console.error("EmailJS error:", error);
-        alert("Failed to send message. Please try again.");
+        setErrorMessage("Something went wrong while sending your message. Please try again in a moment.");
+        setIsSubmitting(false);
       });
   };
+
+  if (submitted) {
+    return (
+      <section id="contact" className="section-dark-primary surface-pattern">
+        <div className="section-container flex flex-col items-center text-center py-24">
+          <h2 className="heading heading-h2 mb-4">Thank you!</h2>
+          <p className="text-white/80 max-w-md mb-8">
+            Your partnership request has been successfully submitted. Our team will get back to you shortly.
+          </p>
+          <Button to="/" variant="primary">Back to Home</Button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="contact" className="section-dark-primary surface-pattern">
@@ -137,8 +159,19 @@ export default function ContactUsSection() {
               ></textarea>
             </div>
 
-            <Button type="submit" variant="primary" className="mt-4">
-              Send Message
+            {errorMessage && (
+              <p className="text-sm text-red-300 bg-red-900/30 border border-red-500/40 rounded-md px-3 py-2">
+                {errorMessage}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              variant="primary"
+              className="mt-4"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sending..." : "Send message"}
             </Button>
           </form>
 
