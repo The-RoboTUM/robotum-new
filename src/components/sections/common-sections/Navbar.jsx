@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Button from "@components/ui/Button";
 import * as assets from "@assets";
 
-const links = [
+const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About us", href: "/about" },
   {
@@ -25,19 +25,13 @@ const PROJECT_TABS = [
   { label: "Innovation & Entrepreneurship", key: "innovation" },
 ];
 
-function ProjectDropdown({
-  open,
-  onEnter,
-  onLeave,
-  onItemClick,
-  onSelectType,
-}) {
+function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) {
   if (!open) return null;
 
   return (
     <div
       role="menu"
-      className="absolute left-0 top-full mt-2 min-w-52 rounded-xl bg-[#0E1C3D]/90 px-2.5 py-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.45)] ring-1 ring-white/10 z-50 backdrop-blur-md"
+      className="absolute left-0 top-full mt-2 min-w-52 rounded-xl bg-[#0E1C3D]/80 px-2.5 py-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.45)] ring-1 ring-white/10 z-50 backdrop-blur-md"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
@@ -47,7 +41,7 @@ function ProjectDropdown({
           type="button"
           role="menuitem"
           tabIndex={0}
-          className="w-full text-left block px-3 py-2.5 text-[14px] tracking-[0.8px] rounded-lg text-white/90 hover:bg-white/10 hover:text-white transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 cursor-pointer"
+          className="block w-full rounded-lg px-3 py-2.5 text-left text-[14px] tracking-[0.8px] text-white/90 transition-colors duration-300 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
           onClick={() => {
             onItemClick();
             onSelectType?.(tab.key);
@@ -61,100 +55,127 @@ function ProjectDropdown({
 }
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [projectsOpen, setProjectsOpen] = useState(false);
-  const [projectsMobileOpen, setProjectsMobileOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isProjectsOpen, setIsProjectsOpen] = useState(false);
+  const [isProjectsMobileOpen, setIsProjectsMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const hoverTimer = useRef(null);
-  const { hash: currentHash, pathname } = useLocation();
+
+  const hoverTimeoutRef = useRef(null);
   const navRef = useRef(null);
   const mobileMenuRef = useRef(null);
+
+  const { hash: currentHash, pathname } = useLocation();
   const navigate = useNavigate();
 
-  const handleProjectsEnter = useCallback(() => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    setProjectsOpen(true);
+  /* -----------------------------------------------------------------------
+   * Handlers
+   * --------------------------------------------------------------------- */
+
+  const openProjectsDropdown = useCallback(() => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    setIsProjectsOpen(true);
   }, []);
 
-  const handleProjectsLeave = useCallback(() => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    hoverTimer.current = setTimeout(() => setProjectsOpen(false), 150);
+  const closeProjectsDropdown = useCallback(() => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => setIsProjectsOpen(false), 150);
+  }, []);
+
+  const closeAllMenus = useCallback(() => {
+    setIsMobileOpen(false);
+    setIsProjectsOpen(false);
+    setIsProjectsMobileOpen(false);
   }, []);
 
   const handleSelectProjectsType = useCallback(
     (key) => {
       navigate(`/projects?type=${key}`);
-      setProjectsOpen(false);
-      setOpen(false);
-      setProjectsMobileOpen(false);
+      closeAllMenus();
     },
-    [navigate],
+    [navigate, closeAllMenus],
   );
 
+  const toggleMobileMenu = () => {
+    setIsMobileOpen((prev) => !prev);
+    // When toggling main mobile menu, always close project submenu
+    setIsProjectsMobileOpen(false);
+  };
+
+  /* -----------------------------------------------------------------------
+   * Effects
+   * --------------------------------------------------------------------- */
+
+  // Scroll + Escape key
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        setOpen(false);
-        setProjectsOpen(false);
+        closeAllMenus();
       }
     };
+
+    window.addEventListener("scroll", handleScroll);
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [closeAllMenus]);
 
+  // Body scroll lock + blur class for background when mobile menu open
   useEffect(() => {
     const body = document.body;
-    if (open) {
+
+    if (isMobileOpen) {
       body.style.overflow = "hidden";
       body.classList.add("blurred-overlay", "menu-open");
     } else {
       body.style.overflow = "auto";
       body.classList.remove("blurred-overlay", "menu-open");
     }
+
     return () => {
       body.style.overflow = "auto";
       body.classList.remove("blurred-overlay", "menu-open");
     };
-  }, [open]);
+  }, [isMobileOpen]);
 
-  // Click-outside handler for closing mobile menu
+  // Click-outside to close menus on mobile
   useEffect(() => {
     function handleClickOutside(e) {
-      if (!open) return;
+      if (!isMobileOpen) return;
       if (navRef.current && !navRef.current.contains(e.target)) {
-        setOpen(false);
-        setProjectsOpen(false);
-        setProjectsMobileOpen(false);
+        closeAllMenus();
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [open]);
+  }, [isMobileOpen, closeAllMenus]);
 
+  // Focus trap inside mobile menu
   useEffect(() => {
-    if (!open || !mobileMenuRef.current) return;
+    if (!isMobileOpen || !mobileMenuRef.current) return;
+
     const root = mobileMenuRef.current;
     const focusable = root.querySelectorAll(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    // focus first focusable
-    first && first.focus();
+
+    if (first) first.focus();
 
     function handleKey(e) {
       if (e.key !== "Tab") return;
+
       if (e.shiftKey) {
         if (document.activeElement === first) {
           e.preventDefault();
@@ -170,10 +191,18 @@ export default function Navbar() {
 
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
-  }, [open]);
+  }, [isMobileOpen]);
 
-  const itemBase =
+  /* -----------------------------------------------------------------------
+   * Shared styles
+   * --------------------------------------------------------------------- */
+
+  const desktopItemBase =
     "relative group inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white";
+
+  /* -----------------------------------------------------------------------
+   * Render
+   * --------------------------------------------------------------------- */
 
   return (
     <nav
@@ -181,14 +210,15 @@ export default function Navbar() {
       role="navigation"
       aria-label="Main"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
-      className={`fixed top-0 left-0 right-0 z-60 h-14 md:h-16 font-sans flex items-center transition-colors duration-500 border-b border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] ${
+      className={`fixed inset-x-0 top-0 z-60 flex h-14 items-center font-sans md:h-16 border-b border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] transition-colors duration-500 ${
         scrolled
-          ? "backdrop-blur-2xl bg-[#0B1530]/80"
-          : "backdrop-blur-xl bg-[#0B1530]/60"
+          ? "bg-[#0B1530]/80 backdrop-blur-2xl"
+          : "bg-[#0B1530]/60 backdrop-blur-xl"
       }`}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex w-full items-center justify-between relative z-60">
+        <div className="relative z-60 flex w-full items-center justify-between">
+          {/* Logo */}
           <Link
             to="/"
             className="flex items-center"
@@ -197,30 +227,38 @@ export default function Navbar() {
             <img
               src={assets.navLogo}
               alt="RoboTUM logo"
-              className="w-[110px] h-9 md:w-[135px] md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity"
+              className="h-9 w-[110px] opacity-90 transition-opacity hover:opacity-100 md:h-12 md:w-[135px]"
             />
           </Link>
 
-          <ul className="hidden md:flex items-center gap-4 ml-auto">
-            {links.map((l) => {
-              if (l.dropdown) {
+          {/* Desktop navigation */}
+          <ul className="ml-auto hidden items-center gap-4 md:flex">
+            {NAV_LINKS.map((link) => {
+              // Projects dropdown
+              if (link.dropdown) {
+                const isActive = pathname.startsWith("/projects");
+
                 return (
                   <li
-                    key={l.label}
+                    key={link.label}
                     className="relative"
-                    onMouseEnter={handleProjectsEnter}
-                    onMouseLeave={handleProjectsLeave}
+                    onMouseEnter={openProjectsDropdown}
+                    onMouseLeave={closeProjectsDropdown}
                   >
                     <button
                       type="button"
-                      onClick={() => setProjectsOpen((o) => !o)}
+                      onClick={() => setIsProjectsOpen((prev) => !prev)}
                       aria-haspopup="true"
-                      aria-expanded={projectsOpen}
-                      className={`${itemBase} rounded-md ${pathname.startsWith("/projects") ? "text-accent" : ""}`}
+                      aria-expanded={isProjectsOpen}
+                      className={`${desktopItemBase} rounded-md ${
+                        isActive ? "text-accent" : ""
+                      }`}
                     >
-                      {l.label.toUpperCase()}
+                      {link.label.toUpperCase()}
                       <svg
-                        className={`ml-2 h-3 w-3 transition-transform ${projectsOpen ? "rotate-180" : ""}`}
+                        className={`ml-2 h-3 w-3 transition-transform ${
+                          isProjectsOpen ? "rotate-180" : ""
+                        }`}
                         viewBox="0 0 12 8"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -235,55 +273,63 @@ export default function Navbar() {
                       </svg>
                       <span
                         aria-hidden
-                        className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${pathname.startsWith("/projects") ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                        className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 origin-left rounded-full bg-accent transition-transform duration-300 ease-out ${
+                          isActive
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover:scale-x-100"
+                        }`}
                       />
                     </button>
+
                     <ProjectDropdown
-                      open={projectsOpen}
-                      onEnter={handleProjectsEnter}
-                      onLeave={handleProjectsLeave}
-                      onItemClick={() => setProjectsOpen(false)}
+                      open={isProjectsOpen}
+                      onEnter={openProjectsDropdown}
+                      onLeave={closeProjectsDropdown}
+                      onItemClick={() => setIsProjectsOpen(false)}
                       onSelectType={handleSelectProjectsType}
                     />
                   </li>
                 );
               }
-              if (l.label === "Join us") {
+
+              // Desktop JOIN US button
+              if (link.label === "Join us") {
                 return (
-                  <li key={l.label}>
+                  <li key={link.label}>
                     <Button
                       variant="primary"
                       as="link"
                       to="/join"
-                      className="ml-2 text-sm px-4 py-2"
+                      className="ml-2 px-4 py-2 text-sm"
                     >
-                      {l.label.toUpperCase()}
+                      {link.label.toUpperCase()}
                     </Button>
                   </li>
                 );
               }
-              // Desktop NavLink with underline and active color
+
+              // Regular desktop links
               return (
-                <li key={l.label} className="px-0.5">
+                <li key={link.label} className="px-0.5">
                   <NavLink
-                    to={l.href}
+                    to={link.href}
                     className={({ isActive }) =>
-                      `${itemBase} rounded-md ${
+                      `${desktopItemBase} rounded-md ${
                         isActive ||
-                        currentHash === l.href ||
-                        (l.href !== "/" && pathname.startsWith(l.href))
+                        currentHash === link.href ||
+                        (link.href !== "/" && pathname.startsWith(link.href))
                           ? "text-accent"
                           : ""
                       }`
                     }
                   >
-                    {l.label.toUpperCase()}
+                    {link.label.toUpperCase()}
                     <span
                       aria-hidden
-                      className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-accent transition-transform duration-300 ease-out origin-left ${
-                        pathname === l.href ||
-                        (l.href !== "/" && pathname.startsWith(l.href)) ||
-                        currentHash === l.href
+                      className={`pointer-events-none absolute -bottom-0.5 left-3 right-3 h-0.5 origin-left rounded-full bg-accent transition-transform duration-300 ease-out ${
+                        pathname === link.href ||
+                        (link.href !== "/" && pathname.startsWith(link.href)) ||
+                        currentHash === link.href
                           ? "scale-x-100"
                           : "scale-x-0 group-hover:scale-x-100"
                       }`}
@@ -294,18 +340,21 @@ export default function Navbar() {
             })}
           </ul>
 
+          {/* Mobile burger button */}
           <button
-            className="md:hidden inline-flex items-center justify-center w-9 h-9 mr-2 rounded-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 transition-transform duration-200 active:scale-95"
-            aria-expanded={open}
+            type="button"
+            className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-md cursor-pointer transition-transform duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 md:hidden"
+            aria-expanded={isMobileOpen}
             aria-controls="mobile-menu"
-            aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-            onClick={() => setOpen((o) => !o)}
+            aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
+            onClick={toggleMobileMenu}
           >
             <span className="sr-only">Toggle navigation</span>
-            <div className="relative w-6 h-6 transition-transform duration-300 ease-out transform-gpu">
+            <div className="relative h-6 w-6 transform-gpu transition-transform duration-300 ease-out">
+              {/* Close icon */}
               <svg
-                className={`absolute inset-0 w-6 h-6 text-white transition-all duration-300 ease-out transform-gpu ${
-                  open ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"
+                className={`absolute inset-0 h-6 w-6 text-white transform-gpu transition-all duration-300 ease-out ${
+                  isMobileOpen ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"
                 }`}
                 fill="none"
                 stroke="currentColor"
@@ -319,59 +368,65 @@ export default function Navbar() {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
+
+              {/* Burger icon */}
               <div
-                className={`absolute inset-0 flex flex-col justify-center space-y-1 transition-all duration-300 ease-out transform-gpu ${
-                  open ? "opacity-0 rotate-90" : "opacity-100 rotate-0"
+                className={`absolute inset-0 flex flex-col justify-center space-y-1 transform-gpu transition-all duration-300 ease-out ${
+                  isMobileOpen ? "opacity-0 rotate-90" : "opacity-100 rotate-0"
                 }`}
               >
-                <span className="block h-0.5 w-6 bg-white rounded" />
-                <span className="block h-0.5 w-6 bg-white rounded" />
-                <span className="block h-0.5 w-6 bg-white rounded" />
+                <span className="block h-0.5 w-6 rounded bg-white" />
+                <span className="block h-0.5 w-6 rounded bg-white" />
+                <span className="block h-0.5 w-6 rounded bg-white" />
               </div>
             </div>
           </button>
         </div>
       </div>
 
-      {/* Blurred clickable overlay for mobile menu */}
-      {open && (
+      {/* Mobile overlay (blur + no click-through) */}
+      {isMobileOpen && (
         <div
-          className="fixed inset-0 z-30 md:hidden bg-black/60 backdrop-blur-sm supports-backdrop-filter:backdrop-blur-md transition-opacity duration-300 ease-out pointer-events-auto"
-          onClick={() => {
-            setOpen(false);
-            setProjectsOpen(false);
-            setProjectsMobileOpen(false);
-          }}
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm supports-backdrop-filter:backdrop-blur-md transition-opacity duration-300 ease-out md:hidden"
+          onClick={closeAllMenus}
           aria-hidden="true"
         />
       )}
+
+      {/* Mobile menu */}
       <div
         id="mobile-menu"
+        ref={mobileMenuRef}
         role="dialog"
         aria-modal="true"
         aria-label="Main navigation"
-        className={`md:hidden fixed top-14 left-0 right-0 z-40 px-4 bg-[#0E1C3D]/95 backdrop-blur-md border-t border-white/10 transform-gpu transition-all duration-350 ease-out ${
-          open
-            ? "opacity-100 translate-y-0 max-h-[calc(100vh-56px)] pb-4 overflow-y-auto pointer-events-auto"
-            : "opacity-0 -translate-y-3 max-h-0 overflow-hidden pointer-events-none"
+        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu bg-[#0E1C3D]/95 border-t border-white/10 backdrop-blur-md transition-all duration-350 ease-out md:hidden ${
+          isMobileOpen
+            ? "pointer-events-auto max-h-[calc(100vh-56px)] translate-y-0 overflow-y-auto pb-4 opacity-100"
+            : "pointer-events-none max-h-0 -translate-y-3 overflow-hidden opacity-0"
         }`}
-        ref={mobileMenuRef}
       >
         <ul className="flex flex-col gap-1.5">
-          {links.map((l) => {
-            if (l.subLinks) {
+          {NAV_LINKS.map((link) => {
+            // MOBILE: Projects dropdown
+            if (link.subLinks) {
               return (
-                <li key={l.label}>
+                <li key={link.label}>
                   <button
-                    onClick={() => setProjectsMobileOpen((v) => !v)}
-                    className="w-full flex items-center justify-between px-4 py-3.5 rounded-lg bg-[#112238] text-white hover:bg-[#1A2E49] transition-colors focus:outline-none"
-                    aria-expanded={projectsMobileOpen}
+                    type="button"
+                    onClick={() =>
+                      setIsProjectsMobileOpen((prev) => !prev)
+                    }
+                    className="flex w-full items-center justify-between rounded-lg bg-[#112238] px-4 py-3.5 text-white transition-colors hover:bg-[#1A2E49] focus:outline-none"
+                    aria-expanded={isProjectsMobileOpen}
                   >
-                    <span className="text-[14px] tracking-[0.8px] font-medium">
-                      {l.label.toUpperCase()}
+                    <span className="text-[14px] font-medium tracking-[0.8px]">
+                      {link.label.toUpperCase()}
                     </span>
                     <svg
-                      className={`h-4 w-4 ml-2 transition-transform ${projectsMobileOpen ? "rotate-180" : ""}`}
+                      className={`ml-2 h-4 w-4 transition-transform ${
+                        isProjectsMobileOpen ? "rotate-180" : ""
+                      }`}
                       viewBox="0 0 12 8"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -387,22 +442,22 @@ export default function Navbar() {
                   </button>
 
                   <div
-                    className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                      projectsMobileOpen
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isProjectsMobileOpen
                         ? "max-h-96 opacity-100"
                         : "max-h-0 opacity-0"
                     }`}
                   >
-                    <ul className="ml-4 mt-2 bg-secondary/95 rounded-lg px-2.5 py-2">
-                      {l.subLinks.map((sub) => (
+                    <ul className="mt-2 rounded-lg bg-secondary/95 px-2.5 py-2">
+                      {link.subLinks.map((sub) => (
                         <li key={sub}>
                           <button
                             type="button"
-                            className="w-full text-left block px-4 py-2 text-[13px] text-white hover:bg-white/10 rounded cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                            className="block w-full cursor-pointer rounded px-4 py-2 text-left text-[13px] text-white transition-colors hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                             onClick={() =>
                               handleSelectProjectsType(
-                                PROJECT_TABS.find((t) => t.label === sub)
-                                  ?.key || "technical",
+                                PROJECT_TABS.find((t) => t.label === sub)?.key ||
+                                  "technical",
                               )
                             }
                           >
@@ -416,40 +471,36 @@ export default function Navbar() {
               );
             }
 
-            if (l.label === "Join us") {
+            // MOBILE: Join us CTA
+            if (link.label === "Join us") {
               return (
-                <li key={l.label}>
+                <li key={link.label}>
                   <Button
                     variant="primary"
                     as="link"
-                    to={l.href}
-                    className="block w-full text-center text-[14px] tracking-[0.8px] font-semibold"
-                    onClick={() => {
-                      setOpen(false);
-                      setProjectsOpen(false);
-                    }}
+                    to={link.href}
+                    className="block w-full text-center text-[14px] font-semibold tracking-[0.8px]"
+                    onClick={closeAllMenus}
                   >
-                    {l.label.toUpperCase()}
+                    {link.label.toUpperCase()}
                   </Button>
                 </li>
               );
             }
 
+            // MOBILE: regular link
             return (
-              <li key={l.label}>
+              <li key={link.label}>
                 <NavLink
-                  to={l.href}
-                  onClick={() => {
-                    setOpen(false);
-                    setProjectsOpen(false);
-                  }}
+                  to={link.href}
+                  onClick={closeAllMenus}
                   className={({ isActive }) =>
-                    `block w-full px-4 py-3.5 text-[14px] tracking-[0.8px] rounded-lg bg-[#112238] hover:bg-[#1A2E49] transition-colors focus:outline-none text-white ${
-                      isActive || currentHash === l.href ? "text-accent" : ""
+                    `block w-full rounded-lg bg-[#112238] px-4 py-3.5 text-[14px] tracking-[0.8px] text-white transition-colors hover:bg-[#1A2E49] focus:outline-none ${
+                      isActive || currentHash === link.href ? "text-accent" : ""
                     }`
                   }
                 >
-                  {l.label.toUpperCase()}
+                  {link.label.toUpperCase()}
                 </NavLink>
               </li>
             );
