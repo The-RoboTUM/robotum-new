@@ -81,3 +81,4 @@ export { default as event2 } from "./images/events/event2.png";
 export { default as event3 } from "./images/events/event3.png";
 export { default as event4 } from "./images/events/event4.png";
 export { default as event5 } from "./images/events/event5.png";
+export { default as event6 } from "./images/events/hackathon-06-25.jpg";

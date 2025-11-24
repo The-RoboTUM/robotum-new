@@ -25,7 +25,13 @@ const PROJECT_TABS = [
   { label: "Innovation & Entrepreneurship", key: "innovation" },
 ];
 
-function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelectType }) {
+function ProjectDropdown({
+  open,
+  onEnter,
+  onLeave,
+  onItemClick,
+  onSelectType,
+}) {
   if (!open) return null;
 
   return (
@@ -346,7 +352,9 @@ export default function Navbar() {
             className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-md cursor-pointer transition-transform duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 md:hidden"
             aria-expanded={isMobileOpen}
             aria-controls="mobile-menu"
-            aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={
+              isMobileOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             onClick={toggleMobileMenu}
           >
             <span className="sr-only">Toggle navigation</span>
@@ -414,9 +422,7 @@ export default function Navbar() {
                 <li key={link.label}>
                   <button
                     type="button"
-                    onClick={() =>
-                      setIsProjectsMobileOpen((prev) => !prev)
-                    }
+                    onClick={() => setIsProjectsMobileOpen((prev) => !prev)}
                     className="flex w-full items-center justify-between rounded-lg bg-[#112238] px-4 py-3.5 text-white transition-colors hover:bg-[#1A2E49] focus:outline-none"
                     aria-expanded={isProjectsMobileOpen}
                   >
@@ -456,8 +462,8 @@ export default function Navbar() {
                             className="block w-full cursor-pointer rounded px-4 py-2 text-left text-[13px] text-white transition-colors hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
                             onClick={() =>
                               handleSelectProjectsType(
-                                PROJECT_TABS.find((t) => t.label === sub)?.key ||
-                                  "technical",
+                                PROJECT_TABS.find((t) => t.label === sub)
+                                  ?.key || "technical",
                               )
                             }
                           >

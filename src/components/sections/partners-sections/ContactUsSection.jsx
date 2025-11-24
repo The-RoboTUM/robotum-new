@@ -52,7 +52,9 @@ export default function ContactUsSection() {
       })
       .catch((error) => {
         console.error("EmailJS error:", error);
-        setErrorMessage("Something went wrong while sending your message. Please try again in a moment.");
+        setErrorMessage(
+          "Something went wrong while sending your message. Please try again in a moment.",
+        );
         setIsSubmitting(false);
       });
   };
@@ -63,9 +65,12 @@ export default function ContactUsSection() {
         <div className="section-container flex flex-col items-center text-center py-24">
           <h2 className="heading heading-h2 mb-4">Thank you!</h2>
           <p className="text-white/80 max-w-md mb-8">
-            Your partnership request has been successfully submitted. Our team will get back to you shortly.
+            Your partnership request has been successfully submitted. Our team
+            will get back to you shortly.
           </p>
-          <Button to="/" variant="primary">Back to Home</Button>
+          <Button to="/" variant="primary">
+            Back to Home
+          </Button>
         </div>
       </section>
     );
