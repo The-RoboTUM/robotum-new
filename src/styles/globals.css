@@ -494,3 +494,50 @@ body {
 .section-container {
   @apply w-full px-6 sm:px-8 lg:px-16 py-24;
 }
+
+/* ==========================================================================
+   NEWS TICKER (compact version)
+   ========================================================================== */
+
+.news-ticker {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* ↓ SLIMMER HEIGHT */
+  padding: 4px 0;
+  height: 28px; /* reduced from 40–50px */
+}
+
+.news-ticker-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: ticker-scroll 18s linear infinite;
+  font-size: 13px; /* smaller */
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Badge */
+.news-ticker-badge {
+  background: #2d4cff;
+  color: white;
+  padding: 2px 8px; /* smaller */
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 12px;
+  letter-spacing: 0.6px;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
