@@ -12,7 +12,7 @@ const FaqSection = lazy(
 
 const Faqs = () => {
   useEffect(() => {
-    document.title = "FAQs | RoboTUM";
+    document.title = "Q&A | RoboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
