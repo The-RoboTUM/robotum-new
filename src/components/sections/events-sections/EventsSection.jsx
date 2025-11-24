@@ -160,7 +160,7 @@ export default function EventsSection() {
           </p>
           <h2
             id="events-section-heading"
-            className="heading heading-h1 leading-tight"
+            className="heading heading-h2 leading-tight"
           >
             Upcoming &amp; Past Events
           </h2>
