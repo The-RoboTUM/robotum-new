@@ -40,7 +40,7 @@ export default function PartnersSection() {
           </h2>
         </div>
         <div>
-          <Button to="/partners" variant="primary-light">
+          <Button to="/partners" variant="primary">
             Meet Our Partners →
           </Button>
         </div>
