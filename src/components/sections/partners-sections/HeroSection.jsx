@@ -1,4 +1,5 @@
 import Button from "@components/ui/Button";
+import * as assets from "@assets";
 
 /**
  * Partners page Hero
@@ -11,14 +12,15 @@ const HeroSection = () => {
   return (
     <section
       id="partners-hero"
-      className="section-container text-white min-h-screen flex items-center hero-orbit-bg section-dark-primary surface-pattern"
+      className="section-container text-white min-h-screen flex items-center relative overflow-hidden section-dark-primary surface-pattern"
       aria-labelledby="partners-hero-heading"
       role="region"
     >
-      {/* Optional subtle pattern overlay */}
-      <div
-        className="surface-pattern opacity-40 absolute inset-0"
-        aria-hidden="true"
+      {/* Optional blurred robotics lab image */}
+      <img
+        src={assets.partnership}
+        alt="Partnership"
+        className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-20 blur-sm pointer-events-none"
       />
 
       <div className="relative z-10">
@@ -31,7 +33,7 @@ const HeroSection = () => {
             Partnerships & Collaborations
           </h1>
           <p className="mt-4 md:mt-5 text-text1 text-white/80 hero-animate">
-            Partnerships that turn vision into reality
+            Partnerships that turn vision into reality.
           </p>
         </header>
 

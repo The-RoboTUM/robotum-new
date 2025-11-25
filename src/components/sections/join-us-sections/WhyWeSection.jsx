@@ -54,24 +54,23 @@ const WhyWeSection = () => {
         {/* Description */}
         <div className="max-w-4xl mx-auto text-center md:text-left">
           <h3 className="heading heading-h2 font-bold mb-6">
-            What are we looking for?
+            Who are we looking for?
           </h3>
           <p className="text-text2 md:text-text1 text-white/80 mb-4 leading-relaxed">
-            We’re looking for curious, motivated students from all disciplines
-            who have a real interest in robotics or want to turn ideas into real
-            robots. No matter your background — if you’re excited about robotics
-            and ready to learn, you’re in the right place.
+            At RoboTUM, we are seeking high-performing, motivated, and efficient
+            students to help transform Munich into the robotics hub it is
+            destined to be. We are highly selective and expect the highest
+            quality of work. In exchange, we offer you value in the form of a
+            community of equally motivated and talented individuals, global
+            connections in the industry, and opportunities to develop your
+            skills to the state of the art.
           </p>
           <p className="text-text2 md:text-text1 text-white/80 leading-relaxed mb-8">
             You don’t need to be an expert — just bring motivation and
             willingness to learn. We’ll support you from day one.
           </p>
-          <Button
-            variant="primary"
-            to="https://form.typeform.com/to/idCpmyGX?typeform-source=www.robotum.info"
-            target="_blank"
-          >
-            Join Now →
+          <Button variant="primary" scrollTarget="application">
+            Join Now ↓
           </Button>
         </div>
       </div>

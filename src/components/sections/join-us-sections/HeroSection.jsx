@@ -15,12 +15,8 @@ const HeroSection = () => {
           Hands-on. Future-focused. Together.
         </p>
         <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4 hero-animate">
-          <Button
-            variant="primary"
-            to="https://form.typeform.com/to/idCpmyGX?typeform-source=www.robotum.info"
-            target="_blank"
-          >
-            Apply Now →
+          <Button variant="primary" scrollTarget="application" target="_blank">
+            Apply Now
           </Button>
           <Button variant="secondary" scrollTarget="why-we-section">
             Learn More ↓

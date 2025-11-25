@@ -29,15 +29,12 @@ export default function WhatIsRobotum({ illustration }) {
             What is <span className="text-gradient">RoboTUM</span>?
           </h2>
           <p className="text-text1 text-white/85 leading-relaxed mb-6">
-            RoboTUM is a student-led robotics community at TUM. Our vision is to
-            help establish
-            <span className="font-semibold text-accent"> Munich</span> as a
-            global robotics hub — comparable to Boston or Switzerland. Our
-            mission is to{" "}
-            <span className="font-semibold text-[#7C3AED]">
-              bridge industry and academia
-            </span>
-            , turning research into real-world innovation and entrepreneurship.
+            Germany's leading student-led robotics initiative, dedicated to
+            advancing robotics engineering and education at the Technical
+            University of Munich and beyond. As a member of RoboTUM, you will
+            have the opportunity to collaborate with a diverse group of talented
+            students, industry professionals, and academics to innovate and
+            excel in the field of robotics.
           </p>
 
           {/* Pillars / categories */}

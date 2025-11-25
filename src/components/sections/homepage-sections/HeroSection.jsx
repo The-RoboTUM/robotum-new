@@ -1,5 +1,6 @@
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
+import NewsTicker from "@components/sections/common-sections/NewsTicker";
 
 /**
  * HeroSection — minimal, creative, and responsive
@@ -21,6 +22,40 @@ export default function HeroSection({
       aria-labelledby="hero-heading"
       className="relative w-full min-h-screen text-white font-sans hero-orbit-bg"
     >
+      {/* Subtle animated tech lines overlay */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+          viewBox="0 0 800 800"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <linearGradient id="lineGradient" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stopColor="#4f8bff" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.5" />
+            </linearGradient>
+          </defs>
+          <g stroke="url(#lineGradient)" strokeWidth="1.0" fill="none">
+            {[...Array(20)].map((_, i) => (
+              <path
+                key={i}
+                d={`M0 ${i * 40} C ${200 + i * 10} ${100 + i * 15}, ${600 - i * 15} ${300 - i * 10}, 800 ${i * 40}`}
+                opacity="0.6"
+              >
+                <animate
+                  attributeName="d"
+                  dur={`${3 + i * 2}s`}
+                  repeatCount="indefinite"
+                  values={`M0 ${i * 40} C ${200 + i * 10} ${100 + i * 15}, ${600 - i * 15} ${300 - i * 10}, 800 ${i * 40};
+                          M0 ${i * 40} C ${250 + i * 10} ${80 + i * 15}, ${550 - i * 15} ${320 - i * 10}, 800 ${i * 40};
+                          M0 ${i * 40} C ${200 + i * 10} ${100 + i * 15}, ${600 - i * 15} ${300 - i * 10}, 800 ${i * 40}`}
+                />
+              </path>
+            ))}
+          </g>
+        </svg>
+      </div>
       {/* ===== Background: layered glows + subtle grid ===== */}
       {/* Base dark fill */}
       <div className="absolute inset-0 -z-20 bg-primary" />
@@ -82,7 +117,7 @@ export default function HeroSection({
         <img
           src={assets.navLogo}
           alt="RoboTUM logo"
-          className="w-36 sm:w-44 md:w-56 h-auto drop-shadow-lg mb-6"
+          className="w-46 sm:w-44 md:w-66 h-auto drop-shadow-lg mb-6"
           loading="eager"
           decoding="async"
         />
@@ -90,7 +125,7 @@ export default function HeroSection({
         {/* Heading with gradient accent on 'Robotics' */}
         <h1
           id="hero-heading"
-          className="heading heading-display leading-tight text-balance hero-animate"
+          className="heading heading-h1 leading-tight text-balance hero-animate"
         >
           Shaping the Future of <span className="text-gradient">Robotics</span>
         </h1>

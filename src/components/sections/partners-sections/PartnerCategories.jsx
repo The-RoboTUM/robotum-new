@@ -15,9 +15,7 @@ const PartnerCategories = () => {
             Network & Community
           </p>
 
-          <h2 className="heading heading-h2 text-slate-50">
-            Proud member of
-          </h2>
+          <h2 className="heading heading-h2 text-slate-50">Proud member of</h2>
 
           <div className="flex items-center justify-center mt-4">
             <div className="inline-flex items-center justify-center rounded-2xl bg-white/5 border border-white/12 px-6 py-4 backdrop-blur-sm transition-all duration-500 hover:bg-white/10 hover:border-accent/60">

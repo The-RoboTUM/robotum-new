@@ -17,6 +17,7 @@ export { default as logo } from "./images/robotum-logos/robotum-logo-blue-white.
 export { default as auditoryImg } from "./images/others/auditory.png";
 export { default as allMembersImg } from "./images/others/foundations-team.jpg";
 export { default as eventsHero } from "./images/others/eventsHero.png";
+export { default as partnership } from "./images/others/partnership.jpg";
 
 // Partners
 // Lead Sponsors
@@ -80,3 +81,5 @@ export { default as event2 } from "./images/events/event2.png";
 export { default as event3 } from "./images/events/event3.png";
 export { default as event4 } from "./images/events/event4.png";
 export { default as event5 } from "./images/events/event5.png";
+export { default as event6 } from "./images/events/hackathon-06-25.jpg";
+export { default as automatica } from "./images/events/automatica.jpg";

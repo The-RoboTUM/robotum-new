@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "@components/ui/Button";
 
 const STORIES = [
@@ -52,7 +51,7 @@ export default function MemberStoriesSection() {
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full">
           <div className="max-w-xl">
             <p className="text-xs tracking-widest text-white/60 uppercase mb-2">
-              What it's like 
+              What it's like
             </p>
             <h2 className="heading heading-h2">
               Member {""}

@@ -3,6 +3,7 @@ import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import HeroSection from "@components/sections/homepage-sections/HeroSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
+import NewsTicker from "@components/sections/common-sections/NewsTicker";
 
 // Lazily load below-the-fold sections to reduce initial bundle size
 import { lazy, Suspense, useEffect } from "react";
@@ -32,16 +33,24 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <HeroSection />
+      <main className="pt-13 md:pt-15">
+        {/* <NewsTicker
+          messages={[
+            "Winter 2025 applications are open — join RoboTUM and build robots with us",
+            "Humanoid team recruiting now",
+            "RoboTUM Precelerator starts soon",
+          ]}
+        /> */}
+        <HeroSection />
 
-      <Suspense fallback={<PageLoader />}>
-        <MissionSection />
-        <ProjectSection />
-        <EventSection />
-        <JoinUsSection />
-        <PartnersSection />
-      </Suspense>
-
+        <Suspense fallback={<PageLoader />}>
+          <MissionSection />
+          <ProjectSection />
+          <EventSection />
+          <JoinUsSection />
+          <PartnersSection />
+        </Suspense>
+      </main>
       <FooterSection />
     </>
   );
