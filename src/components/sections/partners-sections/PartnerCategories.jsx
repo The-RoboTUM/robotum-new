@@ -1,7 +1,7 @@
 import * as assets from "@assets";
 import ImageFrame from "@components/ui/ImageFrame";
 import { useEffect, useState } from "react";
-import { supabase } from "@lib/supabaseClient";
+import { fetchActivePartners } from "@data/partnersApi";
 
 const PartnerCategories = () => {
   const [partners, setPartners] = useState([]);
@@ -13,21 +13,15 @@ const PartnerCategories = () => {
       setLoading(true);
       setErrorMsg("");
 
-      const { data, error } = await supabase
-        .from("partners")
-        .select("id, name, category, logo_url, website_url, is_active, priority, created_at")
-        .eq("is_active", true)
-        .order("category", { ascending: true })
-        .order("priority", { ascending: true });
-
-      if (error) {
-        console.error("Error loading partners:", error);
+      try {
+        const data = await fetchActivePartners(); // ✅ reuse
+        setPartners(data);
+      } catch (error) {
+        console.error(error);
         setErrorMsg("Failed to load partners.");
-      } else {
-        setPartners(data ?? []);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     loadPartners();

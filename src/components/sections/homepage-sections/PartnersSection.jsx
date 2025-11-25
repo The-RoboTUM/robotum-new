@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "@components/ui/Button";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
-import { supabase } from "@lib/supabaseClient";
+import { fetchActivePartners } from "@data/partnersApi"; // ✅ centralized data logic
 
 /**
  * PartnersSection
@@ -19,22 +19,16 @@ export default function PartnersSection() {
       setLoading(true);
       setErrorMsg("");
 
-      const { data, error } = await supabase
-        .from("partners")
-        .select("id, name, category, logo_url, website_url, is_active, priority, created_at")
-        .eq("is_active", true)
-        .order("priority", { ascending: true })
-        .order("created_at", { ascending: true });
-
-      if (error) {
-        console.error("Error loading partners:", error);
+      try {
+        const data = await fetchActivePartners(); // ✅ centralized data logic
+        setPartners(data);
+      } catch (error) {
+        console.error(error);
         setErrorMsg("Failed to load partners. Please try again later.");
         setPartners([]);
-      } else {
-        setPartners(data ?? []);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     loadPartners();
