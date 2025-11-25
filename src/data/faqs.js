@@ -63,12 +63,12 @@ export const faqs = [
     id: 11,
     question: "Who are we looking for?",
     answer:
-      "At RoboTUM, we are seeking high-performing, motivated, and efficient students to help transform Munich into the robotics hub it is destined to be. We are highly selective and expect the highest quality of work. In exchange, we offer you value in the form of a community of equally motivated and talented individuals, global connections in the industry, and opportunities to develop your skills to the state of the art. ",
+      "At RoboTUM, we are seeking high-performing, motivated, and efficient students to help transform Munich into the robotics hub it is destined to be. We are highly selective and expect the highest quality of work. In exchange, we offer you value in the form of a community of equally motivated and talented individuals, global connections in the industry, and opportunities to develop your skills to the state of the art.",
   },
   {
     id: 12,
     question: "Who can I contact for further questions?",
     answer:
-      "Please reach out to Swayam at operations@robotum.info should you have any questions about the application form, the recruitment process, or RoboTUM in general. ",
+      "Please reach out to Swayam at operations@robotum.info should you have any questions about the application form, the recruitment process, or RoboTUM in general.",
   },
 ];
