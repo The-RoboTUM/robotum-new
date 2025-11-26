@@ -14,8 +14,8 @@ export default function AdminLayout({ children, title, description }) {
   const navItems = [
     { to: "/admin", label: "Dashboard" },
     { to: "/admin/faqs", label: "FAQs" },
+    { to: "/admin/partners", label: "Partners" },
     // later:
-    // { to: "/admin/partners", label: "Partners" },
     // { to: "/admin/projects", label: "Projects" },
     // { to: "/admin/events", label: "Events" },
     // { to: "/admin/members", label: "Members" },

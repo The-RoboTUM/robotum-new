@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ScrollToHashElement from "@components/ui/ScrollToHashElement";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 
-// 🔐 Admin route guard (we'll implement this next)
+// 🔐 Admin route guard
 import AdminRoute from "@components/admin/AdminRoute";
 
 // Lazy-load route components for better performance (code-splitting)
@@ -19,10 +19,11 @@ const Projects = lazy(() => import("@pages/Projects"));
 const ProjectDetail = lazy(() => import("@pages/ProjectDetail"));
 const Faqs = lazy(() => import("@pages/Faqs"));
 
-// 🔐 Admin pages (we'll create these)
+// 🔐 Admin pages
 const AdminLogin = lazy(() => import("@pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("@pages/admin/AdminDashboard"));
 const AdminFaqs = lazy(() => import("@pages/admin/AdminFaqs"));
+const AdminPartners = lazy(() => import("@pages/admin/AdminPartners"));
 
 export default function App() {
   return (
@@ -42,27 +43,16 @@ export default function App() {
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/faqs" element={<Faqs />} />
 
-        {/* 🔐 Admin auth */}
+        {/* 🔐 Admin auth (public login page) */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* 🔐 Admin area (protected) */}
-        <Route
-          path="/admin"
-          element={
-            <AdminRoute>
-              <AdminDashboard />
-            </AdminRoute>
-          }
-        />
-        {/* Admin Faqs area */}
-        <Route
-          path="/admin/faqs"
-          element={
-            <AdminRoute>
-              <AdminFaqs />
-            </AdminRoute>
-          }
-        />
+        {/* 🔐 Admin area (protected by AdminRoute) */}
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/faqs" element={<AdminFaqs />} />
+          <Route path="/admin/partners" element={<AdminPartners />} />
+          {/* later: /admin/projects, /admin/events, /admin/applications, /admin/members */}
+        </Route>
       </Routes>
     </Suspense>
   );

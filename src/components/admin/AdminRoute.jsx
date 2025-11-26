@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { supabase } from "@lib/supabaseClient";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 
-export default function AdminRoute({ children }) {
+export default function AdminRoute() {
   const location = useLocation();
   const [status, setStatus] = useState("checking"); // 'checking' | 'allowed' | 'denied'
   const [errorMsg, setErrorMsg] = useState("");
@@ -53,7 +53,6 @@ export default function AdminRoute({ children }) {
       }
 
       if (!profile || !profile.is_admin) {
-        // user exists but is not an admin → optional: sign out
         console.warn("Non-admin tried to access admin area.");
         setErrorMsg("You don’t have permission to access the admin area.");
         setStatus("denied");
@@ -90,6 +89,6 @@ export default function AdminRoute({ children }) {
     );
   }
 
-  // Allowed → render admin page
-  return children;
+  // Allowed → render whatever nested route matches (/admin, /admin/faqs, etc.)
+  return <Outlet />;
 }

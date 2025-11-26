@@ -43,10 +43,15 @@ export default function AdminDashboard() {
             </p>
           </Link>
 
-          <div className="rounded-xl border border-white/10 bg-white/5 px-6 py-8 opacity-40 cursor-not-allowed backdrop-blur-md">
+          <Link
+            to="/admin/partners"
+            className="rounded-xl border border-white/10 bg-white/5 px-6 py-8 hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md block"
+          >
             <h3 className="text-lg font-semibold text-white mb-2">Partners</h3>
-            <p className="text-white/70 text-sm">Coming soon…</p>
-          </div>
+            <p className="text-white/70 text-sm">
+              Manage partner logos and links shown on the site.
+            </p>
+          </Link>
 
           <div className="rounded-xl border border-white/10 bg-white/5 px-6 py-8 opacity-40 cursor-not-allowed backdrop-blur-md">
             <h3 className="text-lg font-semibold text-white mb-2">Projects</h3>
