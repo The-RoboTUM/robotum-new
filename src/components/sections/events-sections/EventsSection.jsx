@@ -1,11 +1,15 @@
+// src/components/sections/events-sections/EventsSection.jsx
+
 import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
-import { events, EVENT_CATEGORIES } from "@data";
+import { EVENT_CATEGORIES } from "@data"; // keep your existing labels
+import { fetchEvents } from "@data"; // from eventsApi.js
 import { formatEventDateRange } from "@utils/date-range";
 
-// Map EVENT_CATEGORIES (plural) to event.type (singular) for correct filtering
+// Map EVENT_CATEGORIES (plural) labels → DB event.category values
+// Adjust these strings to match your event_category enum exactly.
 const normalizeCategory = (label) => {
   if (!label || label === "All") return "All";
   const map = {
@@ -19,10 +23,15 @@ const normalizeCategory = (label) => {
 };
 
 export default function EventsSection() {
-  const [activeCategory, setActiveCategory] = useState("All"); // from EVENT_CATEGORIES (plural)
+  const [activeCategory, setActiveCategory] = useState("All");
   const [timeframe, setTimeframe] = useState("All"); // 'All' | 'Upcoming' | 'Past'
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const { hash } = useLocation();
 
+  // Scroll to hash if present
   useEffect(() => {
     if (hash) {
       const id = hash.replace("#", "");
@@ -35,13 +44,39 @@ export default function EventsSection() {
     }
   }, [hash]);
 
-  // Derived lists
+  // Load all events from Supabase
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setErrorMsg("");
+
+      try {
+        const data = await fetchEvents();
+        setEvents(data);
+      } catch (err) {
+        console.error("Error loading events:", err);
+        setErrorMsg("Failed to load events. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
+  // Derived lists (filter + sort)
   const { filteredEvents, counts } = useMemo(() => {
     const now = new Date();
     const normalized = normalizeCategory(activeCategory);
-    const inCategory = (e) => normalized === "All" || e.type === normalized;
-    const isUpcoming = (e) => new Date(e.end) >= now;
-    const isPast = (e) => new Date(e.end) < now;
+
+    const inCategory = (e) =>
+      normalized === "All" || e.category === normalized;
+
+    const isUpcoming = (e) =>
+      new Date(e.end_at || e.start_at) >= now;
+
+    const isPast = (e) =>
+      new Date(e.end_at || e.start_at) < now;
 
     // base filtered by category
     let base = events.filter(inCategory);
@@ -50,17 +85,25 @@ export default function EventsSection() {
     if (timeframe === "Upcoming") base = base.filter(isUpcoming);
     if (timeframe === "Past") base = base.filter(isPast);
 
-    // sort: upcoming ascending, past descending; if mixed, keep upcoming first
+    // sort: upcoming asc by start_at, past desc by end_at
     const upcoming = base
       .filter(isUpcoming)
-      .sort((a, b) => new Date(a.start) - new Date(b.start));
+      .sort(
+        (a, b) =>
+          new Date(a.start_at) - new Date(b.start_at),
+      );
+
     const past = base
       .filter(isPast)
-      .sort((a, b) => new Date(b.end) - new Date(a.end));
+      .sort(
+        (a, b) =>
+          new Date(b.end_at || b.start_at) -
+          new Date(a.end_at || a.start_at),
+      );
 
-    // counts for UI badges
+    // counts for UI badges (per category)
     const countsAll = events.reduce((acc, e) => {
-      const key = e.type;
+      const key = e.category;
       acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
@@ -69,11 +112,25 @@ export default function EventsSection() {
       filteredEvents: [...upcoming, ...past],
       counts: countsAll,
     };
-  }, [activeCategory, timeframe]);
+  }, [activeCategory, timeframe, events]);
 
-  // Reusable card used in both mobile + desktop layouts
+  // Reusable card (desktop + mobile)
   const EventCard = ({ event }) => {
-    const isPast = new Date(event.end) < new Date();
+    const isPast =
+      new Date(event.end_at || event.start_at) < new Date();
+
+    const locationElement = event.location_url ? (
+      <a
+        href={event.location_url}
+        target="_blank"
+        rel="noreferrer"
+        className="underline decoration-accent/60 decoration-dotted hover:text-accent"
+      >
+        {event.location_name}
+      </a>
+    ) : (
+      event.location_name
+    );
 
     return (
       <article
@@ -83,16 +140,16 @@ export default function EventsSection() {
         {/* Media */}
         <div className="relative">
           <ImageFrame
-            src={event.cover}
+            src={event.cover_url}
             alt={event.title}
             aspect="4/3"
             fit="cover"
             variant="soft"
             rounded="none"
           />
-          {/* Type badge */}
+          {/* Category badge */}
           <div className="absolute left-3 top-3 inline-flex items-center rounded-full border border-white/20 bg-black/30 backdrop-blur px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/90">
-            {event.type}
+            {event.category}
           </div>
           {/* Past badge */}
           {isPast && (
@@ -108,21 +165,23 @@ export default function EventsSection() {
             {event.title}
           </h3>
           <p className="text-sm text-white/70 mb-0.5">
-            {formatEventDateRange(event.start, event.end)}
+            {formatEventDateRange(event.start_at, event.end_at)}
           </p>
-          <p className="text-sm text-white/50 italic mb-3">{event.location}</p>
+          <p className="text-sm text-white/50 italic mb-3">
+            {locationElement}
+          </p>
           <p className="text-text2 text-white/80 leading-relaxed mb-5 grow">
-            {event.blurb}
+            {event.summary}
           </p>
 
           <div className="mt-auto flex items-center justify-between">
             <Button
               variant="secondary"
               as="link"
-              to={event.links?.register || "/events"}
+              to={`/events/${event.slug}`}
               className="text-sm px-4 py-1.5"
             >
-              {isPast ? "Details →" : "Register →"}
+              {isPast ? "Details →" : "Details & registration →"}
             </Button>
             <svg
               className="h-5 w-5 text-white/60 group-hover:text-white transition-colors"
@@ -170,16 +229,14 @@ export default function EventsSection() {
       {/* Filters Row */}
       <div className="sm:mx-0 mt-2 mb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3">
-          {/* Category chips (plural labels from EVENT_CATEGORIES) */}
+          {/* Category chips */}
           <div className="flex flex-wrap gap-2 sm:gap-3">
             {["All", ...EVENT_CATEGORIES].map((cat) => {
               const active = activeCategory === cat;
-              const countLabel = (() => {
-                const singular = normalizeCategory(cat);
-                if (singular === "All") return undefined;
-                const count = counts[singular] || 0;
-                return count;
-              })();
+              const singular = normalizeCategory(cat);
+              const countLabel =
+                singular === "All" ? undefined : counts[singular] || 0;
+
               return (
                 <button
                   key={cat}
@@ -191,7 +248,7 @@ export default function EventsSection() {
                   }`}
                 >
                   {cat}
-                  {typeof countLabel === "number" && (
+                  {typeof countLabel === "number" && singular !== "All" && (
                     <span className="ml-2 inline-flex items-center justify-center rounded-full bg-white/10 px-2 py-0.5 text-[11px]">
                       {countLabel}
                     </span>
@@ -225,10 +282,16 @@ export default function EventsSection() {
       </div>
 
       {/* Content */}
+      {errorMsg && (
+        <div className="mb-4 rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
+          {errorMsg}
+        </div>
+      )}
+
       <div className="mt-4">
         {/* MOBILE: horizontal cards */}
         <div className="sm:hidden">
-          {filteredEvents.length === 0 ? (
+          {loading ? (
             <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6">
               {[...Array(4)].map((_, i) => (
                 <div
@@ -236,6 +299,12 @@ export default function EventsSection() {
                   className="min-w-[80%] h-56 rounded-2xl bg-white/5 border border-white/10 animate-pulse"
                 />
               ))}
+            </div>
+          ) : filteredEvents.length === 0 ? (
+            <div className="px-6">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+                No events found for this filter.
+              </div>
             </div>
           ) : (
             <div className="-mx-6 px-6 pb-2">
@@ -258,7 +327,7 @@ export default function EventsSection() {
 
         {/* DESKTOP / TABLET: grid */}
         <div className="hidden sm:block">
-          {filteredEvents.length === 0 ? (
+          {loading ? (
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
               {[...Array(4)].map((_, i) => (
                 <div
@@ -266,6 +335,10 @@ export default function EventsSection() {
                   className="h-56 rounded-2xl bg-white/5 border border-white/10 animate-pulse"
                 />
               ))}
+            </div>
+          ) : filteredEvents.length === 0 ? (
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-white/70">
+              No events found for this filter.
             </div>
           ) : (
             <div
