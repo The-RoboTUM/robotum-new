@@ -1,27 +1,68 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
-import { events } from "@data";
+import { fetchEventsForHomepage } from "@data";
 import { formatEventDateRange } from "@utils/date-range";
 
 export default function EventSection() {
+  const [events, setEvents] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // Compute the 3 nearest events: upcoming first by start date; if fewer than 3, backfill with most recent past
+  // Load events from Supabase
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setErrorMsg("");
+
+      try {
+        const data = await fetchEventsForHomepage();
+        setEvents(data);
+      } catch (err) {
+        console.error("Error loading events for homepage:", err);
+        setErrorMsg("Failed to load events. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
+  // Helper: make category nice
+  const formatCategory = (cat) => {
+    if (!cat) return "Event";
+    if (cat === "innovation-and-entrepreneurship") {
+      return "Innovation & Entrepreneurship";
+    }
+    return cat.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
+  // Compute the 3 nearest events (upcoming first, then recent past)
   const nearestEvents = useMemo(() => {
-    const now = new Date();
-    const upcoming = events
-      .filter((e) => new Date(e.end) >= now)
-      .sort((a, b) => new Date(a.start) - new Date(b.start));
+    if (!events || events.length === 0) return [];
 
-    const past = events
-      .filter((e) => new Date(e.end) < now)
-      .sort((a, b) => new Date(b.end) - new Date(a.end));
+    const now = new Date();
+
+    const withDates = events.map((e) => {
+      const start = new Date(e.start_at);
+      const end = e.end_at ? new Date(e.end_at) : start;
+      return { ...e, _start: start, _end: end };
+    });
+
+    const upcoming = withDates
+      .filter((e) => e._end >= now)
+      .sort((a, b) => a._start - b._start);
+
+    const past = withDates
+      .filter((e) => e._end < now)
+      .sort((a, b) => b._end - a._end);
 
     const combined = [...upcoming, ...past];
     return combined.slice(0, 3);
-  }, []);
+  }, [events]);
 
   const safeActiveIndex = activeIndex >= 0 ? activeIndex : null;
 
@@ -83,115 +124,154 @@ export default function EventSection() {
           role="list"
           aria-labelledby="events-section-heading"
         >
-          {nearestEvents.length === 0 && (
+          {loading && (
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-white/70">
+              Loading events…
+            </div>
+          )}
+
+          {!loading && errorMsg && (
+            <div className="p-6 rounded-2xl bg-red-500/10 border border-red-500/40 text-red-100 text-sm">
+              {errorMsg}
+            </div>
+          )}
+
+          {!loading && !errorMsg && nearestEvents.length === 0 && (
             <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-white/70">
               No events to show yet. Check back soon!
             </div>
           )}
 
-          <ol className="space-y-4">
-            {nearestEvents.map((event, index) => {
-              const isActive = safeActiveIndex === index;
-              const isPast = new Date(event.end) < new Date();
-              return (
-                <li key={event.id} role="listitem">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setActiveIndex(activeIndex === index ? -1 : index)
-                    }
-                    aria-expanded={isActive ? "true" : "false"}
-                    aria-controls={`event-panel-${index}`}
-                    className={`group w-full text-left cursor-pointer p-5 md:p-6 rounded-2xl border transition-all duration-400 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 ${
-                      isActive
-                        ? "bg-accent/15 border-accent shadow-[0_8px_28px_rgba(59,130,246,0.25)]"
-                        : "bg-white/5 border-white/10 hover:bg-white/10"
-                    }`}
+          {!loading && !errorMsg && nearestEvents.length > 0 && (
+            <ol className="space-y-4">
+              {nearestEvents.map((event, index) => {
+                const isActive = safeActiveIndex === index;
+                const now = new Date();
+                const startDate = event._start || new Date(event.start_at);
+                const endDate = event._end || new Date(event.end_at);
+                const isPast = endDate < now;
+
+                // Build location element with optional link
+                const locationElement = event.location_url ? (
+                  <a
+                    href={event.location_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-accent/60 decoration-dotted hover:text-accent"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      {/* Date chip */}
-                      <div className="flex gap-4 items-start">
-                        <div className="text-center px-3 py-2 rounded-lg bg-white/5 border border-white/10 min-w-[60px]">
-                          <div className="text-[11px] font-semibold text-slate-300 tracking-wider uppercase">
-                            {new Date(event.start).toLocaleString("en-US", {
-                              month: "short",
-                            })}
-                          </div>
-                          <div className="text-2xl font-bold text-white leading-none">
-                            {new Date(event.start).getDate()}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide text-white/80">
-                              {event.type}
-                            </span>
-                            {isPast && (
-                              <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide text-white/60">
-                                Past
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-[15px] md:text-base font-semibold text-white">
-                            {event.title}
-                          </div>
-                          <div className="text-sm text-white/60 italic">
-                            {formatEventDateRange(event.start, event.end)} ·{" "}
-                            {event.location}
-                          </div>
-                        </div>
-                      </div>
+                    {event.location_name}
+                  </a>
+                ) : (
+                  event.location_name
+                );
 
-                      {/* Caret icon */}
-                      <svg
-                        className={`h-5 w-5 text-white/80 transition-transform duration-300 mt-1 ${isActive ? "rotate-180" : ""}`}
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M6 8l4 4 4-4"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-
-                    {/* Reveal panel */}
-                    <div
-                      id={`event-panel-${index}`}
-                      className={`grid transition-[grid-template-rows,opacity] duration-400 ease-out ${
+                return (
+                  <li key={event.id} role="listitem">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setActiveIndex(activeIndex === index ? -1 : index)
+                      }
+                      aria-expanded={isActive ? "true" : "false"}
+                      aria-controls={`event-panel-${index}`}
+                      className={`group w-full text-left cursor-pointer p-5 md:p-6 rounded-2xl border transition-all duration-400 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 ${
                         isActive
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0"
+                          ? "bg-accent/15 border-accent shadow-[0_8px_28px_rgba(59,130,246,0.25)]"
+                          : "bg-white/5 border-white/10 hover:bg-white/10"
                       }`}
                     >
-                      <div className="overflow-hidden">
-                        <div className="mt-4 text-slate-200">
-                          <p className="leading-relaxed">{event.blurb}</p>
-                          {event.links?.register && (
-                            <div className="mt-4">
-                              <Button
-                                variant="secondary"
-                                as="link"
-                                to={event.links.register}
-                                className="text-sm px-4 py-2"
-                              >
-                                Register →
-                              </Button>
+                      <div className="flex items-start justify-between gap-4">
+                        {/* Date chip */}
+                        <div className="flex gap-4 items-start">
+                          <div className="text-center px-3 py-2 rounded-lg bg-white/5 border border-white/10 min-w-[60px]">
+                            <div className="text-[11px] font-semibold text-slate-300 tracking-wider uppercase">
+                              {startDate.toLocaleString("en-US", {
+                                month: "short",
+                              })}
                             </div>
-                          )}
+                            <div className="text-2xl font-bold text-white leading-none">
+                              {startDate.getDate()}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide text-white/80">
+                                {formatCategory(event.category)}
+                              </span>
+                              {isPast && (
+                                <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide text-white/60">
+                                  Past
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[15px] md:text-base font-semibold text-white">
+                              {event.title}
+                            </div>
+                            <div className="text-sm text-white/60 italic">
+                              {formatEventDateRange(event.start_at, event.end_at)}{" "}
+                              · {locationElement}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Caret icon */}
+                        <svg
+                          className={`h-5 w-5 text-white/80 transition-transform duration-300 mt-1 ${
+                            isActive ? "rotate-180" : ""
+                          }`}
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M6 8l4 4 4-4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+
+                      {/* Reveal panel */}
+                      <div
+                        id={`event-panel-${index}`}
+                        className={`grid transition-[grid-template-rows,opacity] duration-400 ease-out ${
+                          isActive
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="mt-4 text-slate-200">
+                            <p className="leading-relaxed">
+                              {event.summary || event.description}
+                            </p>
+
+                            {event.registration_url && (
+                              <div className="mt-4">
+                                <Button
+                                  variant="secondary"
+                                  as="a"
+                                  href={event.registration_url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-sm px-4 py-2"
+                                >
+                                  Register →
+                                </Button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
         </div>
       </div>
     </section>
