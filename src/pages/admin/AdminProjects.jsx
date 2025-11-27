@@ -1,3 +1,4 @@
+// src/pages/admin/AdminProjects.jsx
 import { useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
@@ -22,7 +23,6 @@ const emptyForm = () => ({
   summary: "",
   description: "",
   status: "",
-  team_name: "",
   used_tools: "",
   future_plans: "",
   cover_url: "",
@@ -85,7 +85,6 @@ export default function AdminProjects() {
       summary: project.summary || "",
       description: project.description || "",
       status: project.status || "",
-      team_name: project.team_name || "",
       used_tools: project.used_tools || "",
       future_plans: project.future_plans || "",
       cover_url: project.cover_url || "",
@@ -118,7 +117,6 @@ export default function AdminProjects() {
         summary: form.summary,
         description: form.description,
         status: form.status || null,
-        team_name: form.team_name,
         used_tools: form.used_tools,
         future_plans: form.future_plans,
         cover_url: form.cover_url,
@@ -235,11 +233,6 @@ export default function AdminProjects() {
                     </p>
 
                     <div className="flex flex-wrap gap-2 mt-1">
-                      {p.team_name && (
-                        <span className="text-[11px] text-white/60">
-                          Team: {p.team_name}
-                        </span>
-                      )}
                       <span className="text-[11px] text-white/40">
                         {formatDate(p.created_at)}
                       </span>
@@ -372,23 +365,6 @@ export default function AdminProjects() {
                   ))}
                 </select>
               </div>
-            </div>
-
-            {/* Team */}
-            <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="proj-team">
-                Team name
-              </label>
-              <input
-                id="proj-team"
-                name="team_name"
-                type="text"
-                required
-                value={form.team_name}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
-                placeholder="Humanoid Team"
-              />
             </div>
 
             {/* Summary */}
