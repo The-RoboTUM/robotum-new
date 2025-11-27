@@ -35,6 +35,24 @@ export async function fetchEvents() {
 
   return data ?? [];
 }
+// ✅ used on homepage
+export async function fetchEventsForHomepage() {
+  const nowIso = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from("events")
+    .select(EVENT_FIELDS)
+    .gte("end_at", nowIso) // upcoming / ongoing
+    .order("start_at", { ascending: true })
+    .limit(3);
+
+  if (error) {
+    console.error("Error loading homepage events:", error);
+    throw error;
+  }
+
+  return data ?? [];
+}
 
 // Single event by slug (for EventDetail page)
 export async function fetchEventBySlug(slug) {
