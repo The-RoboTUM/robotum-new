@@ -1,4 +1,3 @@
-// src/pages/admin/AdminEvents.jsx
 import { useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
@@ -9,7 +8,6 @@ import {
   adminDeleteEvent,
   EVENT_CATEGORY_OPTIONS,
   EVENT_FORMAT_OPTIONS,
-  emptyForm,
   toLocalInputValue,
 } from "@data";
 
@@ -18,6 +16,22 @@ import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
 
 import { formatEventDateRange } from "@utils/date-range";
+
+const emptyForm = () => ({
+  title: "",
+  slug: "",
+  category: EVENT_CATEGORY_OPTIONS[0].value,
+  format: EVENT_FORMAT_OPTIONS[0].value,
+  start_at: "",
+  end_at: "",
+  location_name: "",
+  location_url: "",
+  is_featured: false,
+  registration_url: "",
+  summary: "",
+  description: "",
+  cover_url: "",
+});
 
 export default function AdminEvents() {
   const [events, setEvents] = useState([]);

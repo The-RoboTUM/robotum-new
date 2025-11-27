@@ -1,6 +1,14 @@
 // src/data/partnersApi.js
 import { supabase } from "@lib/supabaseClient";
 
+// ⚠️ MUST match your partner_category enum values in Supabase
+export const PARTNER_CATEGORIES = [
+  { value: "Lead Sponsor", label: "Lead Sponsor" },
+  { value: "Sponsor", label: "Sponsor" },
+  { value: "Industry Collaborator", label: "Industry Collaborator" },
+  { value: "Academic Collaborator", label: "Academic Collaborator" },
+];
+
 const PARTNER_FIELDS = `
   id,
   created_at,

@@ -1,5 +1,22 @@
-// src/data/projectsApi.js
 import { supabase } from "@lib/supabaseClient";
+
+// Enums (must match Supabase project_category & project_status)
+export const PROJECT_CATEGORIES = [
+  { value: "technical", label: "Technical" },
+  { value: "operations", label: "Operations" },
+  {
+    value: "innovation-and-entrepreneurship",
+    label: "Innovation & Entrepreneurship",
+  },
+];
+
+export const PROJECT_STATUS = [
+  { value: "active", label: "Active" },
+  { value: "paused", label: "Paused" },
+  { value: "completed", label: "Completed" },
+];
+
+
 /**
  * Base column list for all project queries.
  * Must match your actual DB schema.

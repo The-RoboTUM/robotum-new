@@ -1,6 +1,16 @@
 // src/data/faqsApi.js
 import { supabase } from "@lib/supabaseClient";
 
+export const FAQ_CATEGORIES = [
+  { value: "About RoboTUM", label: "About RoboTUM" },
+  { value: "Membership & Recruitment", label: "Membership & Recruitment" },
+  {
+    value: "Collaboration & Partnerships",
+    label: "Collaboration & Partnerships",
+  },
+  { value: "Contact", label: "Contact" },
+];
+
 export async function fetchFaqs() {
   // You can change order if you later add a sort_order column
   const { data, error } = await supabase

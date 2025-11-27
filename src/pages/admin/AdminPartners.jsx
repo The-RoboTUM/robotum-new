@@ -6,19 +6,12 @@ import {
   adminFetchPartners,
   adminUpsertPartner,
   adminDeletePartner,
+  PARTNER_CATEGORIES,
 } from "@data";
 
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
-
-// ⚠️ MUST match your partner_category enum values in Supabase
-const PARTNER_CATEGORIES = [
-  { value: "Lead Sponsor", label: "Lead Sponsor" },
-  { value: "Sponsor", label: "Sponsor" },
-  { value: "Industry Collaborator", label: "Industry Collaborator" },
-  { value: "Academic Collaborator", label: "Academic Collaborator" },
-];
 
 const emptyForm = () => ({
   name: "",

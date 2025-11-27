@@ -1,7 +1,6 @@
 import * as assets from "@assets";
 
 // High-level categories for filtering and display
-export const PROJECT_CATEGORIES = ["technical", "operations", "innovation"];
 export const MEMBER_CATEGORIES = [
   "All",
   "Founders",

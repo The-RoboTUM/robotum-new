@@ -1,4 +1,3 @@
-// src/pages/admin/AdminProjects.jsx
 import { useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
@@ -7,27 +6,13 @@ import {
   adminFetchProjects,
   adminUpsertProject,
   adminDeleteProject,
+  PROJECT_CATEGORIES, 
+  PROJECT_STATUS, 
 } from "@data";
 
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
-
-// Enums (must match Supabase project_category & project_status)
-const PROJECT_CATEGORIES = [
-  { value: "technical", label: "Technical" },
-  { value: "operations", label: "Operations" },
-  {
-    value: "innovation-and-entrepreneurship",
-    label: "Innovation & Entrepreneurship",
-  },
-];
-
-const PROJECT_STATUS = [
-  { value: "active", label: "Active" },
-  { value: "paused", label: "Paused" },
-  { value: "completed", label: "Completed" },
-];
 
 const emptyForm = () => ({
   id: null,

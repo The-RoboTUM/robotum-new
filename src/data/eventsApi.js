@@ -31,22 +31,6 @@ export function toLocalInputValue(value) {
   return d.toISOString().slice(0, 16);
 }
 
-export const emptyForm = () => ({
-  title: "",
-  slug: "",
-  category: EVENT_CATEGORY_OPTIONS[0].value,
-  format: EVENT_FORMAT_OPTIONS[0].value,
-  start_at: "",
-  end_at: "",
-  location_name: "",
-  location_url: "",
-  is_featured: false,
-  registration_url: "",
-  summary: "",
-  description: "",
-  cover_url: "",
-});
-
 const EVENT_FIELDS = `
   id,
   created_at,

@@ -2,20 +2,10 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
-import { adminFetchFaqs, adminUpsertFaq, adminDeleteFaq } from "@data";
+import { adminFetchFaqs, adminUpsertFaq, adminDeleteFaq, FAQ_CATEGORIES } from "@data";
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
-
-const FAQ_CATEGORIES = [
-  { value: "About RoboTUM", label: "About RoboTUM" },
-  { value: "Membership & Recruitment", label: "Membership & Recruitment" },
-  {
-    value: "Collaboration & Partnerships",
-    label: "Collaboration & Partnerships",
-  },
-  { value: "Contact", label: "Contact" },
-];
 
 export default function AdminFaqs() {
   const [faqs, setFaqs] = useState([]);
