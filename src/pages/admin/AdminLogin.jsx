@@ -50,9 +50,7 @@ export default function AdminLogin() {
     };
   }, [navigate]);
 
-  const fromPath =
-    (location.state && location.state.from) ||
-    "/admin";
+  const fromPath = (location.state && location.state.from) || "/admin";
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -122,9 +120,7 @@ export default function AdminLogin() {
             />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">
-              RoboTUM Admin
-            </h1>
+            <h1 className="text-xl font-semibold text-white">RoboTUM Admin</h1>
             <p className="text-sm text-white/70 mt-1">
               Sign in with your admin credentials.
             </p>

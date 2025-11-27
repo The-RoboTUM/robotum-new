@@ -12,7 +12,10 @@ import PageLoader from "@components/sections/common-sections/PageLoader";
 const TABS = [
   { key: "technical", label: "Technical" },
   { key: "operations", label: "Operations" },
-  { key: "innovation-and-entrepreneurship", label: "Innovation & Entrepreneurship" },
+  {
+    key: "innovation-and-entrepreneurship",
+    label: "Innovation & Entrepreneurship",
+  },
 ];
 
 // Fixed curated tag list (10 tags only)
@@ -125,7 +128,9 @@ export default function Projects() {
               Explore our initiatives across engineering, operations, and
               entrepreneurship.
             </p>
-            {errorMsg && <p className="text-sm text-red-400 mt-3">{errorMsg}</p>}
+            {errorMsg && (
+              <p className="text-sm text-red-400 mt-3">{errorMsg}</p>
+            )}
           </header>
 
           {/* Tabs */}

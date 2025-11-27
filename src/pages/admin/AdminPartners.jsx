@@ -367,7 +367,12 @@ export default function AdminPartners() {
                   Cancel
                 </Button>
               )}
-              <Button type="submit" variant="primary" size="sm" disabled={saving}>
+              <Button
+                type="submit"
+                variant="primary"
+                size="sm"
+                disabled={saving}
+              >
                 {saving ? "Saving…" : "Save partner"}
               </Button>
             </div>

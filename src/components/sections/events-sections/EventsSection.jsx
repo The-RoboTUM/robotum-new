@@ -69,14 +69,11 @@ export default function EventsSection() {
     const now = new Date();
     const normalized = normalizeCategory(activeCategory);
 
-    const inCategory = (e) =>
-      normalized === "All" || e.category === normalized;
+    const inCategory = (e) => normalized === "All" || e.category === normalized;
 
-    const isUpcoming = (e) =>
-      new Date(e.end_at || e.start_at) >= now;
+    const isUpcoming = (e) => new Date(e.end_at || e.start_at) >= now;
 
-    const isPast = (e) =>
-      new Date(e.end_at || e.start_at) < now;
+    const isPast = (e) => new Date(e.end_at || e.start_at) < now;
 
     // base filtered by category
     let base = events.filter(inCategory);
@@ -88,17 +85,13 @@ export default function EventsSection() {
     // sort: upcoming asc by start_at, past desc by end_at
     const upcoming = base
       .filter(isUpcoming)
-      .sort(
-        (a, b) =>
-          new Date(a.start_at) - new Date(b.start_at),
-      );
+      .sort((a, b) => new Date(a.start_at) - new Date(b.start_at));
 
     const past = base
       .filter(isPast)
       .sort(
         (a, b) =>
-          new Date(b.end_at || b.start_at) -
-          new Date(a.end_at || a.start_at),
+          new Date(b.end_at || b.start_at) - new Date(a.end_at || a.start_at),
       );
 
     // counts for UI badges (per category)
@@ -116,8 +109,7 @@ export default function EventsSection() {
 
   // Reusable card (desktop + mobile)
   const EventCard = ({ event }) => {
-    const isPast =
-      new Date(event.end_at || event.start_at) < new Date();
+    const isPast = new Date(event.end_at || event.start_at) < new Date();
 
     const locationElement = event.location_url ? (
       <a
@@ -167,9 +159,7 @@ export default function EventsSection() {
           <p className="text-sm text-white/70 mb-0.5">
             {formatEventDateRange(event.start_at, event.end_at)}
           </p>
-          <p className="text-sm text-white/50 italic mb-3">
-            {locationElement}
-          </p>
+          <p className="text-sm text-white/50 italic mb-3">{locationElement}</p>
           <p className="text-text2 text-white/80 leading-relaxed mb-5 grow">
             {event.summary}
           </p>

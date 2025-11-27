@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
-import {
-  adminFetchEvents,
-  adminUpsertEvent,
-  adminDeleteEvent,
-} from "@data";
+import { adminFetchEvents, adminUpsertEvent, adminDeleteEvent } from "@data";
 import { formatEventDateRange } from "@utils/date-range";
 
 // Adjust these to match your Supabase enums
@@ -65,7 +61,9 @@ export default function AdminEvents() {
       setEvents(data);
     } catch (err) {
       console.error("Error loading events (admin):", err);
-      setErrorMsg("Failed to load events. Please try again or contact an admin.");
+      setErrorMsg(
+        "Failed to load events. Please try again or contact an admin.",
+      );
     } finally {
       setLoading(false);
     }
@@ -377,7 +375,10 @@ export default function AdminEvents() {
 
             {/* Location */}
             <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="ev-location-name">
+              <label
+                className="text-xs text-white/70"
+                htmlFor="ev-location-name"
+              >
                 Location name
               </label>
               <input
@@ -393,7 +394,10 @@ export default function AdminEvents() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="ev-location-url">
+              <label
+                className="text-xs text-white/70"
+                htmlFor="ev-location-url"
+              >
                 Location URL (e.g. Google Maps)
               </label>
               <input
@@ -409,7 +413,10 @@ export default function AdminEvents() {
 
             {/* Registration & cover */}
             <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="ev-registration">
+              <label
+                className="text-xs text-white/70"
+                htmlFor="ev-registration"
+              >
                 Registration URL
               </label>
               <input

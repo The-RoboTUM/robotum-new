@@ -102,7 +102,10 @@ export default function PartnersSection() {
               >
                 <div className="flex min-w-full items-center gap-10 sm:gap-12 py-5 sm:py-6 px-6 animate-marquee motion-reduce:animate-none">
                   {laneA.map((partner, idx) => (
-                    <LogoItem key={`A-${partner.id ?? "x"}-${idx}`} partner={partner} />
+                    <LogoItem
+                      key={`A-${partner.id ?? "x"}-${idx}`}
+                      partner={partner}
+                    />
                   ))}
                 </div>
               </div>
@@ -118,7 +121,10 @@ export default function PartnersSection() {
               >
                 <div className="flex min-w-full items-center gap-10 sm:gap-12 py-5 sm:py-6 px-6 animate-marquee-reverse motion-reduce:animate-none">
                   {laneB.map((partner, idx) => (
-                    <LogoItem key={`B-${partner.id ?? "x"}-${idx}`} partner={partner} />
+                    <LogoItem
+                      key={`B-${partner.id ?? "x"}-${idx}`}
+                      partner={partner}
+                    />
                   ))}
                 </div>
               </div>

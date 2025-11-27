@@ -9,7 +9,6 @@ export default function AdminDashboard() {
       description="Manage RoboTUM content and internal data."
     >
       <div className="space-y-8">
-
         {/* Stats placeholders */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
@@ -32,7 +31,6 @@ export default function AdminDashboard() {
 
         {/* Navigation Cards */}
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-
           <Link
             to="/admin/faqs"
             className="rounded-xl border border-white/10 bg-white/5 px-6 py-8 hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md block"
@@ -73,7 +71,9 @@ export default function AdminDashboard() {
           </Link>
 
           <div className="rounded-xl border border-white/10 bg-white/5 px-6 py-8 opacity-40 cursor-not-allowed backdrop-blur-md">
-            <h3 className="text-lg font-semibold text-white mb-2">Applications</h3>
+            <h3 className="text-lg font-semibold text-white mb-2">
+              Applications
+            </h3>
             <p className="text-white/70 text-sm">Coming soon…</p>
           </div>
 
@@ -81,9 +81,7 @@ export default function AdminDashboard() {
             <h3 className="text-lg font-semibold text-white mb-2">Members</h3>
             <p className="text-white/70 text-sm">Coming soon…</p>
           </div>
-
         </div>
-
       </div>
     </AdminLayout>
   );

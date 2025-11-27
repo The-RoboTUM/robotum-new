@@ -111,9 +111,7 @@ export async function adminUpsertEvent(event) {
   const start_at = event.start_at
     ? new Date(event.start_at).toISOString()
     : null;
-  const end_at = event.end_at
-    ? new Date(event.end_at).toISOString()
-    : null;
+  const end_at = event.end_at ? new Date(event.end_at).toISOString() : null;
 
   const payload = {
     title: event.title?.trim(),
@@ -138,7 +136,8 @@ export async function adminUpsertEvent(event) {
   if (!payload.start_at) throw new Error("Start date/time is required.");
   if (!payload.end_at) throw new Error("End date/time is required.");
   if (!payload.location_name) throw new Error("Location name is required.");
-  if (!payload.registration_url) throw new Error("Registration URL is required.");
+  if (!payload.registration_url)
+    throw new Error("Registration URL is required.");
 
   if (event.id) {
     const { error } = await supabase

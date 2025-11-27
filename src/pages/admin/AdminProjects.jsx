@@ -61,7 +61,7 @@ export default function AdminProjects() {
     } catch (err) {
       console.error("Error loading projects:", err);
       setErrorMsg(
-        err.message || "Failed to load projects. Please try again later."
+        err.message || "Failed to load projects. Please try again later.",
       );
     } finally {
       setLoading(false);
@@ -154,7 +154,7 @@ export default function AdminProjects() {
   const handleDelete = async (project) => {
     if (
       !window.confirm(
-        `Delete project "${project.title}"? This cannot be undone.`
+        `Delete project "${project.title}"? This cannot be undone.`,
       )
     ) {
       return;
@@ -567,7 +567,12 @@ export default function AdminProjects() {
                   Cancel
                 </Button>
               )}
-              <Button type="submit" size="sm" variant="primary" disabled={saving}>
+              <Button
+                type="submit"
+                size="sm"
+                variant="primary"
+                disabled={saving}
+              >
                 {saving ? "Saving…" : "Save project"}
               </Button>
             </div>

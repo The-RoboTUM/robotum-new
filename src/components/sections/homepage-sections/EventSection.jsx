@@ -208,7 +208,10 @@ export default function EventSection() {
                               {event.title}
                             </div>
                             <div className="text-sm text-white/60 italic">
-                              {formatEventDateRange(event.start_at, event.end_at)}{" "}
+                              {formatEventDateRange(
+                                event.start_at,
+                                event.end_at,
+                              )}{" "}
                               · {locationElement}
                             </div>
                           </div>

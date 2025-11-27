@@ -33,14 +33,14 @@ export default function ProjectSection() {
       try {
         const data = await fetchFeaturedProjects(); // from Supabase
         // keep only rows where is_featured = true
-        const featuredOnly = (data ?? []).filter(
-          (p) => p.is_featured === true
-        );
+        const featuredOnly = (data ?? []).filter((p) => p.is_featured === true);
         setProjects(featuredOnly);
         setCurrent(0);
       } catch (error) {
         console.error("Error loading featured projects:", error);
-        setErrorMsg("Failed to load featured projects. Please try again later.");
+        setErrorMsg(
+          "Failed to load featured projects. Please try again later.",
+        );
         setProjects([]);
       } finally {
         setLoading(false);
@@ -59,10 +59,10 @@ export default function ProjectSection() {
   };
 
   useEffect(() => {
-  if (projects.length > 0 && current > 0) {
-    scrollToIndex(current);
-  }
-}, [current, projects.length]);
+    if (projects.length > 0 && current > 0) {
+      scrollToIndex(current);
+    }
+  }, [current, projects.length]);
 
   return (
     <section
@@ -122,8 +122,9 @@ export default function ProjectSection() {
                 {projects.map((p, i) => (
                   <div
                     key={p.id ?? p.slug ?? p.title}
-                    className={`absolute inset-0 transition-opacity duration-700 ${i === current ? "opacity-100 z-10" : "opacity-0 z-0"
-                      }`}
+                    className={`absolute inset-0 transition-opacity duration-700 ${
+                      i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+                    }`}
                   >
                     <ImageFrame
                       src={p.cover_url}
@@ -180,9 +181,7 @@ export default function ProjectSection() {
                       rounded="xl"
                       className="w-full mb-4"
                     />
-                    <h3 className="text-text1 font-semibold mb-2">
-                      {p.title}
-                    </h3>
+                    <h3 className="text-text1 font-semibold mb-2">{p.title}</h3>
                     <p className="text-text2 text-white/80 text-sm leading-relaxed mb-4 line-clamp-4">
                       {p.summary}
                     </p>
@@ -213,8 +212,9 @@ export default function ProjectSection() {
                 role="tab"
                 aria-selected={i === current}
                 onClick={() => setCurrent(i)}
-                className={`cursor-pointer w-3.5 h-3.5 rounded-full transition-colors ${i === current ? "bg-white" : "bg-white/30 hover:bg-white/50"
-                  }`}
+                className={`cursor-pointer w-3.5 h-3.5 rounded-full transition-colors ${
+                  i === current ? "bg-white" : "bg-white/30 hover:bg-white/50"
+                }`}
               >
                 <span className="sr-only">Go to slide {i + 1}</span>
               </button>

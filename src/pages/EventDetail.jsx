@@ -73,14 +73,10 @@ export default function EventDetail() {
               {errorMsg || "Event not found"}
             </h1>
             <p className="text-text2 text-white/70 mb-6">
-              The event you’re looking for might have been moved or no longer exists.
+              The event you’re looking for might have been moved or no longer
+              exists.
             </p>
-            <Button
-              as={Link}
-              to="/events"
-              variant="secondary"
-              className="mt-2"
-            >
+            <Button as={Link} to="/events" variant="secondary" className="mt-2">
               Back to Events
             </Button>
           </div>
@@ -90,8 +86,7 @@ export default function EventDetail() {
     );
   }
 
-  const isPast =
-    new Date(event.end_at || event.start_at) < new Date();
+  const isPast = new Date(event.end_at || event.start_at) < new Date();
 
   const locationElement = event.location_url ? (
     <a
@@ -132,9 +127,7 @@ export default function EventDetail() {
               )}
             </div>
 
-            <h1 className="heading heading-h1 leading-tight">
-              {event.title}
-            </h1>
+            <h1 className="heading heading-h1 leading-tight">{event.title}</h1>
 
             <p className="text-text2 text-white/75 text-sm md:text-base">
               {formatEventDateRange(event.start_at, event.end_at)} ·{" "}
@@ -174,9 +167,7 @@ export default function EventDetail() {
               <dl className="space-y-3 text-sm text-white/80">
                 <div className="flex gap-2">
                   <dt className="w-24 text-white/60">When</dt>
-                  <dd>
-                    {formatEventDateRange(event.start_at, event.end_at)}
-                  </dd>
+                  <dd>{formatEventDateRange(event.start_at, event.end_at)}</dd>
                 </div>
                 <div className="flex gap-2">
                   <dt className="w-24 text-white/60">Location</dt>
