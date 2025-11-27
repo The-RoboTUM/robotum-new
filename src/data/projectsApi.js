@@ -1,6 +1,5 @@
 // src/data/projectsApi.js
 import { supabase } from "@lib/supabaseClient";
-
 /**
  * Base column list for all project queries.
  * Must match your actual DB schema.

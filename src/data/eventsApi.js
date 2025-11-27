@@ -1,6 +1,14 @@
 // src/data/eventsApi.js
 import { supabase } from "@lib/supabaseClient";
 
+export const EVENT_CATEGORIES = [
+  "Hackathons",
+  "Info Events",
+  "Conferences",
+  "Workshops",
+  "Meetups",
+];
+
 const EVENT_FIELDS = `
   id,
   created_at,
