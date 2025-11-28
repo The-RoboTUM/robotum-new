@@ -1,10 +1,8 @@
-// src/components/sections/events-sections/PreviousEventsSection.jsx
-
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
-import { fetchEvents } from "@data"; // from eventsApi.js (exported via @data/index.js)
+import { fetchEvents } from "@data"; 
 import { formatEventDateRange } from "@utils/date-range";
 
 export default function PreviousEventsSection() {

@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
-import { EVENT_CATEGORY_OPTIONS, fetchEvents } from "@data"; // use options from eventsApi.js
+import { EVENT_CATEGORY_OPTIONS, fetchEvents } from "@data"; 
 import { formatEventDateRange } from "@utils/date-range";
 
 // Map UI labels → DB event.category values (from EVENT_CATEGORY_OPTIONS)
