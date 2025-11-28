@@ -99,7 +99,7 @@ export default function ProjectSection() {
                 className="transition-all duration-700 ease-in-out animate-fadeIn"
               >
                 <h2 className="heading heading-h2 font-bold mb-4 leading-tight text-balance">
-                  {projects[current].title}
+                  {projects[current].name}
                 </h2>
                 <p className="text-text1 text-white/80 mb-6 leading-relaxed">
                   {projects[current].summary}
@@ -121,14 +121,14 @@ export default function ProjectSection() {
               <div className="relative w-full max-w-md mx-auto -mt-6 md:-mt-10 aspect-3/2 min-h-[220px] sm:min-h-[260px]">
                 {projects.map((p, i) => (
                   <div
-                    key={p.id ?? p.slug ?? p.title}
+                    key={p.id ?? p.slug ?? p.name}
                     className={`absolute inset-0 transition-opacity duration-700 ${
                       i === current ? "opacity-100 z-10" : "opacity-0 z-0"
                     }`}
                   >
                     <ImageFrame
                       src={p.cover_url}
-                      alt={p.title}
+                      alt={p.name}
                       aspect="3/2"
                       fit="cover"
                       variant="soft"
@@ -169,19 +169,19 @@ export default function ProjectSection() {
               <div ref={trackRef} className="flex gap-6 min-w-full">
                 {projects.map((p) => (
                   <div
-                    key={p.id ?? p.slug ?? p.title}
+                    key={p.id ?? p.slug ?? p.name}
                     className="rt-slide snap-center shrink-0 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-5 w-80 sm:w-96 text-center flex flex-col items-center justify-between"
                   >
                     <ImageFrame
                       src={p.cover_url}
-                      alt={p.title}
+                      alt={p.name}
                       aspect="3/2"
                       fit="cover"
                       variant="soft"
                       rounded="xl"
                       className="w-full mb-4"
                     />
-                    <h3 className="text-text1 font-semibold mb-2">{p.title}</h3>
+                    <h3 className="text-text1 font-semibold mb-2">{p.name}</h3>
                     <p className="text-text2 text-white/80 text-sm leading-relaxed mb-4 line-clamp-4">
                       {p.summary}
                     </p>
