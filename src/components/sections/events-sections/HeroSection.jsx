@@ -34,7 +34,7 @@ const HeroSection = () => {
         {/* Hero Image */}
         <div className="w-full lg:w-1/2 flex justify-center lg:justify-end hero-animate">
           <ImageFrame
-            src={assets.speakerImg}
+            src={assets.eventHeroImg}
             alt="Robot and speaker at event"
             aspect="3/2"
             fit="cover"

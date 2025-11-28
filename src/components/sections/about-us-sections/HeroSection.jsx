@@ -80,7 +80,7 @@ export default function AboutHero() {
         {/* Visual */}
         <div className="md:w-1/2">
           <ImageFrame
-            src={assets.auditoryImg}
+            src={assets.aboutUsHeroImg}
             alt="RoboTUM students collaborating during a robotics session"
             aspect="3/2"
             fit="cover"

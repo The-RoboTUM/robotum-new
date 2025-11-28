@@ -18,7 +18,7 @@ const HeroSection = () => {
     >
       {/* Optional blurred robotics lab image */}
       <img
-        src={assets.partnership}
+        src={assets.heroBackground}
         alt="Partnership"
         className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-20 blur-sm pointer-events-none"
       />

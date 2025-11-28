@@ -27,7 +27,7 @@ const HeroSection = () => {
       {/* Right side: image */}
       <div className="w-full lg:w-1/2 order-1 lg:order-2 mt-10 lg:mt-0 flex justify-center hero-animate">
         <ImageFrame
-          src={assets.allMembersImg}
+          src={assets.joinUsHeroImg}
           alt="Group of club members"
           aspect="3/2"
           fit="cover"

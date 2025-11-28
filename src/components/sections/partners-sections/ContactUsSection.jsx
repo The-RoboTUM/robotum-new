@@ -199,7 +199,7 @@ export default function ContactUsSection() {
         {/* Right side: contact card */}
         <div className="flex flex-col items-center bg-[#0B1B2E]/40 border border-white/10 rounded-2xl p-8 text-center">
           <ImageFrame
-            src={assets.member}
+            src={assets.marcoImg}
             alt="Marco Färber-Gonzalez"
             className="w-40 h-40 rounded-full mb-5"
           />
