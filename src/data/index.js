@@ -3,4 +3,4 @@ export * from "./partnersApi";
 export * from "./faqsApi";
 export * from "./eventsApi";
 
-export * from "./members";
+export * from "./membersApi";
