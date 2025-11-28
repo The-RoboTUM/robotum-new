@@ -119,7 +119,7 @@ export default function TeamSection() {
                     member.projects &&
                     member.projects.length > 0 && (
                       <p className="text-[11px] text-accent/80 mt-1">
-                        Lead of {member.projects.map((p) => p.title).join(", ")}
+                        Lead of {member.projects.map((p) => p.name).join(", ")}
                       </p>
                     )}
                 </div>

@@ -81,7 +81,7 @@ export async function fetchTeamMembers() {
   if (projectLeadIds.length > 0) {
     const { data: projects, error: projError } = await supabase
       .from("projects")
-      .select("id, title, project_lead_id")
+      .select("id, name, project_lead_id")
       .in("project_lead_id", projectLeadIds);
 
     if (projError) {
