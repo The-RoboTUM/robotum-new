@@ -8,11 +8,15 @@ export { default as handsOnIcon } from "./icons/others/hands-on.png";
 export { default as teamsIcon } from "./icons/others/teams.png";
 export { default as eventsIcon } from "./icons/others/events.png";
 
+//Homepage images
+export { default as groupImg } from "./images/homepage/group-image.png";
+export { default as partnerImg } from "./images/homepage/partner-image.png";
+export { default as eventImg } from "./images/homepage/event-image.png";
+
 // General images
 export { default as speakerImg } from "./images/others/speaker.png";
 export { default as navLogo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
-export { default as memberImg } from "./images/others/foundations-team.jpg";
-export { default as partnerImg } from "./images/others/foundations-team.jpg";
+
 export { default as logo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
 export { default as auditoryImg } from "./images/others/auditory.png";
 export { default as allMembersImg } from "./images/others/foundations-team.jpg";

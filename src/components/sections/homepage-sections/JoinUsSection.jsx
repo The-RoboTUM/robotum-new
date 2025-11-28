@@ -13,7 +13,7 @@ export default function JoinUsSection() {
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2 w-full">
             <ImageFrame
-              src={assets.memberImg}
+              src={assets.groupImg}
               alt="Join as Member"
               aspect="3/2"
               fit="cover"

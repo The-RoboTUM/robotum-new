@@ -2,14 +2,6 @@ import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 
-/**
- * Events → Hero Section (Refined)
- * - Consistent with design system
- * - Full screen on all devices
- * - Balanced text and visuals
- * - Improved readability and spacing
- */
-
 const HeroSection = () => {
   return (
     <section
@@ -42,7 +34,7 @@ const HeroSection = () => {
         {/* Hero Image */}
         <div className="w-full lg:w-1/2 flex justify-center lg:justify-end hero-animate">
           <ImageFrame
-            src={assets.event6}
+            src={assets.speakerImg}
             alt="Robot and speaker at event"
             aspect="3/2"
             fit="cover"

@@ -98,7 +98,7 @@ export default function EventSection() {
         {/* Visual */}
         <div className="lg:col-span-5">
           <ImageFrame
-            src={assets.automatica}
+            src={assets.eventImg}
             alt="Event speaker"
             aspect="3/2"
             fit="cover"
