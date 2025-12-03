@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
-import { fetchEvents } from "@data"; 
+import { fetchEvents } from "@data";
 import { formatEventDateRange } from "@utils/date-range";
 
 export default function PreviousEventsSection() {
@@ -10,7 +10,7 @@ export default function PreviousEventsSection() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Load all events from Supabase (we'll filter to past ones)
+  // Load all events
   useEffect(() => {
     const load = async () => {
       setLoading(true);
@@ -30,25 +30,26 @@ export default function PreviousEventsSection() {
     load();
   }, []);
 
-  // Only past events, sorted by end_at (desc)
-  const pastEvents = useMemo(() => {
-    if (!events || events.length === 0) return [];
+  // Only past & featured events
+  const pastFeaturedEvents = useMemo(() => {
+    if (!events?.length) return [];
 
     const now = new Date();
 
     return events
       .filter((e) => {
+        if (!e.is_featured) return false;
         const end = e.end_at ? new Date(e.end_at) : new Date(e.start_at);
         return end < now;
       })
       .sort((a, b) => {
         const endA = a.end_at ? new Date(a.end_at) : new Date(a.start_at);
         const endB = b.end_at ? new Date(b.end_at) : new Date(b.start_at);
-        return endB - endA; // newest past first
+        return endB - endA;
       });
   }, [events]);
 
-  // Reusable card for previous events
+  // Event card
   const PreviousEventCard = ({ event }) => {
     const locationElement = event.location_url ? (
       <a
@@ -64,8 +65,7 @@ export default function PreviousEventsSection() {
     );
 
     return (
-      <article className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-accent/80 hover:shadow-[0_8px_24px_rgba(59,130,246,0.18)]">
-        {/* Media */}
+      <article className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-accent/80 hover:shadow-[0_8px_24px_rgba(59,130,246,0.18)] min-w-[260px] sm:min-w-0">
         {event.cover_url && (
           <div className="relative">
             <ImageFrame
@@ -82,7 +82,6 @@ export default function PreviousEventsSection() {
           </div>
         )}
 
-        {/* Body */}
         <div className="p-4 sm:p-5 flex flex-col grow text-left">
           <h3 className="text-lg md:text-xl font-semibold mb-1 leading-snug text-white">
             {event.title}
@@ -91,6 +90,7 @@ export default function PreviousEventsSection() {
             {formatEventDateRange(event.start_at, event.end_at)}
           </p>
           <p className="text-sm text-white/50 italic mb-3">{locationElement}</p>
+
           <p className="text-text2 text-white/80 leading-relaxed mb-5 grow">
             {event.summary}
           </p>
@@ -104,21 +104,6 @@ export default function PreviousEventsSection() {
             >
               View details →
             </Button>
-            <svg
-              className="h-5 w-5 text-white/60 group-hover:text-white transition-colors"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <path
-                d="M7 5l6 5-6 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
           </div>
         </div>
       </article>
@@ -145,6 +130,16 @@ export default function PreviousEventsSection() {
             Previous Events
           </h2>
         </div>
+
+        {/* NEW: Button linking to full events page */}
+        <Button
+          as={Link}
+          to="/events"
+          variant="secondary"
+          className="text-sm md:text-base"
+        >
+          See all events →
+        </Button>
       </div>
 
       {/* Error */}
@@ -164,16 +159,28 @@ export default function PreviousEventsSection() {
             />
           ))}
         </div>
-      ) : pastEvents.length === 0 ? (
+      ) : pastFeaturedEvents.length === 0 ? (
         <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-white/70">
-          No previous events recorded yet.
+          No previous featured events yet.
         </div>
       ) : (
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {pastEvents.map((event) => (
-            <PreviousEventCard key={event.id} event={event} />
-          ))}
-        </div>
+        <>
+          {/* Mobile horizontal scroll */}
+          <div className="mt-4 flex gap-4 overflow-x-auto pb-4 px-1 md:hidden snap-x snap-mandatory">
+            {pastFeaturedEvents.map((event) => (
+              <div key={event.id} className="snap-start">
+                <PreviousEventCard event={event} />
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop grid */}
+          <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
+            {pastFeaturedEvents.map((event) => (
+              <PreviousEventCard key={event.id} event={event} />
+            ))}
+          </div>
+        </>
       )}
     </section>
   );
