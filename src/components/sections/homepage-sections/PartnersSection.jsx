@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import Button from "@components/ui/Button";
-import PartnerLogo from "@components/ui/PartnerLogo";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
-import { fetchActivePartners } from "@data"; // ✅ centralized data logic
+import { fetchActivePartners } from "@data"; // centralized data logic
 
 /**
  * PartnersSection
- * - Desktop: two animated marquee lanes in opposite directions.
- * - Mobile: static responsive logo grid (no animation issues).
- * - Accessible, responsive, and uses globals.css tokens.
+ * - All viewports: one endless animated marquee lane.
+ * - Logos are raw <img> with no backgrounds, tiles, or borders.
  */
 export default function PartnersSection() {
   const [partners, setPartners] = useState([]);
@@ -21,12 +19,11 @@ export default function PartnersSection() {
       setErrorMsg("");
 
       try {
-        const data = await fetchActivePartners(); // ✅ centralized data logic
+        const data = await fetchActivePartners();
         setPartners(data);
       } catch (error) {
         console.error(error);
         setErrorMsg("Failed to load partners. Please try again later.");
-        setPartners([]);
       } finally {
         setLoading(false);
       }
@@ -35,18 +32,13 @@ export default function PartnersSection() {
     loadPartners();
   }, []);
 
-  // Map Supabase rows into the shape used by the UI
   const allPartners = partners.map((p) => ({
     ...p,
     groupTitle: formatCategory(p.category),
   }));
 
-  // Duplicate arrays to create seamless marquee loops (for desktop/tablet)
-  const laneA = [...allPartners, ...allPartners];
-  const laneB = [
-    ...allPartners.slice().reverse(),
-    ...allPartners.slice().reverse(),
-  ];
+  // Duplicate for seamless loop
+  const marqueeItems = [...allPartners, ...allPartners];
 
   return (
     <section
@@ -67,14 +59,12 @@ export default function PartnersSection() {
             Our <span className="text-gradient">Sponsors &amp; Partners</span>
           </h2>
         </div>
-        <div>
-          <Button to="/partners" variant="primary">
-            Meet Our Partners →
-          </Button>
-        </div>
+        <Button to="/partners" variant="primary">
+          Meet Our Partners →
+        </Button>
       </div>
 
-      {/* Loading / Error / Content states */}
+      {/* Content */}
       {loading ? (
         <SectionLoader />
       ) : errorMsg ? (
@@ -84,101 +74,47 @@ export default function PartnersSection() {
           Partners will appear here soon.
         </p>
       ) : (
-        <>
-          {/* DESKTOP / TABLET: marquee lanes */}
-          <div className="hidden sm:block">
-            <div
-              className="relative w-full overflow-hidden rounded-2xl bg-white ring-1 ring-accent/15"
-              aria-live="polite"
-            >
-              {/* Left/Right decorative fades */}
-              <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-white to-transparent z-20" />
-              <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-white to-transparent z-20" />
+        <div
+          className="relative w-full overflow-hidden rounded-2xl bg-white ring-1 ring-accent/15"
+          aria-live="polite"
+        >
+          {/* Left/Right decorative fades */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-white to-transparent z-20" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-white to-transparent z-20" />
 
-              {/* Lane A (left to right) */}
-              <div
-                className="group whitespace-nowrap"
-                aria-label="Partners marquee lane A"
-                role="list"
-              >
-                <div className="flex min-w-full items-center gap-10 sm:gap-12 py-5 sm:py-6 px-6 animate-marquee motion-reduce:animate-none">
-                  {laneA.map((partner, idx) => (
-                    <div
-                      key={`A-${partner.id ?? "x"}-${idx}`}
-                      role="listitem"
-                      className="flex-none"
-                    >
-                      <PartnerLogo
-                        partner={partner}
-                        context="home"
-                        theme="light"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Divider between lanes */}
-              <div className="h-px bg-accent/10" />
-
-              {/* Lane B (right to left) */}
-              <div
-                className="group whitespace-nowrap"
-                aria-label="Partners marquee lane B"
-                role="list"
-              >
-                <div className="flex min-w-full items-center gap-10 sm:gap-12 py-5 sm:py-6 px-6 animate-marquee-reverse motion-reduce:animate-none">
-                  {laneB.map((partner, idx) => (
-                    <div
-                      key={`B-${partner.id ?? "x"}-${idx}`}
-                      role="listitem"
-                      className="flex-none"
-                    >
-                      <PartnerLogo
-                        partner={partner}
-                        context="home"
-                        theme="light"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* Marquee */}
+          <div className="whitespace-nowrap" role="list">
+            <div className="flex min-w-full items-center gap-10 sm:gap-12 py-5 px-6 animate-marquee motion-reduce:animate-none">
+              {marqueeItems.map((partner, idx) => {
+                const Wrapper = partner.website_url ? "a" : "div";
+                return (
+                  <Wrapper
+                    key={`partner-${partner.id}-${idx}`}
+                    href={partner.website_url || undefined}
+                    target={partner.website_url ? "_blank" : undefined}
+                    rel={partner.website_url ? "noopener noreferrer" : undefined}
+                    aria-label={partner.name}
+                    className="flex-none"
+                  >
+                    <img
+                      src={partner.logo_url}
+                      alt={partner.name}
+                      draggable="false"
+                      loading="lazy"
+                      className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+                    />
+                  </Wrapper>
+                );
+              })}
             </div>
           </div>
-
-          {/* MOBILE: uniform logo tiles (no animation) */}
-          <div className="sm:hidden">
-            <div
-              className="w-full rounded-2xl bg-white ring-1 ring-accent/15 px-4 py-5"
-              aria-label="Partners logos"
-            >
-              <div className="grid grid-cols-2 gap-3">
-                {allPartners.map((partner) => (
-                  <PartnerLogo
-                    key={partner.id}
-                    partner={partner}
-                    context="home"
-                    theme="light"
-                    className="w-full"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <p className="mt-4 text-xs text-[#0A1A2F]/60 text-center">
-              Tap a logo to visit the partner&apos;s website.
-            </p>
-          </div>
-        </>
+        </div>
       )}
     </section>
   );
 }
 
-/**
- * Format enum category into a human-readable group title.
- * Example: "industry_partner" -> "Industry Partner"
- */
+/** Format enum category */
 function formatCategory(category) {
   if (!category) return "Partner";
   return category

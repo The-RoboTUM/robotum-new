@@ -2,10 +2,10 @@
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import HeroSection from "@/components/sections/partners-sections/HeroSection";
-import PageLoader from "@components/sections/common-sections/PageLoader";
 
 // Lazy-load below-the-fold content for performance
 import { lazy, Suspense, useEffect } from "react";
+import SectionLoader from "@/components/sections/common-sections/SectionLoader";
 const PartnerCategories = lazy(
   () => import("@components/sections/partners-sections/PartnerCategories"),
 );
@@ -25,13 +25,15 @@ export default function Partners() {
   return (
     <>
       <Navbar />
-      <HeroSection />
+      <main className="pt-13 md:pt-15">
+        <HeroSection />
 
-      <Suspense fallback={<PageLoader />}>
-        <PartnerCategories />
-        <WhatWeOffer />
-        <ContactUsSection />
-      </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <PartnerCategories />
+          <WhatWeOffer />
+          <ContactUsSection />
+        </Suspense>
+      </main>
 
       <FooterSection />
     </>
