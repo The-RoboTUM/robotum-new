@@ -59,7 +59,7 @@ export default function PartnersSection() {
             Our <span className="text-gradient">Sponsors &amp; Partners</span>
           </h2>
         </div>
-        <Button to="/partners" variant="primary">
+        <Button to="/partners" variant="secondary">
           Meet Our Partners →
         </Button>
       </div>
