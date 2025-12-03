@@ -50,7 +50,7 @@ function ProjectDropdown({
           type="button"
           role="menuitem"
           tabIndex={0}
-          className="block w-full rounded-lg px-3 py-2.5 text-left text-[14px] tracking-[0.8px] text-white/90 transition-colors duration-300 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+          className="block w-full rounded-lg px-3 py-2.5 text-left text-[14px] tracking-[0.8px] text-white/90 transition-colors duration-300 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 cursor-pointer"
           onClick={() => {
             onItemClick();
             onSelectType?.(tab.key);
