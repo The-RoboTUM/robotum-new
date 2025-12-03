@@ -110,9 +110,9 @@ export default function TeamSection() {
                 {/* Text */}
                 <div className="mt-4 space-y-1">
                   <h3 className="text-text1 font-semibold">{member.name}</h3>
-                  <p className="text-text2 text-white/70 text-sm">
+                  {/* <p className="text-text2 text-white/70 text-sm">
                     {member.role}
-                  </p>
+                  </p> */}
 
                   {/* Extra label for Project Leads: show project name(s) */}
                   {member.category === "Project Leads" &&
