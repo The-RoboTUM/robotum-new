@@ -76,9 +76,6 @@ export default function PreviousEventsSection() {
               variant="soft"
               rounded="none"
             />
-            <div className="absolute left-3 top-3 inline-flex items-center rounded-full border border-white/20 bg-black/30 backdrop-blur px-2.5 py-1 text-[11px] uppercase tracking-wide text-white/90">
-              Past Event
-            </div>
           </div>
         )}
 
