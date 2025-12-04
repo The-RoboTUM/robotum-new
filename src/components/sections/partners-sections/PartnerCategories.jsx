@@ -70,7 +70,9 @@ const PartnerCategories = () => {
             <div className="flex items-center justify-center mt-6">
               <a
                 href={nextPrototypesPartner.website_url || undefined}
-                target={nextPrototypesPartner.website_url ? "_blank" : undefined}
+                target={
+                  nextPrototypesPartner.website_url ? "_blank" : undefined
+                }
                 rel="noopener noreferrer"
                 aria-label={nextPrototypesPartner.name}
                 className="flex-none"

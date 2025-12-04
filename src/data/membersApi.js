@@ -141,8 +141,7 @@ export async function fetchMemberStories() {
       ? row.member_projects[0]
       : null;
 
-    const departmentName =
-      mp?.department?.name || mp?.department_slug;
+    const departmentName = mp?.department?.name || mp?.department_slug;
 
     const joinedYear = row.created_at
       ? new Date(row.created_at).getFullYear()

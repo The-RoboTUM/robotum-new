@@ -1,5 +1,3 @@
-import React from "react";
-
 function getPartnerTier(category) {
   if (category === "Lead Sponsor") return "lead";
   if (category === "Sponsor") return "sponsor";
@@ -36,7 +34,7 @@ const LOGO_IMG_BASE =
 export default function PartnerLogo({
   partner,
   context = "home", // "home" | "partners"
-  theme = "light",   // "light" | "dark"
+  theme = "light", // "light" | "dark"
   showCategoryChip = false,
   className = "",
 }) {

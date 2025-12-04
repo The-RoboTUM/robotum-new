@@ -42,8 +42,7 @@ export default function MemberStoriesSection() {
               What it's like
             </p>
             <h2 className="heading heading-h2">
-              Member{" "}
-              <span className="text-gradient">Stories</span>
+              Member <span className="text-gradient">Stories</span>
             </h2>
           </div>
 
@@ -151,7 +150,6 @@ function StoryCard({ story, layout }) {
               </span>
             )}
           </div>
-
 
           {/* Joined + study program + university */}
           <p className="mt-0.5 text-[11px] text-white/40">

@@ -180,10 +180,11 @@ export default function EventSection() {
                       }
                       aria-expanded={isActive ? "true" : "false"}
                       aria-controls={`event-panel-${index}`}
-                      className={`group w-full text-left cursor-pointer p-5 md:p-6 rounded-2xl border transition-all duration-400 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 ${isActive
-                        ? "bg-accent/15 border-accent shadow-[0_8px_28px_rgba(59,130,246,0.25)]"
-                        : "bg-white/5 border-white/10 hover:bg-white/10"
-                        }`}
+                      className={`group w-full text-left cursor-pointer p-5 md:p-6 rounded-2xl border transition-all duration-400 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 ${
+                        isActive
+                          ? "bg-accent/15 border-accent shadow-[0_8px_28px_rgba(59,130,246,0.25)]"
+                          : "bg-white/5 border-white/10 hover:bg-white/10"
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-4">
                         {/* Date chip */}
@@ -224,8 +225,9 @@ export default function EventSection() {
 
                         {/* Caret icon */}
                         <svg
-                          className={`h-5 w-5 text-white/80 transition-transform duration-300 mt-1 ${isActive ? "rotate-180" : ""
-                            }`}
+                          className={`h-5 w-5 text-white/80 transition-transform duration-300 mt-1 ${
+                            isActive ? "rotate-180" : ""
+                          }`}
                           viewBox="0 0 20 20"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -244,10 +246,11 @@ export default function EventSection() {
                       {/* Reveal panel */}
                       <div
                         id={`event-panel-${index}`}
-                        className={`grid transition-[grid-template-rows,opacity] duration-400 ease-out ${isActive
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0"
-                          }`}
+                        className={`grid transition-[grid-template-rows,opacity] duration-400 ease-out ${
+                          isActive
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0"
+                        }`}
                       >
                         <div className="overflow-hidden">
                           <div className="mt-4 text-slate-200">

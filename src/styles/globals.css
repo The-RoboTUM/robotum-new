@@ -328,7 +328,6 @@ body {
   animation: marquee 20s linear infinite;
 }
 
-
 .animate-marquee:hover {
   animation-play-state: paused;
 }
@@ -453,7 +452,7 @@ body {
   /* Static gradient stroke (no animation, no hover) */
   border: 1px solid transparent;
   background:
-    linear-gradient(#0A0F1C, #0A0F1C) padding-box,
+    linear-gradient(#0a0f1c, #0a0f1c) padding-box,
     linear-gradient(90deg, #2563eb, #7c3aed) border-box;
 }
 

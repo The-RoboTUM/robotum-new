@@ -41,7 +41,7 @@ export default function Button({
       primary: "btn-primary",
       "primary-light": "btn-primary-light",
       secondary: "btn-secondary",
-      secondaryStatic: "btn-secondary-static",   // ✅ NEW VARIANT
+      secondaryStatic: "btn-secondary-static", // ✅ NEW VARIANT
     }[variant] || "btn-primary";
 
   const sizeClass =

@@ -92,7 +92,9 @@ export default function PartnersSection() {
                     key={`partner-${partner.id}-${idx}`}
                     href={partner.website_url || undefined}
                     target={partner.website_url ? "_blank" : undefined}
-                    rel={partner.website_url ? "noopener noreferrer" : undefined}
+                    rel={
+                      partner.website_url ? "noopener noreferrer" : undefined
+                    }
                     aria-label={partner.name}
                     className="flex-none"
                   >
