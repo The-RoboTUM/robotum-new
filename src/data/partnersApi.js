@@ -3,10 +3,10 @@ import { supabase } from "@lib/supabaseClient";
 
 // ⚠️ MUST match your partner_category enum values in Supabase
 export const PARTNER_CATEGORIES = [
-  { value: "Lead Sponsor", label: "Lead Sponsor" },
-  { value: "Sponsor", label: "Sponsor" },
-  { value: "Industry Collaborator", label: "Industry Collaborator" },
-  { value: "Academic Collaborator", label: "Academic Collaborator" },
+  { value: "Lead Sponsors", label: "Lead Sponsors" },
+  { value: "Sponsors", label: "Sponsors" },
+  { value: "Industry Collaborators", label: "Industry Collaborators" },
+  { value: "Academic Collaborators", label: "Academic Collaborators" },
 ];
 
 const PARTNER_FIELDS = `
