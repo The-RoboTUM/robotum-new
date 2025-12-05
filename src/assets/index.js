@@ -34,7 +34,7 @@ export { default as eventHeroImg } from "./images/events-page/hero-image.png";
 export { default as joinUsHeroImg } from "./images/join-us-page/hero-image.png";
 
 // Partners page images
-export { default as marcoImg } from "./images/partners-page/marco-image.png";
+export { default as violetImg } from "./images/partners-page/violet-image.png";
 
 // General images
 export { default as navLogo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
