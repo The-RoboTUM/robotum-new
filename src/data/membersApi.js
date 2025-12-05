@@ -5,6 +5,7 @@ export const MEMBER_CATEGORIES = [
   "Founders",
   "Department Heads",
   "Project Leads",
+  "Seniors",
 ];
 
 /**
@@ -52,14 +53,16 @@ export async function fetchTeamMembers() {
             ? "Department Head"
             : membershipType === "Project Leads"
               ? "Project Lead"
-              : membershipType;
+              : membershipType === "Seniors"
+                ? "Senior"
+                : membershipType;
 
       return {
         id: m.id,
         name: m.full_name,
         photo: m.avatar_url,
         linkedin: m.linkedin_url,
-        category: membershipType, // "Founders" | "Department Heads" | "Project Leads"
+        category: membershipType, // "Founders" | "Department Heads" | "Project Leads" | "Seniors"
         role: roleLabel,
         projects: [], // filled below for project leads
       };
