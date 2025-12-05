@@ -40,8 +40,7 @@ export default function JoinUsSection() {
               </Button>
               <Button
                 variant="secondary"
-                to="join"
-                scrollTarget="why-we-section"
+                to="about"
               >
                 Learn More
               </Button>
