@@ -5,7 +5,7 @@ export const MEMBER_CATEGORIES = [
   "Founders",
   "Department Heads",
   "Project Leads",
-  "Seniors",
+  // "Seniors",
 ];
 
 /**
@@ -53,8 +53,8 @@ export async function fetchTeamMembers() {
             ? "Department Head"
             : membershipType === "Project Leads"
               ? "Project Lead"
-              : membershipType === "Seniors"
-                ? "Senior"
+              // : membershipType === "Seniors"
+              //   ? "Senior"
                 : membershipType;
 
       return {
