@@ -1,23 +1,14 @@
 // src/data/partnersApi.js
 import { supabase } from "@lib/supabaseClient";
 
-/**
- * Columns we fetch from public.partners
- * Must match your Supabase schema.
- *
- * create table public.partners (
- *   created_at   timestamptz not null default now(),
- *   name         text        not null,
- *   category     public.partner_category not null,
- *   logo_url     text        not null,
- *   website_url  text        null,
- *   id           uuid        not null default gen_random_uuid (),
- *   priority     bigint      null default 1,
- *   slug         text        not null,
- *   is_active    boolean     not null default false,
- *   ...
- * );
- */
+// ⚠️ MUST match your partner_category enum values in Supabase
+export const PARTNER_CATEGORIES = [
+  { value: "Lead Sponsors", label: "Lead Sponsors" },
+  { value: "Sponsors", label: "Sponsors" },
+  { value: "Industry Collaborators", label: "Industry Collaborators" },
+  { value: "Academic Collaborators", label: "Academic Collaborators" },
+];
+
 const PARTNER_FIELDS = `
   id,
   created_at,
@@ -25,52 +16,103 @@ const PARTNER_FIELDS = `
   category,
   logo_url,
   website_url,
+  is_active,
   priority,
-  slug,
-  is_active
+  slug
 `;
 
-/**
- * Small helper: add a cache-buster (?t=timestamp) to image URLs
- * so that when you replace a file in Supabase Storage with the same name,
- * browsers are forced to re-fetch it.
- *
- * We use `created_at` for now — if you later add an `updated_at` column,
- * just swap it in here.
- */
-function addCacheBuster(url, updatedAt) {
-  if (!url) return url;
-
-  const t = updatedAt ? new Date(updatedAt).getTime() : Date.now();
-  const separator = url.includes("?") ? "&" : "?";
-
-  return `${url}${separator}t=${t}`;
-}
-
-/**
- * Public: fetch all *active* partners, with logo_url cache-busted.
- * Used by:
- *  - Home: PartnersSection
- *  - /partners: PartnerCategories
- */
+// 🔹 Public: used by homepage/partners page
 export async function fetchActivePartners() {
   const { data, error } = await supabase
     .from("partners")
     .select(PARTNER_FIELDS)
     .eq("is_active", true)
-    .order("priority", { ascending: true }) // custom ordering
+    .order("priority", { ascending: true })
     .order("created_at", { ascending: true });
 
   if (error) {
-    console.error("Error fetching active partners:", error);
+    console.error("Error loading active partners:", error);
     throw error;
   }
 
-  const rows = data ?? [];
+  return data ?? [];
+}
 
-  // Attach cache-buster to logo_url
-  return rows.map((p) => ({
-    ...p,
-    logo_url: addCacheBuster(p.logo_url, p.created_at),
-  }));
+// 🔹 Admin: list all partners
+export async function adminFetchPartners() {
+  const { data, error } = await supabase
+    .from("partners")
+    .select(PARTNER_FIELDS)
+    .order("priority", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Error loading partners (admin):", error);
+    throw error;
+  }
+
+  return data ?? [];
+}
+
+// 🔹 Admin: create or update a partner
+export async function adminUpsertPartner(partner) {
+  const priority =
+    partner.priority === "" || partner.priority == null
+      ? null
+      : Number(partner.priority);
+
+  let slug = (partner.slug || "").trim();
+  if (!slug && partner.name) {
+    slug = partner.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  const payload = {
+    name: partner.name?.trim(),
+    category: partner.category, // MUST match partner_category enum
+    logo_url: partner.logo_url?.trim() || null,
+    website_url: partner.website_url?.trim() || null,
+    is_active: !!partner.is_active,
+    priority,
+    slug,
+  };
+
+  if (!payload.name) {
+    throw new Error("Name is required.");
+  }
+  if (!payload.category) {
+    throw new Error("Category is required.");
+  }
+  if (!payload.slug) {
+    throw new Error("Slug is required.");
+  }
+
+  if (partner.id) {
+    const { error } = await supabase
+      .from("partners")
+      .update(payload)
+      .eq("id", partner.id);
+
+    if (error) {
+      console.error("Error updating partner:", error);
+      throw error;
+    }
+  } else {
+    const { error } = await supabase.from("partners").insert(payload);
+    if (error) {
+      console.error("Error inserting partner:", error);
+      throw error;
+    }
+  }
+}
+
+// 🔹 Admin: delete
+export async function adminDeletePartner(id) {
+  const { error } = await supabase.from("partners").delete().eq("id", id);
+  if (error) {
+    console.error("Error deleting partner:", error);
+    throw error;
+  }
 }
