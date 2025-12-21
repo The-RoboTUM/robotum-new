@@ -11,7 +11,7 @@ const NAV_LINKS = [
     label: "Projects",
     href: "/projects",
     dropdown: true,
-    subLinks: ["Technical", "Operations", "Innovation & Entrepreneurship"],
+    subLinks: ["Technical", "Operations", "Innovation & Entrepreneurship", "Robocast"],
   },
   { label: "Events", href: "/events" },
   { label: "Partners", href: "/partners" },
@@ -20,21 +20,17 @@ const NAV_LINKS = [
 ];
 
 const PROJECT_TABS = [
-  { label: "Technical", key: "technical" },
-  { label: "Operations", key: "operations" },
+  { label: "Technical", key: "technical", mode: "tab" },
+  { label: "Operations", key: "operations", mode: "tab" },
   {
     label: "Innovation & Entrepreneurship",
     key: "innovation-and-entrepreneurship",
+    mode: "tab",
   },
+  { label: "Robocast", key: "robocast", mode: "route", href: "/robocast" },
 ];
 
-function ProjectDropdown({
-  open,
-  onEnter,
-  onLeave,
-  onItemClick,
-  onSelectType,
-}) {
+function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelect }) {
   if (!open) return null;
 
   return (
@@ -53,7 +49,7 @@ function ProjectDropdown({
           className="block w-full rounded-lg px-3 py-2.5 text-left text-[14px] tracking-[0.8px] text-white/90 transition-colors duration-300 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 cursor-pointer"
           onClick={() => {
             onItemClick();
-            onSelectType?.(tab.key);
+            onSelect?.(tab);
           }}
         >
           {tab.label}
@@ -96,8 +92,17 @@ export default function Navbar() {
     setIsProjectsMobileOpen(false);
   }, []);
 
-  const handleSelectProjectsType = useCallback(
-    (key) => {
+  const handleSelectProjects = useCallback(
+    (tab) => {
+      // Robocast → separate route
+      if (tab?.mode === "route" && tab.href) {
+        navigate(tab.href);
+        closeAllMenus();
+        return;
+      }
+
+      // Default → projects tabs
+      const key = tab?.key || "technical";
       navigate(`/projects?type=${key}`);
       closeAllMenus();
     },
@@ -106,7 +111,6 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => {
     setIsMobileOpen((prev) => !prev);
-    // When toggling main mobile menu, always close project submenu
     setIsProjectsMobileOpen(false);
   };
 
@@ -114,14 +118,11 @@ export default function Navbar() {
    * Effects
    * --------------------------------------------------------------------- */
 
-  // Scroll + Escape key
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
 
     const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        closeAllMenus();
-      }
+      if (e.key === "Escape") closeAllMenus();
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -133,7 +134,6 @@ export default function Navbar() {
     };
   }, [closeAllMenus]);
 
-  // Body scroll lock + blur class for background when mobile menu open
   useEffect(() => {
     const body = document.body;
 
@@ -151,13 +151,10 @@ export default function Navbar() {
     };
   }, [isMobileOpen]);
 
-  // Click-outside to close menus on mobile
   useEffect(() => {
     function handleClickOutside(e) {
       if (!isMobileOpen) return;
-      if (navRef.current && !navRef.current.contains(e.target)) {
-        closeAllMenus();
-      }
+      if (navRef.current && !navRef.current.contains(e.target)) closeAllMenus();
     }
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -169,7 +166,6 @@ export default function Navbar() {
     };
   }, [isMobileOpen, closeAllMenus]);
 
-  // Focus trap inside mobile menu
   useEffect(() => {
     if (!isMobileOpen || !mobileMenuRef.current) return;
 
@@ -243,9 +239,9 @@ export default function Navbar() {
           {/* Desktop navigation */}
           <ul className="ml-auto hidden items-center gap-4 md:flex">
             {NAV_LINKS.map((link) => {
-              // Projects dropdown
               if (link.dropdown) {
-                const isActive = pathname.startsWith("/projects");
+                const isActive =
+                  pathname.startsWith("/projects") || pathname.startsWith("/robocast");
 
                 return (
                   <li
@@ -295,13 +291,12 @@ export default function Navbar() {
                       onEnter={openProjectsDropdown}
                       onLeave={closeProjectsDropdown}
                       onItemClick={() => setIsProjectsOpen(false)}
-                      onSelectType={handleSelectProjectsType}
+                      onSelect={handleSelectProjects}
                     />
                   </li>
                 );
               }
 
-              // Desktop JOIN US button
               if (link.label === "Join us") {
                 return (
                   <li key={link.label}>
@@ -317,7 +312,6 @@ export default function Navbar() {
                 );
               }
 
-              // Regular desktop links
               return (
                 <li key={link.label} className="px-0.5">
                   <NavLink
@@ -362,7 +356,6 @@ export default function Navbar() {
           >
             <span className="sr-only">Toggle navigation</span>
             <div className="relative h-6 w-6 transform-gpu transition-transform duration-300 ease-out">
-              {/* Close icon */}
               <svg
                 className={`absolute inset-0 h-6 w-6 text-white transform-gpu transition-all duration-300 ease-out ${
                   isMobileOpen ? "opacity-100 rotate-0" : "opacity-0 -rotate-90"
@@ -380,7 +373,6 @@ export default function Navbar() {
                 />
               </svg>
 
-              {/* Burger icon */}
               <div
                 className={`absolute inset-0 flex flex-col justify-center space-y-1 transform-gpu transition-all duration-300 ease-out ${
                   isMobileOpen ? "opacity-0 rotate-90" : "opacity-100 rotate-0"
@@ -395,7 +387,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile overlay (blur + no click-through) */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm supports-backdrop-filter:backdrop-blur-md transition-opacity duration-300 ease-out md:hidden"
@@ -419,7 +410,6 @@ export default function Navbar() {
       >
         <ul className="flex flex-col gap-1.5">
           {NAV_LINKS.map((link) => {
-            // MOBILE: Projects dropdown
             if (link.subLinks) {
               return (
                 <li key={link.label}>
@@ -458,29 +448,27 @@ export default function Navbar() {
                     }`}
                   >
                     <ul className="mt-2 rounded-lg bg-secondary/95 px-2.5 py-2">
-                      {link.subLinks.map((sub) => (
-                        <li key={sub}>
-                          <button
-                            type="button"
-                            className="block w-full cursor-pointer rounded px-4 py-2 text-left text-[13px] text-white transition-colors hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                            onClick={() =>
-                              handleSelectProjectsType(
-                                PROJECT_TABS.find((t) => t.label === sub)
-                                  ?.key || "technical",
-                              )
-                            }
-                          >
-                            {sub}
-                          </button>
-                        </li>
-                      ))}
+                      {link.subLinks.map((sub) => {
+                        const tab = PROJECT_TABS.find((t) => t.label === sub);
+
+                        return (
+                          <li key={sub}>
+                            <button
+                              type="button"
+                              className="block w-full cursor-pointer rounded px-4 py-2 text-left text-[13px] text-white transition-colors hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                              onClick={() => handleSelectProjects(tab)}
+                            >
+                              {sub}
+                            </button>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 </li>
               );
             }
 
-            // MOBILE: Join us CTA
             if (link.label === "Join us") {
               return (
                 <li key={link.label}>
@@ -497,7 +485,6 @@ export default function Navbar() {
               );
             }
 
-            // MOBILE: regular link
             return (
               <li key={link.label}>
                 <NavLink
