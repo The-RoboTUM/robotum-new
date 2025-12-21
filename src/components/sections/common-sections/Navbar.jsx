@@ -11,7 +11,12 @@ const NAV_LINKS = [
     label: "Projects",
     href: "/projects",
     dropdown: true,
-    subLinks: ["Technical", "Operations", "Innovation & Entrepreneurship", "Robocast"],
+    subLinks: [
+      "Technical",
+      "Operations",
+      "Innovation & Entrepreneurship",
+      "Robocast",
+    ],
   },
   { label: "Events", href: "/events" },
   { label: "Partners", href: "/partners" },
@@ -241,7 +246,8 @@ export default function Navbar() {
             {NAV_LINKS.map((link) => {
               if (link.dropdown) {
                 const isActive =
-                  pathname.startsWith("/projects") || pathname.startsWith("/robocast");
+                  pathname.startsWith("/projects") ||
+                  pathname.startsWith("/robocast");
 
                 return (
                   <li

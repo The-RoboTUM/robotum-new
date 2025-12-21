@@ -53,9 +53,9 @@ export async function fetchTeamMembers() {
             ? "Department Head"
             : membershipType === "Project Leads"
               ? "Project Lead"
-              // : membershipType === "Seniors"
-              //   ? "Senior"
-                : membershipType;
+              : // : membershipType === "Seniors"
+                //   ? "Senior"
+                membershipType;
 
       return {
         id: m.id,

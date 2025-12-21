@@ -9,9 +9,16 @@ import { fetchPublishedRobocastEpisodes } from "@data/robocastApi";
 function getPlatformLinks(ep) {
   const links = [];
 
-  if (ep.spotify_url) links.push({ key: "spotify", label: "Spotify", url: ep.spotify_url });
-  if (ep.apple_podcasts_url) links.push({ key: "apple", label: "Apple Podcasts", url: ep.apple_podcasts_url });
-  if (ep.youtube_url) links.push({ key: "youtube", label: "YouTube", url: ep.youtube_url });
+  if (ep.spotify_url)
+    links.push({ key: "spotify", label: "Spotify", url: ep.spotify_url });
+  if (ep.apple_podcasts_url)
+    links.push({
+      key: "apple",
+      label: "Apple Podcasts",
+      url: ep.apple_podcasts_url,
+    });
+  if (ep.youtube_url)
+    links.push({ key: "youtube", label: "YouTube", url: ep.youtube_url });
 
   // other_links can be { "deezer": "...", "amazon": "..." }
   if (ep.other_links && typeof ep.other_links === "object") {
@@ -26,16 +33,18 @@ function getPlatformLinks(ep) {
 }
 
 function prettifyKey(k) {
-  return k
-    .replace(/[-_]/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return k.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function formatDate(d) {
   if (!d) return null;
   const dt = new Date(d);
   if (Number.isNaN(dt.getTime())) return null;
-  return dt.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  return dt.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export default function RobocastPage() {
@@ -64,13 +73,16 @@ export default function RobocastPage() {
     load();
   }, []);
 
-  const featured = useMemo(() => episodes.find((e) => e.is_featured) || episodes[0], [episodes]);
+  const featured = useMemo(
+    () => episodes.find((e) => e.is_featured) || episodes[0],
+    [episodes],
+  );
 
   return (
     <>
       <Navbar />
 
-      <section className="section-container font-sans text-white section-dark-primary surface-pattern">
+      <section className="section-container  hero-offset font-sans text-white section-dark-primary surface-pattern">
         {/* HERO */}
         <div className="grid gap-10 lg:grid-cols-12 items-center">
           <div className="lg:col-span-6 space-y-4">
@@ -91,9 +103,11 @@ export default function RobocastPage() {
                 What Is RoboCast?
               </h2>
               <p className="text-sm md:text-base text-white/75 leading-relaxed">
-                RoboCast is an engaging podcast series hosted by RoboTUM, bringing together robotics enthusiasts,
-                students, and experts. Each episode dives deep into the world of robotics, featuring conversations
-                with industry leaders, researchers, and innovators. It’s a platform where real stories meet the newest
+                RoboCast is an engaging podcast series hosted by RoboTUM,
+                bringing together robotics enthusiasts, students, and experts.
+                Each episode dives deep into the world of robotics, featuring
+                conversations with industry leaders, researchers, and
+                innovators. It’s a platform where real stories meet the newest
                 technology trends.
               </p>
             </div>
@@ -133,7 +147,7 @@ export default function RobocastPage() {
               >
                 {/* Spotify badge icon (use if you have it; fallback to external icon) */}
                 <img
-                  src={assets.spotifyLogo ?? assets.externalLinkIcon}
+                  src={assets.spotifyIcon}
                   alt=""
                   className="h-4 w-4 opacity-90"
                   aria-hidden="true"
@@ -154,7 +168,10 @@ export default function RobocastPage() {
               No episodes yet - check back soon.
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            <div
+              className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              role="list"
+            >
               {episodes.map((ep) => {
                 const links = getPlatformLinks(ep);
                 const partnerLogos = (ep.robocast_episode_partners ?? [])
@@ -212,19 +229,24 @@ export default function RobocastPage() {
                               <img
                                 src={
                                   l.key === "spotify"
-                                    ? (assets.spotifyIcon ?? assets.externalLinkIcon)
+                                    ? (assets.spotifyIcon ??
+                                      assets.externalLinkIcon)
                                     : assets.externalLinkIcon
                                 }
                                 alt=""
                                 className="h-3.5 w-3.5 opacity-90"
                                 aria-hidden="true"
                               />
-                              <span className="inline-flex items-center">{l.label}</span>
+                              <span className="inline-flex items-center">
+                                {l.label}
+                              </span>
                             </a>
                           ))}
                         </div>
                       ) : (
-                        <div className="text-xs text-white/55">Links coming soon.</div>
+                        <div className="text-xs text-white/55">
+                          Links coming soon.
+                        </div>
                       )}
 
                       {/* Partner logos (optional) */}
