@@ -175,8 +175,8 @@ export default function RobocastPage() {
               {episodes.map((ep) => {
                 const links = getPlatformLinks(ep);
                 const partnerLogos = (ep.robocast_episode_partners ?? [])
-                  .map((x) => x.partner)
-                  .filter(Boolean);
+                  .map((x) => x?.partner)
+                  .filter((p) => p && p.logo_url);
 
                 return (
                   <article
@@ -210,7 +210,7 @@ export default function RobocastPage() {
                       </div>
 
                       {ep.description ? (
-                        <p className="text-sm text-white/75 leading-relaxed line-clamp-4">
+                        <p className="text-sm text-white/75 leading-relaxed whitespace-pre-line">
                           {ep.description}
                         </p>
                       ) : null}
@@ -251,22 +251,39 @@ export default function RobocastPage() {
 
                       {/* Partner logos (optional) */}
                       {partnerLogos.length > 0 ? (
-                        <div className="pt-2 border-t border-white/10">
+                        <div className="pt-3 border-t border-white/10">
                           <p className="text-[11px] uppercase tracking-wider text-white/50 mb-2">
-                            Featuring members from
+                            Partnered with
                           </p>
+
                           <div className="flex flex-wrap items-center gap-3">
-                            {partnerLogos.map((p) => (
-                              <img
-                                key={p.id}
-                                src={p.logo_url}
-                                alt={p.name}
-                                title={p.name}
-                                className="h-6 w-auto object-contain opacity-90"
-                                loading="lazy"
-                                draggable="false"
-                              />
-                            ))}
+                            {partnerLogos.map((p) => {
+                              const Wrapper = p.website_url ? "a" : "div";
+                              return (
+                                <Wrapper
+                                  key={p.id}
+                                  href={p.website_url || undefined}
+                                  target={p.website_url ? "_blank" : undefined}
+                                  rel={p.website_url ? "noopener noreferrer" : undefined}
+                                  aria-label={p.name}
+                                  title={p.name}
+                                  className={
+                                    "inline-flex items-center justify-center rounded-xl " +
+                                    "bg-slate-100/95 border border-slate-200 " +
+                                    "px-3 py-2 shadow-[0_10px_26px_rgba(0,0,0,0.25)] " +
+                                    "transition-transform duration-300 hover:scale-[1.03]"
+                                  }
+                                >
+                                  <img
+                                    src={p.logo_url}
+                                    alt={p.name}
+                                    className="h-8 sm:h-9 w-auto max-w-[150px] object-contain"
+                                    loading="lazy"
+                                    draggable="false"
+                                  />
+                                </Wrapper>
+                              );
+                            })}
                           </div>
                         </div>
                       ) : null}
