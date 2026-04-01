@@ -54,6 +54,7 @@ const ApplicationFormSection = () => {
             </div>
 
             <div className="flex flex-col gap-4 rounded-2xl border border-white/15 bg-[#050A1A]/40 p-5 sm:p-6 min-h-full">
+              {/*
               <div>
                 <p className="text-sm font-medium text-white">Ready to apply?</p>
                 <p className="mt-2 text-sm text-white/70 leading-relaxed">
@@ -85,6 +86,33 @@ const ApplicationFormSection = () => {
                 >
                   {TYPEFORM_APPLICATION_URL}
                 </a>
+              </div>
+              */}
+
+              <div>
+                <p className="text-sm font-medium text-white">
+                  Applications are currently closed
+                </p>
+                <p className="mt-2 text-sm text-white/70 leading-relaxed">
+                  Thank you for your interest in joining RoboTUM. The current
+                  application phase has ended, and new submissions are no longer
+                  accepted at this time.
+                </p>
+              </div>
+
+              <Button
+                variant="secondaryStatic"
+                disabled
+                className="w-full justify-center"
+              >
+                Applications closed
+              </Button>
+
+              <div className="pt-1 border-t border-white/10">
+                <p className="text-[11px] text-white/45 leading-relaxed">
+                  Please check back during the next application phase or follow
+                  RoboTUM announcements for reopening updates.
+                </p>
               </div>
             </div>
           </div>

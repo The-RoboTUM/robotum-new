@@ -42,14 +42,14 @@ const Home = () => {
       <Navbar />
       <main className="pt-13 md:pt-15">
         <NewsTicker
-          messages={[
-            "Applications for Summer Semester 2026 are now open.",
-            "Please submit your application by the end of this month.",
-          ]}
           // messages={[
-          //   "WS 2025 applications are closed",
-          //   "Next application phase opens in April 2026",
+          //   "Applications for Summer Semester 2026 are now open.",
+          //   "Please submit your application by the end of this month.",
           // ]}
+          messages={[
+            "SS 2026 applications are closed",
+            "Next application phase opens in September 2026",
+          ]}
         />
         <HeroSection />
 
