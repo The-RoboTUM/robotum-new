@@ -14,24 +14,49 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+*.log
+*.pid
+*.pid.lock
+*.seed
+lerna-debug.log*
 
 # Local environment variables
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+.env.*
+!.env.example
 
 # Editor folders and settings
 .vscode/
 .idea/
 .DS_Store
+.vscode-test/
+.history/
 
 # Temporary files
 *.local
 *.tmp
 *.swp
 *.swo
+*.bak
+*.orig
+
+# Local caches and tooling
+.cache/
+.eslintcache
+.stylelintcache
+.pnpm-store/
+.npm/
+*.tsbuildinfo
+
+# Frontend test artifacts
+playwright-report/
+blob-report/
+.vitest/
+
+# Local deployment folders
+.vercel/
 
 # Lock files (optional if your team uses another package manager)
 # Uncomment only if necessary

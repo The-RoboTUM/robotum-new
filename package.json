@@ -1,41 +1,13 @@
 {
-  "name": "robotum-frontend",
-  "homepage": "https://ermawqa.github.io/robotum-frontend/",
+  "name": "robotum-new",
   "version": "1.0.0",
   "type": "module",
-  "description": "Frontend codebase for RoboTUM — a student-led robotics club. Built with React + Tailwind CSS. Designed to be fast, modular, and easy to scale.",
-  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "rebuild": "npm run clean && npm run build",
     "preview": "vite preview",
-    "clean": "rm -rf dist node_modules && npm install",
-    "format": "eslint . --fix --fix-type=layout",
-    "format:check": "eslint . --max-warnings=0",
-    "format:prettier": "prettier --write .",
-    "depcheck": "depcheck --ignores='@tailwindcss/postcss' --skip-missing",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:cov": "vitest run --coverage",
-    "e2e": "playwright test",
-    "e2e:ui": "playwright test --ui",
-    "e2e:report": "playwright show-report",
-    "build:clean": "npm run build && npm run css:purge",
-    "css:purge": "purgecss --css 'dist/assets/*.css' --content 'index.html' 'src/**/*.{js,jsx}' --safelist 'html,body,#root,nav,section,header,footer' --output dist/assets",
-    "css:report": "purgecss --css 'dist/assets/*.css' --content 'index.html' 'src/**/*.{js,jsx}' --rejected --output dist/purged && echo 'See dist/purged for purged CSS; rejected selectors are printed above.'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ermawqa/robotum-frontend.git"
-  },
-  "keywords": [],
-  "author": "Yermukhamed Shakhman <yermukhamed.shakhman@robotum.info>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ermawqa/robotum-frontend/issues"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

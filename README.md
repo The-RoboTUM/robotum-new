@@ -1,208 +1,113 @@
-# 🤖 RoboTUM Website
+# RoboTUM Website
 
-This is the official website for **RoboTUM**, a student robotics initiative at the Technical University of Munich (TUM).  
-Our mission is to bridge the gap between academia and industry in robotics by showcasing our projects, events, and collaborations.
+Official RoboTUM web application.
 
-Built with **React**, **Vite**, and **Tailwind CSS**, this site is fully responsive, modular, and designed for scalability.
+## Overview
 
-## 🌍 Vision
+This repository contains the public website and admin pages for RoboTUM.
+It is a React single-page application with route-based pages and Supabase-backed data.
 
-To establish Munich as a global hub for robotics innovation and collaboration.
+## Tech Stack
 
-## 🎯 Goals
+- React + Vite
+- Tailwind CSS
+- React Router
+- Supabase
 
-- Showcase RoboTUM’s technical, operational, and innovation projects.
-- Highlight sponsors, events, and academic partnerships.
-- Provide an easy way for new students and companies to get involved.
+## Project Structure
 
-## 🧱 Tech Stack
-
-- **Frontend Framework:** React 18 + Vite
-- **Styling:** Tailwind CSS (custom design system in `globals.css`)
-- **Routing:** React Router v7
-- **Component System:** Reusable components (`Button`, `ImageFrame`, etc.)
-- **Data Management:** Static JS data files (e.g., `/src/data/projects.js`)
-- **Deployment:** GitHub Pages (temporary) → Custom Domain (production)
-
-## 🗂 Folder Structure
-
-```
+```text
 src/
-├── assets/               # Images, icons, logos
-├── components/           # Reusable UI components
-│    ├── ui/              # Buttons, ImageFrame, etc.
-│    └── sections/        # Page sections (Hero, Events, Projects…)
-├── data/                 # Static content files (projects.js, events.js, etc.)
-├── pages/                # Route-based pages (Home, Partners, Projects…)
-├── styles/               # globals.css, variables.css
-├── utils/                # scrollToSection.js, hooks
-├── tests/                # global tests (integration, e2e, setup)
-├── App.jsx               # Root app with routes
-├── main.jsx              # Entry point
-└── vite.config.js        # Build & alias configuration
+  assets/        Static images, icons, videos
+  components/    Reusable UI and section components
+  data/          Centralized API layer (all Supabase reads/writes)
+  lib/           Shared clients (Supabase client)
+  pages/         Route-level pages
+  styles/        Global styles
+  utils/         Shared helpers
 ```
 
----
+## Routes (Public)
 
-## ⚙️ Getting Started
+- /
+- /about
+- /join
+- /events
+- /events/:slug
+- /partners
+- /projects
+- /projects/:slug
+- /robocast
+- /faqs
+- /impressum
+- /privacy-policy
+- /gender-and-diversity
 
-### 1. Prerequisites
+Admin routes:
 
-Make sure you have [Node.js](https://nodejs.org/) installed (version 16 or higher recommended).
+- /admin/login
+- /admin (protected)
+- /admin/faqs
+- /admin/partners
+- /admin/projects
+- /admin/events
 
-### 2. Clone the Repository
+Note: Robocast is a standalone route, not a projects tab.
 
-```bash
-git clone https://github.com/robotum/robotum-frontend.git
-cd robotum-frontend
-```
+## Getting Started
 
-### 3. Install Dependencies
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-### 4. Run Development Server
+2. Start development server:
 
 ```bash
 npm run dev
 ```
 
-App runs at:  
- ➜ Local: http://localhost:5173/robotum-frontend/  
- ➜ Network: http://192.168.15.104:5173/robotum-frontend/
-
-### 5. Build for Production
+3. Build for production:
 
 ```bash
 npm run build
 ```
 
-### 6. Preview Build
+4. Preview production build:
 
 ```bash
 npm run preview
 ```
 
----
+## Scripts
 
-## 🎨 Design System
+- npm run dev
+- npm run build
+- npm run preview
+- npm run lint
+- npm run lint:fix
 
-- **Typography:** Exo (primary font)
-- **Color Palette:** Defined in `/styles/variables.css`
-- **Components:** Built with Tailwind utilities and reusable `Button` and `ImageFrame` components.
-- **Section Spacing:** Use `.section-container` for consistent margins and paddings.
-- **Backgrounds:** Apply `surface-*` and gradient classes for unified visual style.
+## Environment Variables
 
----
+Create a local `.env` file with required Vite variables.
 
-## 👩‍💻 Development Guidelines
+Typical variables used in this project:
 
-Follow these guidelines to maintain code quality and consistency across the project:
-
-- Follow existing file structure and naming conventions.
-- Use `@aliases` (defined in `vite.config.js`) for imports instead of relative paths.
-- Create new sections in `/components/sections/[page]-sections/`.
-- Define reusable data in `/data/*.js` instead of hardcoding.
-- Use the shared `Button` and `ImageFrame` components for UI consistency.
-- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
-  - `feat:` new feature
-  - `fix:` bug fix
-  - `refactor:` code improvement
-  - `style:` visual or formatting changes
-
----
-
-## 🧹 Code Quality
-
-To ensure code quality and maintainability, run the following tools:
-
-Run ESLint:
-
-```bash
-npm run lint
+```env
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+VITE_EMAILJS_SERVICE_ID=
+VITE_EMAILJS_TEMPLATE_ID=
+VITE_EMAILJS_PUBLIC_KEY=
 ```
 
-Auto-fix issues:
+Never commit real secrets.
 
-```bash
-npm run lint:fix
-```
+## Conventions
 
-Check for unused dependencies:
-
-```bash
-npm run depcheck
-```
-
----
-
-## 🤝 Contributing
-
-We welcome new members to the RoboTUM development team!
-
-### Steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch:
-
-```bash
-git checkout -b feature/my-new-feature
-```
-
-3. Make your changes and commit with clear messages.
-4. Push your branch and open a Pull Request.
-
----
-
-## 🚀 Deployment
-
-### Development Build
-
-Deployed via Vite dev server.
-
-### Production Build
-
-1. Run:
-
-```bash
-npm run build
-```
-
----
-
-## 🛠 Environment Variables
-
-If applicable, define environment variables in a `.env` file at the root of the project. Example:
-
-```
-VITE_API_URL=https://api.robotum.info
-```
-
-Ensure `.env` files are excluded from version control if they contain sensitive information.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 👥 Team
-
-**Project Lead:** Yermukhamed Shakhman  
-**UI/UX Designer:** TU Design Club  
-**Developers:** Maryna Redka & Ediz Perez Landeros  
-📩 Contact: yermukhamed.shakhman@robotum.info
-
----
-
-## 🧩 Upcoming Features
-
-- Add CMS integration (Notion / Strapi)
-- Animate sections with Framer Motion
-- Add dark/light theme toggle
-- Expand “Events” filtering and detail pages
-- Internationalization (English / German)
+- Keep data fetching in `src/data/*Api.js`.
+- Do not call Supabase directly from UI components.
+- Reuse existing components and styles before adding new ones.
+- Preserve existing route/query behavior, especially `/projects?type=...`.
+- Follow the internal rules documented in AGENTS.md and .docs/.
