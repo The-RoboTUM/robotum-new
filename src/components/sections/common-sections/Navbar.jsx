@@ -210,6 +210,12 @@ export default function Navbar() {
   const desktopItemBase =
     "relative group inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white";
 
+  const mobileItemBase =
+    "block w-full rounded-xl border border-white/10 bg-[#10213C]/95 px-4 py-3.5 text-[14px] tracking-[0.8px] text-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition-all duration-200 hover:border-white/15 hover:bg-[#173155] active:scale-[0.995] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70";
+
+  const mobileSubItemBase =
+    "block w-full cursor-pointer rounded-lg px-4 py-2 text-left text-[13px] text-white/90 transition-colors duration-200 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70";
+
   /* -----------------------------------------------------------------------
    * Render
    * --------------------------------------------------------------------- */
@@ -231,7 +237,9 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center"
+            className={`flex items-center transition-opacity ${
+              isMobileOpen ? "pointer-events-none opacity-80" : "opacity-100"
+            }`}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <img
@@ -352,7 +360,7 @@ export default function Navbar() {
           {/* Mobile burger button */}
           <button
             type="button"
-            className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-md cursor-pointer transition-transform duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 md:hidden"
+            className="ml-2 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white cursor-pointer shadow-[0_6px_20px_rgba(0,0,0,0.2)] transition-all duration-200 hover:bg-white/10 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 md:hidden"
             aria-expanded={isMobileOpen}
             aria-controls="mobile-menu"
             aria-label={
@@ -395,7 +403,7 @@ export default function Navbar() {
 
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm supports-backdrop-filter:backdrop-blur-md transition-opacity duration-300 ease-out md:hidden"
+          className="fixed inset-0 z-30 pointer-events-auto bg-black/65 backdrop-blur-md supports-backdrop-filter:backdrop-blur-md transition-opacity duration-300 ease-out md:hidden"
           onClick={closeAllMenus}
           aria-hidden="true"
         />
@@ -408,13 +416,13 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Main navigation"
-        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu bg-[#0E1C3D]/95 border-t border-white/10 backdrop-blur-md transition-all duration-350 ease-out md:hidden ${
+        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu border-t border-white/10 bg-linear-to-b from-[#0D1A37]/95 to-[#081429]/95 shadow-[0_24px_45px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-300 ease-out md:hidden ${
           isMobileOpen
-            ? "pointer-events-auto max-h-[calc(100vh-56px)] translate-y-0 overflow-y-auto pb-4 opacity-100"
+            ? "pointer-events-auto max-h-[calc(100vh-56px)] translate-y-0 overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] opacity-100"
             : "pointer-events-none max-h-0 -translate-y-3 overflow-hidden opacity-0"
         }`}
       >
-        <ul className="flex flex-col gap-1.5">
+        <ul className="flex flex-col gap-2 pt-2">
           {NAV_LINKS.map((link) => {
             if (link.subLinks) {
               return (
@@ -422,7 +430,7 @@ export default function Navbar() {
                   <button
                     type="button"
                     onClick={() => setIsProjectsMobileOpen((prev) => !prev)}
-                    className="flex w-full items-center justify-between rounded-lg bg-[#112238] px-4 py-3.5 text-white transition-colors hover:bg-[#1A2E49] focus:outline-none"
+                    className={`${mobileItemBase} flex items-center justify-between`}
                     aria-expanded={isProjectsMobileOpen}
                   >
                     <span className="text-[14px] font-medium tracking-[0.8px]">
@@ -453,7 +461,7 @@ export default function Navbar() {
                         : "max-h-0 opacity-0"
                     }`}
                   >
-                    <ul className="mt-2 rounded-lg bg-secondary/95 px-2.5 py-2">
+                    <ul className="mt-2 rounded-xl border border-white/10 bg-secondary/90 px-2.5 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                       {link.subLinks.map((sub) => {
                         const tab = PROJECT_TABS.find((t) => t.label === sub);
 
@@ -461,7 +469,7 @@ export default function Navbar() {
                           <li key={sub}>
                             <button
                               type="button"
-                              className="block w-full cursor-pointer rounded px-4 py-2 text-left text-[13px] text-white transition-colors hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                              className={mobileSubItemBase}
                               onClick={() => handleSelectProjects(tab)}
                             >
                               {sub}
@@ -497,8 +505,10 @@ export default function Navbar() {
                   to={link.href}
                   onClick={closeAllMenus}
                   className={({ isActive }) =>
-                    `block w-full rounded-lg bg-[#112238] px-4 py-3.5 text-[14px] tracking-[0.8px] text-white transition-colors hover:bg-[#1A2E49] focus:outline-none ${
-                      isActive || currentHash === link.href ? "text-accent" : ""
+                    `${mobileItemBase} ${
+                      isActive || currentHash === link.href
+                        ? "border-accent/60 text-accent"
+                        : ""
                     }`
                   }
                 >

@@ -1,27 +1,30 @@
-Plan: Partner logo sizing and centering
-Update the Partners page so the category groups read as intentionally centered blocks and the logo sizes clearly communicate partner tier. The safest approach is to keep the existing data flow and partner section structure, then refine the layout in PartnerCategories.jsx and only touch PartnerLogo.jsx if the current shared sizing map is not enough to make the three tiers visibly distinct on desktop.
+Plan: Mobile Navbar Professional Polish
+Improve the mobile navbar in Navbar.jsx so it looks more professional and visually consistent with your current design system, while keeping existing behavior intact (projects query tabs, separate robocast route, accessibility, and menu logic). The safest approach is a focused polish of mobile-only styles and interaction states, plus a strict overlay/pointer-events validation to ensure background content is not interactable when the menu is open.
 
 Steps
 
-Review the current partner section layout in PartnerCategories.jsx and confirm how the grouped partner lists are rendered today, including the fixed width passed into PartnerLogo and the current grid alignment behavior.
-Rework the category list container so each category block is centered horizontally on web, rather than stretching from the left edge. Prefer a centered wrapper strategy that keeps the section responsive and preserves the existing dark-card visual style.
-Introduce or tighten three clearly visible logo size tiers for partner categories: Lead Sponsors as the largest tier, Sponsors as the medium tier, and Industry Collaborators plus Academic Collaborators as the small tier. Reuse the existing PartnerLogo tier logic if possible; otherwise, expose a small sizing hook/variant rather than duplicating logo rendering logic.
-Verify the category grouping still respects the existing partner.category values from partnersApi.js, and ensure the special NEXT Prototypes handling remains unchanged.
-Validate the result on desktop and mobile so the centered layout does not break the responsive grid, card spacing, hover/focus states, or the current section styling used on the Partners page.
+Baseline current behavior in Navbar.jsx: confirm open/close flow, z-index layering, body scroll lock, click-outside handling, and current mobile dropdown behavior before any styling changes.
+Refine mobile surface styling in Navbar.jsx: replace hardcoded mobile color treatment with classes that better match the established dark-surface/accent system.
+Standardize interaction polish in Navbar.jsx: align focus, hover, and active states for burger button, mobile links, and sub-items so the mobile nav feels cohesive with desktop quality.
+Harden non-clickable background behavior in Navbar.jsx: verify and adjust overlay/pointer-events layering so content behind the menu cannot be clicked while preserving backdrop click-to-close.
+Tune mobile spacing and hierarchy in Navbar.jsx: improve item rhythm, panel spacing, and readability across 320-768 widths without changing desktop presentation.
+Validate shared button sizing consistency between Button.jsx and globals.css: if needed, add missing size utility classes to support consistent Join us button behavior.
+Run regression checks for routing and accessibility in Navbar.jsx: ensure projects tabs still route via query params, robocast remains separate, Esc/focus trap remain correct, and transitions are smooth.
 Relevant files
 
-PartnerCategories.jsx — center each category list and apply category-specific sizing treatment.
-PartnerLogo.jsx — reuse or refine the shared tier size map if the section-level change is not sufficient.
-partnersApi.js — confirm category values used for tier mapping and keep alignment with Supabase enum values.
-Partners.jsx — verify the section still fits the existing lazy-loaded page composition.
+Navbar.jsx: primary mobile navbar style and interaction updates.
+globals.css: shared style utilities and consistency alignment.
+Button.jsx: confirm size contract and avoid style drift.
 
 Verification
 
-Run the app and inspect the Partners page on desktop widths to confirm each category list is centered and Lead Sponsors are visibly larger than Sponsors, with collaborators remaining smaller.
-Check mobile widths to confirm the new centering does not create overflow, uneven wrapping, or awkward spacing.
-Confirm the existing partner ordering, NEXT Prototypes handling, and link behavior still work after the layout change.
+Run npm run build to confirm no compile/style regressions.
+Run npm run dev and test mobile widths (320, 375, 430, 768): open menu and verify background is not clickable while open.
+Confirm interaction behavior: backdrop closes menu, Esc closes menu, focus remains trapped inside mobile menu.
+Confirm navigation behavior: projects entries still go to /projects?type=..., robocast still goes to /robocast.
+Confirm desktop navbar remains unchanged.
 Decisions
 
-Keep the fix narrowly scoped to the Partners section unless the shared logo component needs a small API adjustment for clearer tier separation.
-Do not change the data source or partner categories; the task is purely presentation and alignment.
-Preserve the existing dark section styling, rounded cards, hover/focus treatment.
+Included: mobile navbar styling polish and background non-clickability when open.
+Excluded: desktop navbar redesign, route architecture changes, or new navigation patterns.
+Preserve existing query-param tab behavior and separate robocast route behavior.
