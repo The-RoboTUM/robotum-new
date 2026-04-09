@@ -1,21 +1,23 @@
 function getPartnerTier(category) {
-  if (category === "Lead Sponsor") return "lead";
-  if (category === "Sponsor") return "sponsor";
+  if (category === "Lead Sponsors" || category === "Lead Sponsor") {
+    return "lead";
+  }
+  if (category === "Sponsors" || category === "Sponsor") return "sponsor";
   return "collaborator";
 }
 
 const LOGO_SIZE_MAP = {
   lead: {
     home: "h-10 sm:h-12 md:h-14",
-    partners: "h-16 sm:h-20",
+    partners: "h-16 sm:h-20 md:h-24",
   },
   sponsor: {
     home: "h-8 sm:h-10 md:h-11",
-    partners: "h-12 sm:h-16",
+    partners: "h-12 sm:h-14 md:h-16",
   },
   collaborator: {
     home: "h-7 sm:h-9 md:h-10",
-    partners: "h-10 sm:h-12",
+    partners: "h-9 sm:h-11 md:h-12",
   },
 };
 

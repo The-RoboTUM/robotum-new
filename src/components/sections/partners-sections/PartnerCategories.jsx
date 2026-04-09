@@ -52,6 +52,12 @@ const PartnerCategories = () => {
       .replace(/\b\w/g, (c) => c.toUpperCase());
   }
 
+  function getPartnerTileSizeClass(category) {
+    if (category === "Lead Sponsors") return "w-36 sm:w-44 md:w-52";
+    if (category === "Sponsors") return "w-32 sm:w-36 md:w-40";
+    return "w-24 sm:w-28 md:w-32";
+  }
+
   return (
     <section
       id="partner-categories"
@@ -102,14 +108,14 @@ const PartnerCategories = () => {
               {category}
             </h3>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 sm:gap-10 place-items-center">
+            <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-6 sm:gap-8 md:gap-10">
               {items.map((p) => (
                 <PartnerLogo
                   key={p.id}
                   partner={p}
                   context="partners"
                   theme="dark"
-                  className="w-28 sm:w-32"
+                  className={getPartnerTileSizeClass(category)}
                 />
               ))}
             </div>
