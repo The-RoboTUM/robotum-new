@@ -4,3 +4,4 @@ export * from "./faqsApi";
 export * from "./eventsApi";
 
 export * from "./membersApi";
+export * from "./storageApi";

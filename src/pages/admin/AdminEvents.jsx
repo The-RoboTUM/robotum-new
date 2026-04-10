@@ -39,6 +39,8 @@ export default function AdminEvents() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [coverFile, setCoverFile] = useState(null);
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState("");
 
   const [editing, setEditing] = useState(null); // null = new
   const [form, setForm] = useState(emptyForm());
@@ -67,9 +69,25 @@ export default function AdminEvents() {
     loadEvents();
   }, []);
 
+  useEffect(
+    () => () => {
+      if (coverPreviewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(coverPreviewUrl);
+      }
+    },
+    [coverPreviewUrl],
+  );
+
   const resetForm = () => {
     setEditing(null);
     setForm(emptyForm());
+    setCoverFile(null);
+    setCoverPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+      return "";
+    });
   };
 
   const handleEdit = (ev) => {
@@ -92,6 +110,14 @@ export default function AdminEvents() {
       description: ev.description || "",
       cover_url: ev.cover_url || "",
     });
+
+    setCoverFile(null);
+    setCoverPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+      return "";
+    });
   };
 
   const handleChange = (e) => {
@@ -100,6 +126,20 @@ export default function AdminEvents() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handleCoverFileChange = (e) => {
+    const file = e.target.files?.[0] || null;
+
+    setCoverFile(file);
+    setCoverPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+
+      if (!file) return "";
+      return URL.createObjectURL(file);
+    });
   };
 
   const handleSave = async (e) => {
@@ -112,6 +152,8 @@ export default function AdminEvents() {
       await adminUpsertEvent({
         ...(editing ? { id: editing.id } : {}),
         ...form,
+        imageFile: coverFile,
+        previous_cover_url: editing?.cover_url || null,
       });
 
       setSuccessMsg("Event saved successfully.");
@@ -424,18 +466,49 @@ export default function AdminEvents() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="ev-cover">
-                Cover image URL
+              <label className="text-xs text-white/70" htmlFor="ev-cover-file">
+                Cover image
               </label>
               <input
-                id="ev-cover"
-                name="cover_url"
-                type="url"
-                value={form.cover_url}
-                onChange={handleChange}
+                id="ev-cover-file"
+                name="cover_file"
+                type="file"
+                accept="image/*"
+                onChange={handleCoverFileChange}
                 className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
-                placeholder="https://…"
               />
+              <p className="text-[11px] text-white/40">
+                Upload a new image or keep the current one. Max file size: 10MB.
+              </p>
+
+              <div className="space-y-1 pt-1">
+                <label className="text-[11px] text-white/55" htmlFor="ev-cover">
+                  Optional external URL fallback
+                </label>
+                <input
+                  id="ev-cover"
+                  name="cover_url"
+                  type="url"
+                  value={form.cover_url}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+                  placeholder="https://…"
+                />
+              </div>
+
+              {(coverPreviewUrl || form.cover_url) && (
+                <div className="mt-2 rounded-lg border border-white/10 bg-black/40 p-2">
+                  <p className="text-[11px] text-white/50 mb-1">Preview:</p>
+                  <div className="aspect-video w-full overflow-hidden rounded-md bg-black/60">
+                    <img
+                      src={coverPreviewUrl || form.cover_url}
+                      alt="Event cover preview"
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Summary & description */}

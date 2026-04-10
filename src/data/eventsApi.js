@@ -1,5 +1,10 @@
 // src/data/eventsApi.js
 import { supabase } from "@lib/supabaseClient";
+import {
+  deletePublicImageByUrl,
+  getAdminImageUploadTarget,
+  uploadPublicImage,
+} from "./storageApi";
 
 // Adjust these to match your Supabase enums
 export const EVENT_CATEGORY_OPTIONS = [
@@ -128,6 +133,18 @@ export async function adminUpsertEvent(event) {
     : null;
   const end_at = event.end_at ? new Date(event.end_at).toISOString() : null;
 
+  let finalCoverUrl = event.cover_url?.trim() || null;
+  if (event.imageFile) {
+    const uploadTarget = getAdminImageUploadTarget("events");
+    const { publicUrl } = await uploadPublicImage({
+      file: event.imageFile,
+      folderPath: uploadTarget.folderPath,
+    });
+    finalCoverUrl = publicUrl;
+  }
+
+  const previousCoverUrl = event.previous_cover_url?.trim() || null;
+
   const payload = {
     title: event.title?.trim(),
     slug,
@@ -135,7 +152,7 @@ export async function adminUpsertEvent(event) {
     location_url: event.location_url?.trim() || null,
     category: event.category, // must match event_category enum
     is_featured: !!event.is_featured,
-    cover_url: event.cover_url?.trim() || null,
+    cover_url: finalCoverUrl,
     description: event.description?.trim() || "",
     summary: event.summary?.trim() || "",
     registration_url: event.registration_url?.trim() || "",
@@ -153,6 +170,7 @@ export async function adminUpsertEvent(event) {
   if (!payload.location_name) throw new Error("Location name is required.");
   if (!payload.registration_url)
     throw new Error("Registration URL is required.");
+  if (!payload.cover_url) throw new Error("Cover image is required.");
 
   if (event.id) {
     const { error } = await supabase
@@ -163,6 +181,10 @@ export async function adminUpsertEvent(event) {
     if (error) {
       console.error("Error updating event:", error);
       throw error;
+    }
+
+    if (event.imageFile && previousCoverUrl && previousCoverUrl !== finalCoverUrl) {
+      await deletePublicImageByUrl({ publicUrl: previousCoverUrl });
     }
   } else {
     const { error } = await supabase.from("events").insert(payload);

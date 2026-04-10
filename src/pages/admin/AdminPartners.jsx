@@ -28,6 +28,9 @@ export default function AdminPartners() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [logoFile, setLogoFile] = useState(null);
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState("");
 
   const [editingPartner, setEditingPartner] = useState(null);
   const [form, setForm] = useState(emptyForm());
@@ -51,13 +54,30 @@ export default function AdminPartners() {
     loadPartners();
   }, []);
 
+  useEffect(
+    () => () => {
+      if (logoPreviewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(logoPreviewUrl);
+      }
+    },
+    [logoPreviewUrl],
+  );
+
   const startNew = () => {
     setEditingPartner(null);
     setForm(emptyForm());
+    setLogoFile(null);
+    setLogoPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+      return "";
+    });
   };
 
   const startEdit = (partner) => {
     setEditingPartner(partner);
+    setSuccessMsg("");
     setForm({
       name: partner.name || "",
       category: partner.category || PARTNER_CATEGORIES[0].value,
@@ -66,6 +86,14 @@ export default function AdminPartners() {
       is_active: partner.is_active ?? true,
       priority: partner.priority ?? "",
       slug: partner.slug || "",
+    });
+
+    setLogoFile(null);
+    setLogoPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+      return "";
     });
   };
 
@@ -77,18 +105,36 @@ export default function AdminPartners() {
     }));
   };
 
+  const handleLogoFileChange = (e) => {
+    const file = e.target.files?.[0] || null;
+
+    setLogoFile(file);
+    setLogoPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+
+      if (!file) return "";
+      return URL.createObjectURL(file);
+    });
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     setErrorMsg("");
+    setSuccessMsg("");
 
     try {
       await adminUpsertPartner({
         id: editingPartner?.id,
         ...form,
+        imageFile: logoFile,
+        previous_logo_url: editingPartner?.logo_url || null,
       });
       await loadPartners();
       startNew();
+      setSuccessMsg("Partner saved successfully.");
     } catch (err) {
       console.error("Error saving partner:", err);
       setErrorMsg(err.message || "Failed to save partner.");
@@ -103,6 +149,7 @@ export default function AdminPartners() {
     try {
       await adminDeletePartner(partner.id);
       await loadPartners();
+      setSuccessMsg("Partner deleted.");
     } catch (error) {
       console.error("Error deleting partner:", error);
       setErrorMsg("Failed to delete partner.");
@@ -117,6 +164,11 @@ export default function AdminPartners() {
       description="Manage RoboTUM partners shown on the public site."
     >
       <AdminErrorBanner message={errorMsg} />
+      {successMsg && (
+        <div className="mb-4 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+          {successMsg}
+        </div>
+      )}
 
       <div className="grid gap-8 md:grid-cols-[2fr_minmax(0,1.6fr)] items-start">
         {/* List */}
@@ -260,20 +312,48 @@ export default function AdminPartners() {
               </select>
             </div>
 
-            {/* Logo URL */}
+            {/* Logo upload */}
             <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="partner-logo">
-                Logo URL
+              <label className="text-xs text-white/70" htmlFor="partner-logo-file">
+                Logo image
               </label>
               <input
-                id="partner-logo"
+                id="partner-logo-file"
+                name="logo_file"
+                type="file"
+                accept="image/*"
+                onChange={handleLogoFileChange}
+                className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+              />
+              <p className="text-[11px] text-white/40">
+                Upload a new logo or keep the current one. Max file size: 10MB.
+              </p>
+
+              <div className="space-y-1 pt-1">
+                <label className="text-[11px] text-white/55" htmlFor="partner-logo">
+                  Optional external URL fallback
+                </label>
+                <input
+                  id="partner-logo"
                 name="logo_url"
                 type="url"
                 value={form.logo_url}
                 onChange={handleChange}
-                className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+                className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
                 placeholder="https://…"
               />
+
+                {(logoPreviewUrl || form.logo_url) && (
+                  <div className="mt-2 h-24 rounded-lg border border-white/10 bg-black/40 p-2">
+                    <img
+                      src={logoPreviewUrl || form.logo_url}
+                      alt="Partner logo preview"
+                      className="h-full w-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Website URL */}

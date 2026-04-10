@@ -36,6 +36,8 @@ export default function AdminProjects() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [coverFile, setCoverFile] = useState(null);
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState("");
 
   const [form, setForm] = useState(emptyForm());
 
@@ -62,9 +64,25 @@ export default function AdminProjects() {
     loadProjects();
   }, []);
 
+  useEffect(
+    () => () => {
+      if (coverPreviewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(coverPreviewUrl);
+      }
+    },
+    [coverPreviewUrl],
+  );
+
   // ---------- Helpers ----------
   const resetForm = () => {
     setForm(emptyForm());
+    setCoverFile(null);
+    setCoverPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+      return "";
+    });
   };
 
   const startNew = () => {
@@ -91,6 +109,14 @@ export default function AdminProjects() {
       tagsText: (project.tags || []).join(", "),
       is_featured: !!project.is_featured,
     });
+
+    setCoverFile(null);
+    setCoverPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+      return "";
+    });
   };
 
   const handleChange = (e) => {
@@ -99,6 +125,20 @@ export default function AdminProjects() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handleCoverFileChange = (e) => {
+    const file = e.target.files?.[0] || null;
+
+    setCoverFile(file);
+    setCoverPreviewUrl((previous) => {
+      if (previous?.startsWith("blob:")) {
+        URL.revokeObjectURL(previous);
+      }
+
+      if (!file) return "";
+      return URL.createObjectURL(file);
+    });
   };
 
   // ---------- Save (create/update) ----------
@@ -123,6 +163,11 @@ export default function AdminProjects() {
         // tags will be parsed inside adminUpsertProject
         tags: form.tagsText,
         is_featured: form.is_featured,
+        imageFile: coverFile,
+        previous_cover_url: form.id
+          ? projects.find((projectItem) => projectItem.id === form.id)
+              ?.cover_url || null
+          : null,
       };
 
       await adminUpsertProject(payload);
@@ -441,29 +486,49 @@ export default function AdminProjects() {
               />
             </div>
 
-            {/* Cover URL */}
+            {/* Cover image upload */}
             <div className="space-y-1">
-              <label className="text-xs text-white/70" htmlFor="proj-cover-url">
-                Cover image URL
+              <label className="text-xs text-white/70" htmlFor="proj-cover-file">
+                Cover image
               </label>
               <input
-                id="proj-cover-url"
-                name="cover_url"
-                type="url"
-                required
-                value={form.cover_url}
-                onChange={handleChange}
+                id="proj-cover-file"
+                name="cover_file"
+                type="file"
+                accept="image/*"
+                onChange={handleCoverFileChange}
                 className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
-                placeholder="https://…"
               />
-              {form.cover_url && (
+              <p className="text-[11px] text-white/40">
+                Upload a new image or keep the existing one. Max file size: 10MB.
+              </p>
+
+              <div className="space-y-1 pt-1">
+                <label
+                  className="text-[11px] text-white/55"
+                  htmlFor="proj-cover-url"
+                >
+                  Optional external URL fallback
+                </label>
+                <input
+                  id="proj-cover-url"
+                  name="cover_url"
+                  type="url"
+                  value={form.cover_url}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+                  placeholder="https://…"
+                />
+              </div>
+
+              {(coverPreviewUrl || form.cover_url) && (
                 <div className="mt-2 rounded-lg border border-white/10 bg-black/40 p-2">
                   <p className="text-[11px] text-white/50 mb-1">
-                    Preview (if URL is accessible):
+                    Preview:
                   </p>
                   <div className="aspect-video w-full overflow-hidden rounded-md bg-black/60">
                     <img
-                      src={form.cover_url}
+                      src={coverPreviewUrl || form.cover_url}
                       alt="Cover preview"
                       className="h-full w-full object-cover"
                       loading="lazy"

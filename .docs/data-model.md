@@ -342,3 +342,6 @@ RLS (Row Level Security)
 	•	Admin operations must be restricted
 
 ⸻
+
+## Supabase Storage
+  there is only one bucket "asset" and inside of it there are subfolders: events, icons, members, others, partners, projects, robotum-logos. Inside events there is subfolder "covers". Inside icons there are "offers", "others", "socials". Inside members there are "covers". Inside others no subfolder.. Inside partners there are "logos". Inside projects there is "covers". Inside robotum-logos there is no subfolder.

@@ -1,5 +1,10 @@
 // src/data/partnersApi.js
 import { supabase } from "@lib/supabaseClient";
+import {
+  deletePublicImageByUrl,
+  getAdminImageUploadTarget,
+  uploadPublicImage,
+} from "./storageApi";
 
 // ⚠️ MUST match your partner_category enum values in Supabase
 export const PARTNER_CATEGORIES = [
@@ -69,10 +74,22 @@ export async function adminUpsertPartner(partner) {
       .replace(/^-+|-+$/g, "");
   }
 
+  let finalLogoUrl = partner.logo_url?.trim() || null;
+  if (partner.imageFile) {
+    const uploadTarget = getAdminImageUploadTarget("partners");
+    const { publicUrl } = await uploadPublicImage({
+      file: partner.imageFile,
+      folderPath: uploadTarget.folderPath,
+    });
+    finalLogoUrl = publicUrl;
+  }
+
+  const previousLogoUrl = partner.previous_logo_url?.trim() || null;
+
   const payload = {
     name: partner.name?.trim(),
     category: partner.category, // MUST match partner_category enum
-    logo_url: partner.logo_url?.trim() || null,
+    logo_url: finalLogoUrl,
     website_url: partner.website_url?.trim() || null,
     is_active: !!partner.is_active,
     priority,
@@ -98,6 +115,10 @@ export async function adminUpsertPartner(partner) {
     if (error) {
       console.error("Error updating partner:", error);
       throw error;
+    }
+
+    if (partner.imageFile && previousLogoUrl && previousLogoUrl !== finalLogoUrl) {
+      await deletePublicImageByUrl({ publicUrl: previousLogoUrl });
     }
   } else {
     const { error } = await supabase.from("partners").insert(payload);

@@ -1,4 +1,9 @@
 import { supabase } from "@lib/supabaseClient";
+import {
+  deletePublicImageByUrl,
+  getAdminImageUploadTarget,
+  uploadPublicImage,
+} from "./storageApi";
 
 // Enums (must match Supabase project_category & project_status)
 export const PROJECT_CATEGORIES = [
@@ -161,6 +166,18 @@ export async function adminUpsertProject(project) {
         .map((t) => t.trim())
         .filter((t) => t.length > 0);
 
+  let finalCoverUrl = project.cover_url?.trim() || "";
+  if (project.imageFile) {
+    const uploadTarget = getAdminImageUploadTarget("projects");
+    const { publicUrl } = await uploadPublicImage({
+      file: project.imageFile,
+      folderPath: uploadTarget.folderPath,
+    });
+    finalCoverUrl = publicUrl;
+  }
+
+  const previousCoverUrl = project.previous_cover_url?.trim() || null;
+
   const payload = {
     slug,
     name: project.name?.trim(),
@@ -170,7 +187,7 @@ export async function adminUpsertProject(project) {
     status: project.status || null, // if you use project_status enum
     used_tools: project.used_tools?.trim() || null,
     future_plans: project.future_plans?.trim() || null,
-    cover_url: project.cover_url?.trim(),
+    cover_url: finalCoverUrl,
     tags,
     is_featured: !!project.is_featured,
   };
@@ -180,7 +197,7 @@ export async function adminUpsertProject(project) {
   if (!payload.slug) throw new Error("Slug is required.");
   if (!payload.summary) throw new Error("Summary is required.");
   if (!payload.description) throw new Error("Description is required.");
-  if (!payload.cover_url) throw new Error("Cover image URL is required.");
+  if (!payload.cover_url) throw new Error("Cover image is required.");
   if (!payload.category) throw new Error("Category is required.");
   if (!Array.isArray(payload.tags) || payload.tags.length === 0) {
     throw new Error("At least one tag is required.");
@@ -196,6 +213,14 @@ export async function adminUpsertProject(project) {
     if (error) {
       console.error("Error updating project:", error);
       throw error;
+    }
+
+    if (
+      project.imageFile &&
+      previousCoverUrl &&
+      previousCoverUrl !== finalCoverUrl
+    ) {
+      await deletePublicImageByUrl({ publicUrl: previousCoverUrl });
     }
   } else {
     // Insert new project
