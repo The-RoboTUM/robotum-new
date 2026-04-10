@@ -208,7 +208,7 @@ export default function Navbar() {
    * --------------------------------------------------------------------- */
 
   const desktopItemBase =
-    "relative group inline-flex items-center justify-center px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white";
+    "relative group inline-flex items-center justify-center whitespace-nowrap px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white md:px-2.5 md:py-2.5 md:text-[12px] md:tracking-[0.4px] lg:px-4 lg:py-3 lg:text-[14px] lg:tracking-[0.8px]";
 
   const mobileItemBase =
     "block w-full rounded-xl border border-white/10 bg-[#10213C]/95 px-4 py-3.5 text-[14px] tracking-[0.8px] text-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition-all duration-200 hover:border-white/15 hover:bg-[#173155] active:scale-[0.995] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70";
@@ -233,7 +233,7 @@ export default function Navbar() {
       }`}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="relative z-60 flex w-full items-center justify-between">
+        <div className="relative z-60 flex w-full items-center justify-between md:gap-4 lg:gap-0">
           {/* Logo */}
           <Link
             to="/"
@@ -245,12 +245,12 @@ export default function Navbar() {
             <img
               src={assets.navLogo}
               alt="RoboTUM logo"
-              className="h-9 w-[110px] opacity-90 transition-opacity hover:opacity-100 md:h-12 md:w-[135px]"
+              className="h-9 w-[110px] opacity-90 transition-opacity hover:opacity-100 md:h-12 md:w-[145px] lg:w-[135px]"
             />
           </Link>
 
           {/* Desktop navigation */}
-          <ul className="ml-auto hidden items-center gap-4 md:flex">
+          <ul className="ml-auto hidden items-center gap-4 md:flex md:gap-3 lg:gap-4">
             {NAV_LINKS.map((link) => {
               if (link.dropdown) {
                 const isActive =
@@ -318,7 +318,7 @@ export default function Navbar() {
                       variant="primary"
                       as="link"
                       to="/join"
-                      className="ml-2 px-4 py-2 text-sm"
+                      className="ml-2 whitespace-nowrap px-4 py-2 text-sm md:ml-1 md:px-2.5 md:py-1.5 md:text-[11px] lg:ml-2 lg:px-4 lg:py-2 lg:text-sm"
                     >
                       {link.label.toUpperCase()}
                     </Button>
