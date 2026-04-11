@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
 import {
-  adminFetchEvents,
+  adminFetchEventsPage,
   adminUpsertEvent,
   adminDeleteEvent,
   EVENT_CATEGORY_OPTIONS,
@@ -14,8 +14,11 @@ import {
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
+import AdminPagination from "@components/admin/AdminPagination";
 
 import { formatEventDateRange } from "@utils/date-range";
+
+const DEFAULT_PAGE_SIZE = 10;
 
 const emptyForm = () => ({
   title: "",
@@ -39,6 +42,11 @@ export default function AdminEvents() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+    totalItems: 0,
+  });
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreviewUrl, setCoverPreviewUrl] = useState("");
 
@@ -46,14 +54,43 @@ export default function AdminEvents() {
   const [form, setForm] = useState(emptyForm());
 
   // Load events
-  const loadEvents = async () => {
+  const loadEvents = useCallback(async ({ page = 1, pageSize = DEFAULT_PAGE_SIZE } = {}) => {
+    const requestedPage = page;
+    const requestedPageSize = pageSize;
+
     setLoading(true);
     setErrorMsg("");
     setSuccessMsg("");
 
     try {
-      const data = await adminFetchEvents();
-      setEvents(data);
+      let { items, total } = await adminFetchEventsPage({
+        page: requestedPage,
+        pageSize: requestedPageSize,
+      });
+
+      const totalPages = Math.max(1, Math.ceil(total / requestedPageSize));
+      let nextPage = requestedPage;
+
+      if (total > 0 && requestedPage > totalPages) {
+        nextPage = totalPages;
+        const fallback = await adminFetchEventsPage({
+          page: nextPage,
+          pageSize: requestedPageSize,
+        });
+        items = fallback.items;
+        total = fallback.total;
+      }
+
+      if (total === 0) {
+        nextPage = 1;
+      }
+
+      setEvents(items);
+      setPagination({
+        currentPage: nextPage,
+        pageSize: requestedPageSize,
+        totalItems: total,
+      });
     } catch (err) {
       console.error("Error loading events (admin):", err);
       setErrorMsg(
@@ -63,11 +100,11 @@ export default function AdminEvents() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    loadEvents();
-  }, []);
+    loadEvents({ page: 1, pageSize: DEFAULT_PAGE_SIZE });
+  }, [loadEvents]);
 
   useEffect(
     () => () => {
@@ -157,7 +194,10 @@ export default function AdminEvents() {
       });
 
       setSuccessMsg("Event saved successfully.");
-      await loadEvents();
+      await loadEvents({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       resetForm();
     } catch (err) {
       console.error("Error saving event:", err);
@@ -175,7 +215,10 @@ export default function AdminEvents() {
     try {
       await adminDeleteEvent(ev.id);
       setSuccessMsg("Event deleted.");
-      await loadEvents();
+      await loadEvents({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       if (editing && editing.id === ev.id) {
         resetForm();
       }
@@ -283,6 +326,20 @@ export default function AdminEvents() {
                 );
               })}
             </ul>
+          )}
+
+          {!loading && (
+            <AdminPagination
+              currentPage={pagination.currentPage}
+              pageSize={pagination.pageSize}
+              totalItems={pagination.totalItems}
+              onPageChange={(nextPage) =>
+                loadEvents({ page: nextPage, pageSize: pagination.pageSize })
+              }
+              onPageSizeChange={(nextPageSize) =>
+                loadEvents({ page: 1, pageSize: nextPageSize })
+              }
+            />
           )}
         </div>
 

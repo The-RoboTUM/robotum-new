@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
 import {
-  adminFetchFaqs,
+  adminFetchFaqsPage,
   adminUpsertFaq,
   adminDeleteFaq,
   FAQ_CATEGORIES,
@@ -11,12 +11,20 @@ import {
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
+import AdminPagination from "@components/admin/AdminPagination";
+
+const DEFAULT_PAGE_SIZE = 10;
 
 export default function AdminFaqs() {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+    totalItems: 0,
+  });
 
   const [editingFaq, setEditingFaq] = useState(null); // null = new
   const [form, setForm] = useState({
@@ -25,24 +33,53 @@ export default function AdminFaqs() {
     category: FAQ_CATEGORIES[0].value,
   });
 
-  const loadFaqs = async () => {
+  const loadFaqs = useCallback(async ({ page = 1, pageSize = DEFAULT_PAGE_SIZE } = {}) => {
+    const requestedPage = page;
+    const requestedPageSize = pageSize;
+
     setLoading(true);
     setErrorMsg("");
 
     try {
-      const data = await adminFetchFaqs();
-      setFaqs(data);
+      let { items, total } = await adminFetchFaqsPage({
+        page: requestedPage,
+        pageSize: requestedPageSize,
+      });
+
+      const totalPages = Math.max(1, Math.ceil(total / requestedPageSize));
+      let nextPage = requestedPage;
+
+      if (total > 0 && requestedPage > totalPages) {
+        nextPage = totalPages;
+        const fallback = await adminFetchFaqsPage({
+          page: nextPage,
+          pageSize: requestedPageSize,
+        });
+        items = fallback.items;
+        total = fallback.total;
+      }
+
+      if (total === 0) {
+        nextPage = 1;
+      }
+
+      setFaqs(items);
+      setPagination({
+        currentPage: nextPage,
+        pageSize: requestedPageSize,
+        totalItems: total,
+      });
     } catch (error) {
       console.error("Error loading FAQs:", error);
       setErrorMsg("Failed to load FAQs.");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    loadFaqs();
-  }, []);
+    loadFaqs({ page: 1, pageSize: DEFAULT_PAGE_SIZE });
+  }, [loadFaqs]);
 
   const startNew = () => {
     setEditingFaq(null);
@@ -77,7 +114,10 @@ export default function AdminFaqs() {
         id: editingFaq?.id,
         ...form,
       });
-      await loadFaqs();
+      await loadFaqs({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       startNew();
     } catch (err) {
       console.error("Error saving FAQ:", err);
@@ -92,7 +132,10 @@ export default function AdminFaqs() {
 
     try {
       await adminDeleteFaq(faq.id);
-      await loadFaqs();
+      await loadFaqs({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
     } catch (error) {
       console.error("Error deleting FAQ:", error);
       setErrorMsg("Failed to delete FAQ.");
@@ -162,6 +205,20 @@ export default function AdminFaqs() {
                 </li>
               ))}
             </ul>
+          )}
+
+          {!loading && (
+            <AdminPagination
+              currentPage={pagination.currentPage}
+              pageSize={pagination.pageSize}
+              totalItems={pagination.totalItems}
+              onPageChange={(nextPage) =>
+                loadFaqs({ page: nextPage, pageSize: pagination.pageSize })
+              }
+              onPageSizeChange={(nextPageSize) =>
+                loadFaqs({ page: 1, pageSize: nextPageSize })
+              }
+            />
           )}
         </div>
 

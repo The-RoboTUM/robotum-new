@@ -1,10 +1,10 @@
 // src/pages/admin/AdminProjects.jsx
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
 import {
-  adminFetchProjects,
+  adminFetchProjectsPage,
   adminUpsertProject,
   adminDeleteProject,
   PROJECT_CATEGORIES,
@@ -14,6 +14,9 @@ import {
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
+import AdminPagination from "@components/admin/AdminPagination";
+
+const DEFAULT_PAGE_SIZE = 10;
 
 const emptyForm = () => ({
   id: null,
@@ -36,20 +39,54 @@ export default function AdminProjects() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+    totalItems: 0,
+  });
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreviewUrl, setCoverPreviewUrl] = useState("");
 
   const [form, setForm] = useState(emptyForm());
 
   // ---------- Load projects ----------
-  const loadProjects = async () => {
+  const loadProjects = useCallback(async ({ page = 1, pageSize = DEFAULT_PAGE_SIZE } = {}) => {
+    const requestedPage = page;
+    const requestedPageSize = pageSize;
+
     setLoading(true);
     setErrorMsg("");
     setSuccessMsg("");
 
     try {
-      const data = await adminFetchProjects();
-      setProjects(data);
+      let { items, total } = await adminFetchProjectsPage({
+        page: requestedPage,
+        pageSize: requestedPageSize,
+      });
+
+      const totalPages = Math.max(1, Math.ceil(total / requestedPageSize));
+      let nextPage = requestedPage;
+
+      if (total > 0 && requestedPage > totalPages) {
+        nextPage = totalPages;
+        const fallback = await adminFetchProjectsPage({
+          page: nextPage,
+          pageSize: requestedPageSize,
+        });
+        items = fallback.items;
+        total = fallback.total;
+      }
+
+      if (total === 0) {
+        nextPage = 1;
+      }
+
+      setProjects(items);
+      setPagination({
+        currentPage: nextPage,
+        pageSize: requestedPageSize,
+        totalItems: total,
+      });
     } catch (err) {
       console.error("Error loading projects:", err);
       setErrorMsg(
@@ -58,11 +95,11 @@ export default function AdminProjects() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    loadProjects();
-  }, []);
+    loadProjects({ page: 1, pageSize: DEFAULT_PAGE_SIZE });
+  }, [loadProjects]);
 
   useEffect(
     () => () => {
@@ -172,7 +209,10 @@ export default function AdminProjects() {
 
       await adminUpsertProject(payload);
       setSuccessMsg("Project saved successfully.");
-      await loadProjects();
+      await loadProjects({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       resetForm();
     } catch (err) {
       console.error("Error saving project:", err);
@@ -195,7 +235,10 @@ export default function AdminProjects() {
     try {
       await adminDeleteProject(project.id);
       setSuccessMsg("Project deleted.");
-      await loadProjects();
+      await loadProjects({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       if (form.id === project.id) {
         resetForm();
       }
@@ -321,6 +364,20 @@ export default function AdminProjects() {
                 </li>
               ))}
             </ul>
+          )}
+
+          {!loading && (
+            <AdminPagination
+              currentPage={pagination.currentPage}
+              pageSize={pagination.pageSize}
+              totalItems={pagination.totalItems}
+              onPageChange={(nextPage) =>
+                loadProjects({ page: nextPage, pageSize: pagination.pageSize })
+              }
+              onPageSizeChange={(nextPageSize) =>
+                loadProjects({ page: 1, pageSize: nextPageSize })
+              }
+            />
           )}
         </div>
 

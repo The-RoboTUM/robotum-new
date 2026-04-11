@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
 import {
-  adminFetchPartners,
+  adminFetchPartnersPage,
   adminUpsertPartner,
   adminDeletePartner,
   PARTNER_CATEGORIES,
@@ -12,6 +12,9 @@ import {
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
+import AdminPagination from "@components/admin/AdminPagination";
+
+const DEFAULT_PAGE_SIZE = 10;
 
 const emptyForm = () => ({
   name: "",
@@ -29,30 +32,64 @@ export default function AdminPartners() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+    totalItems: 0,
+  });
   const [logoFile, setLogoFile] = useState(null);
   const [logoPreviewUrl, setLogoPreviewUrl] = useState("");
 
   const [editingPartner, setEditingPartner] = useState(null);
   const [form, setForm] = useState(emptyForm());
 
-  const loadPartners = async () => {
+  const loadPartners = useCallback(async ({ page = 1, pageSize = DEFAULT_PAGE_SIZE } = {}) => {
+    const requestedPage = page;
+    const requestedPageSize = pageSize;
+
     setLoading(true);
     setErrorMsg("");
 
     try {
-      const data = await adminFetchPartners();
-      setPartners(data);
+      let { items, total } = await adminFetchPartnersPage({
+        page: requestedPage,
+        pageSize: requestedPageSize,
+      });
+
+      const totalPages = Math.max(1, Math.ceil(total / requestedPageSize));
+      let nextPage = requestedPage;
+
+      if (total > 0 && requestedPage > totalPages) {
+        nextPage = totalPages;
+        const fallback = await adminFetchPartnersPage({
+          page: nextPage,
+          pageSize: requestedPageSize,
+        });
+        items = fallback.items;
+        total = fallback.total;
+      }
+
+      if (total === 0) {
+        nextPage = 1;
+      }
+
+      setPartners(items);
+      setPagination({
+        currentPage: nextPage,
+        pageSize: requestedPageSize,
+        totalItems: total,
+      });
     } catch (error) {
       console.error("Error loading partners:", error);
       setErrorMsg("Failed to load partners.");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    loadPartners();
-  }, []);
+    loadPartners({ page: 1, pageSize: DEFAULT_PAGE_SIZE });
+  }, [loadPartners]);
 
   useEffect(
     () => () => {
@@ -132,7 +169,10 @@ export default function AdminPartners() {
         imageFile: logoFile,
         previous_logo_url: editingPartner?.logo_url || null,
       });
-      await loadPartners();
+      await loadPartners({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       startNew();
       setSuccessMsg("Partner saved successfully.");
     } catch (err) {
@@ -148,7 +188,10 @@ export default function AdminPartners() {
 
     try {
       await adminDeletePartner(partner.id);
-      await loadPartners();
+      await loadPartners({
+        page: pagination.currentPage,
+        pageSize: pagination.pageSize,
+      });
       setSuccessMsg("Partner deleted.");
     } catch (error) {
       console.error("Error deleting partner:", error);
@@ -258,6 +301,20 @@ export default function AdminPartners() {
                 </li>
               ))}
             </ul>
+          )}
+
+          {!loading && (
+            <AdminPagination
+              currentPage={pagination.currentPage}
+              pageSize={pagination.pageSize}
+              totalItems={pagination.totalItems}
+              onPageChange={(nextPage) =>
+                loadPartners({ page: nextPage, pageSize: pagination.pageSize })
+              }
+              onPageSizeChange={(nextPageSize) =>
+                loadPartners({ page: 1, pageSize: nextPageSize })
+              }
+            />
           )}
         </div>
 

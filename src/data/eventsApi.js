@@ -115,6 +115,29 @@ export async function adminFetchEvents() {
   return data ?? [];
 }
 
+export async function adminFetchEventsPage({ page = 1, pageSize = 10 } = {}) {
+  const safePage = Math.max(1, Number(page) || 1);
+  const safePageSize = Math.max(1, Number(pageSize) || 10);
+  const from = (safePage - 1) * safePageSize;
+  const to = from + safePageSize - 1;
+
+  const { data, error, count } = await supabase
+    .from("events")
+    .select(EVENT_FIELDS, { count: "exact" })
+    .order("start_at", { ascending: false })
+    .range(from, to);
+
+  if (error) {
+    console.error("Error loading events page (admin):", error);
+    throw error;
+  }
+
+  return {
+    items: data ?? [],
+    total: count ?? 0,
+  };
+}
+
 // Admin: create or update event
 export async function adminUpsertEvent(event) {
   // Normalize / generate slug

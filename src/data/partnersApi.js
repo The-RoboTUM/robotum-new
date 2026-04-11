@@ -59,6 +59,30 @@ export async function adminFetchPartners() {
   return data ?? [];
 }
 
+export async function adminFetchPartnersPage({ page = 1, pageSize = 10 } = {}) {
+  const safePage = Math.max(1, Number(page) || 1);
+  const safePageSize = Math.max(1, Number(pageSize) || 10);
+  const from = (safePage - 1) * safePageSize;
+  const to = from + safePageSize - 1;
+
+  const { data, error, count } = await supabase
+    .from("partners")
+    .select(PARTNER_FIELDS, { count: "exact" })
+    .order("priority", { ascending: true })
+    .order("created_at", { ascending: true })
+    .range(from, to);
+
+  if (error) {
+    console.error("Error loading partners page (admin):", error);
+    throw error;
+  }
+
+  return {
+    items: data ?? [],
+    total: count ?? 0,
+  };
+}
+
 // 🔹 Admin: create or update a partner
 export async function adminUpsertPartner(partner) {
   const priority =

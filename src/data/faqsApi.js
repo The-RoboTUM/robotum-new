@@ -44,6 +44,26 @@ export async function adminFetchFaqs() {
   return data ?? [];
 }
 
+export async function adminFetchFaqsPage({ page = 1, pageSize = 10 } = {}) {
+  const safePage = Math.max(1, Number(page) || 1);
+  const safePageSize = Math.max(1, Number(pageSize) || 10);
+  const from = (safePage - 1) * safePageSize;
+  const to = from + safePageSize - 1;
+
+  const { data, error, count } = await supabase
+    .from("faqs")
+    .select(FAQ_SELECT, { count: "exact" })
+    .order("created_at", { ascending: true })
+    .range(from, to);
+
+  if (error) throw error;
+
+  return {
+    items: data ?? [],
+    total: count ?? 0,
+  };
+}
+
 export async function adminUpsertFaq(faq) {
   const payload = {
     question: faq.question.trim(),
