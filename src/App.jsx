@@ -19,6 +19,7 @@ const GenderAndDiversity = lazy(() => import("@pages/GenderAndDiversity"));
 const Projects = lazy(() => import("@pages/Projects"));
 const ProjectDetail = lazy(() => import("@pages/ProjectDetail"));
 const Robocast = lazy(() => import("@pages/Robocast"));
+const RoboticsWeek = lazy(() => import("@pages/roboticsweek/RoboticsWeekStandalone"));
 const Faqs = lazy(() => import("@pages/Faqs"));
 
 // 🔐 Admin pages
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/robocast" element={<Robocast />} />
+        <Route path="/roboticsweek" element={<RoboticsWeek />} />
         <Route path="/faqs" element={<Faqs />} />
 
         {/* 🔐 Admin auth (public login page) */}

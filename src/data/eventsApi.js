@@ -47,6 +47,18 @@ const EVENT_FIELDS = `
   format
 `;
 
+export const ROBOTICS_WEEK_EVENT_SLUG = "robotics-week";
+
+export function isRoboticsWeekEvent(eventOrSlug) {
+  if (!eventOrSlug) return false;
+
+  if (typeof eventOrSlug === "string") {
+    return eventOrSlug === ROBOTICS_WEEK_EVENT_SLUG;
+  }
+
+  return eventOrSlug.slug === ROBOTICS_WEEK_EVENT_SLUG;
+}
+
 // ---------- PUBLIC HELPERS ----------
 
 // List all events (for Events page)

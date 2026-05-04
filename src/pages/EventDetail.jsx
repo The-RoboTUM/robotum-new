@@ -6,7 +6,7 @@ import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
-import { fetchEventBySlug } from "@data"; // from eventsApi.js
+import { fetchEventBySlug, isRoboticsWeekEvent } from "@data"; // from eventsApi.js
 import { formatEventDateRange } from "@utils/date-range";
 
 function formatCategoryLabel(cat) {
@@ -86,6 +86,7 @@ export default function EventDetail() {
   }
 
   const isPast = new Date(event.end_at || event.start_at) < new Date();
+  const showRoboticsWeekLink = isRoboticsWeekEvent(event);
 
   const locationElement = event.location_url ? (
     <a
@@ -185,6 +186,16 @@ export default function EventDetail() {
               </dl>
 
               <div className="pt-2 flex flex-col gap-2">
+                {showRoboticsWeekLink && (
+                  <Button
+                    as={Link}
+                    to="/roboticsweek"
+                    variant="primary"
+                    className="w-full justify-center"
+                  >
+                    Open Robotics Week page
+                  </Button>
+                )}
                 {!isPast && event.registration_url && (
                   <Button
                     as="a"

@@ -4,6 +4,7 @@ import FooterSection from "@components/sections/common-sections/FooterSection";
 import HeroSection from "@components/sections/homepage-sections/HeroSection";
 import SectionLoader from "@/components/sections/common-sections/SectionLoader";
 import NewsTicker from "@components/sections/common-sections/NewsTicker";
+import RoboticsWeekSection from "@components/sections/homepage-sections/RoboticsWeekSection";
 
 // Lazily load below-the-fold sections to reduce initial bundle size
 import { lazy, Suspense, useEffect } from "react";
@@ -52,6 +53,7 @@ const Home = () => {
           ]}
         />
         <HeroSection />
+        <RoboticsWeekSection />
 
         <Suspense fallback={<SectionLoader />}>
           <MissionSection />
