@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/project/humanoid/3d-viewer",
+      "destination": "https://david.dimic.de/robotum/forrest-viewer",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
