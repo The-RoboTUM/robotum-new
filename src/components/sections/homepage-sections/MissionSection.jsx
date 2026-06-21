@@ -21,14 +21,14 @@ export default function MissionSection() {
           <span className="text-gradient">Foundations</span> of RoboTUM
         </h2>
 
-        {/* Content container */}
-        <div className="bg-white/90 backdrop-blur-xl border border-white/10 text-white rounded-2xl p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-10 shadow-xl">
+        {/* Content container — deliberate light feature panel for contrast */}
+        <div className="feature-panel grid grid-cols-1 gap-10 p-8 md:grid-cols-2 md:p-12">
           {/* Vision */}
           <div className="flex flex-col gap-4">
             <h3 className="heading heading-h2 text-[1.5rem] md:text-[1.75rem] font-semibold text-primary">
               Vision
             </h3>
-            <p className="text-text2 md:text-text1 text-black/80 leading-relaxed">
+            <p className="text-text2 md:text-text1 text-slate-700 leading-relaxed">
               To establish{" "}
               <span className="text-accent font-semibold">Munich</span> as a
               global{" "}
@@ -44,7 +44,7 @@ export default function MissionSection() {
             <h3 className="heading heading-h2 text-[1.5rem] md:text-[1.75rem] font-semibold text-primary">
               Mission
             </h3>
-            <p className="text-text2 md:text-text1 text-black/80 leading-relaxed">
+            <p className="text-text2 md:text-text1 text-slate-700 leading-relaxed">
               To bridge the gap between{" "}
               <span className="text-accent font-semibold">
                 robotic industry
@@ -58,7 +58,7 @@ export default function MissionSection() {
               .
             </p>
             <div className="mt-6">
-              <Button variant="primary" as="link" to="/about">
+              <Button variant="primary-light" as="link" to="/about">
                 Discover RoboTUM →
               </Button>
             </div>
