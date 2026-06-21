@@ -21,7 +21,8 @@
       "@styles/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"],
       "@data/*": ["src/data/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   }
 }

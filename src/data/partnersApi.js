@@ -1,5 +1,6 @@
 // src/data/partnersApi.js
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 import {
   deletePublicImageByUrl,
   getAdminImageUploadTarget,
@@ -36,7 +37,7 @@ export async function fetchActivePartners() {
     .order("created_at", { ascending: true });
 
   if (error) {
-    console.error("Error loading active partners:", error);
+    logger.error("Error loading active partners:", error);
     throw error;
   }
 
@@ -52,7 +53,7 @@ export async function adminFetchPartners() {
     .order("created_at", { ascending: true });
 
   if (error) {
-    console.error("Error loading partners (admin):", error);
+    logger.error("Error loading partners (admin):", error);
     throw error;
   }
 
@@ -73,7 +74,7 @@ export async function adminFetchPartnersPage({ page = 1, pageSize = 10 } = {}) {
     .range(from, to);
 
   if (error) {
-    console.error("Error loading partners page (admin):", error);
+    logger.error("Error loading partners page (admin):", error);
     throw error;
   }
 
@@ -137,7 +138,7 @@ export async function adminUpsertPartner(partner) {
       .eq("id", partner.id);
 
     if (error) {
-      console.error("Error updating partner:", error);
+      logger.error("Error updating partner:", error);
       throw error;
     }
 
@@ -147,7 +148,7 @@ export async function adminUpsertPartner(partner) {
   } else {
     const { error } = await supabase.from("partners").insert(payload);
     if (error) {
-      console.error("Error inserting partner:", error);
+      logger.error("Error inserting partner:", error);
       throw error;
     }
   }
@@ -157,7 +158,7 @@ export async function adminUpsertPartner(partner) {
 export async function adminDeletePartner(id) {
   const { error } = await supabase.from("partners").delete().eq("id", id);
   if (error) {
-    console.error("Error deleting partner:", error);
+    logger.error("Error deleting partner:", error);
     throw error;
   }
 }

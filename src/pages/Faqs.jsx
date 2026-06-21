@@ -1,38 +1,27 @@
 // Faqs.jsx
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
-import FaqSection from "@/components/sections/faqs-sections/FaqSection";
+import FaqSection from "@components/sections/faqs-sections/FaqSection";
 
 import { fetchFaqs } from "@data"; // ✅ use your helper
+import { useAsyncData } from "@hooks/useAsyncData";
 
 const Faqs = () => {
-  const [faqs, setFaqs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const {
+    data: faqs,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchFaqs, [], {
+    initialData: [],
+    errorMessage: "Failed to load FAQs. Please try again later.",
+  });
 
   useEffect(() => {
     document.title = "Q&A | RoboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchFaqs(); // ✅ all Supabase logic inside faqsApi
-        setFaqs(data);
-      } catch (error) {
-        console.error(error);
-        setErrorMsg("Failed to load FAQs. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
   }, []);
 
   if (loading) {

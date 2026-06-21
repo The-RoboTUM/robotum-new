@@ -1,37 +1,24 @@
 // src/components/sections/about/TeamSection.jsx
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import * as assets from "@assets";
 import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
 import { MEMBER_CATEGORIES, fetchTeamMembers } from "@data";
+import { useAsyncData } from "@hooks/useAsyncData";
 
 export default function TeamSection() {
   // default to first category
   const [selectedCategory, setSelectedCategory] = useState(
     MEMBER_CATEGORIES[0],
   );
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  // Load from Supabase
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-      try {
-        const data = await fetchTeamMembers();
-        setTeamMembers(data);
-      } catch (err) {
-        console.error("Error loading team members:", err);
-        setErrorMsg("Failed to load team. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
+  const {
+    data: teamMembers,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchTeamMembers, [], {
+    initialData: [],
+    errorMessage: "Failed to load team. Please try again later.",
+  });
 
   // Filter by selected category
   const filteredTeam = useMemo(

@@ -1,5 +1,6 @@
 // src/data/eventsApi.js
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 import {
   deletePublicImageByUrl,
   getAdminImageUploadTarget,
@@ -57,7 +58,7 @@ export async function fetchEvents() {
     .order("start_at", { ascending: true });
 
   if (error) {
-    console.error("Error loading events:", error);
+    logger.error("Error loading events:", error);
     throw error;
   }
 
@@ -75,7 +76,7 @@ export async function fetchEventsForHomepage() {
     .limit(3);
 
   if (error) {
-    console.error("Error loading homepage events:", error);
+    logger.error("Error loading homepage events:", error);
     throw error;
   }
 
@@ -91,7 +92,7 @@ export async function fetchEventBySlug(slug) {
     .maybeSingle();
 
   if (error) {
-    console.error("Error loading event by slug:", error);
+    logger.error("Error loading event by slug:", error);
     throw error;
   }
 
@@ -108,7 +109,7 @@ export async function adminFetchEvents() {
     .order("start_at", { ascending: false });
 
   if (error) {
-    console.error("Error loading events (admin):", error);
+    logger.error("Error loading events (admin):", error);
     throw error;
   }
 
@@ -128,7 +129,7 @@ export async function adminFetchEventsPage({ page = 1, pageSize = 10 } = {}) {
     .range(from, to);
 
   if (error) {
-    console.error("Error loading events page (admin):", error);
+    logger.error("Error loading events page (admin):", error);
     throw error;
   }
 
@@ -202,7 +203,7 @@ export async function adminUpsertEvent(event) {
       .eq("id", event.id);
 
     if (error) {
-      console.error("Error updating event:", error);
+      logger.error("Error updating event:", error);
       throw error;
     }
 
@@ -212,7 +213,7 @@ export async function adminUpsertEvent(event) {
   } else {
     const { error } = await supabase.from("events").insert(payload);
     if (error) {
-      console.error("Error inserting event:", error);
+      logger.error("Error inserting event:", error);
       throw error;
     }
   }
@@ -222,7 +223,7 @@ export async function adminUpsertEvent(event) {
 export async function adminDeleteEvent(id) {
   const { error } = await supabase.from("events").delete().eq("id", id);
   if (error) {
-    console.error("Error deleting event:", error);
+    logger.error("Error deleting event:", error);
     throw error;
   }
 }

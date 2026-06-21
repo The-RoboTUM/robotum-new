@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { fetchProjects } from "@data"; // Supabase
+import { useAsyncData } from "@hooks/useAsyncData";
 import ProjectCard from "@components/ui/ProjectCard";
 import Button from "@components/ui/Button";
 import Navbar from "@components/sections/common-sections/Navbar";
@@ -35,9 +36,14 @@ const CURATED_TAGS = [
 export default function Projects() {
   const [params, setParams] = useSearchParams();
 
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const {
+    data: projects,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchProjects, [], {
+    initialData: [],
+    errorMessage: "Failed to load projects. Please try again later.",
+  });
 
   // top tabs (technical, operations, innovation)
   const initial =
@@ -62,26 +68,6 @@ export default function Projects() {
     if (tag) next.set("tag", tag);
     setParams(next, { replace: true });
   }, [active, query, tag, setParams]);
-
-  // load Supabase projects
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchProjects(); // loads all projects
-        setProjects(data);
-      } catch (err) {
-        console.error("Error loading projects:", err);
-        setErrorMsg("Failed to load projects. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
 
   // Filtering logic
   const filtered = useMemo(() => {

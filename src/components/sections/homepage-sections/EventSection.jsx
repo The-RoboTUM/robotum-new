@@ -1,44 +1,22 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { fetchEventsForHomepage } from "@data";
 import { formatEventDateRange } from "@utils/date-range";
+import { useAsyncData } from "@hooks/useAsyncData";
+import { formatEventCategory } from "@utils/formatCategory";
 
 export default function EventSection() {
-  const [events, setEvents] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  // Load events from Supabase
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchEventsForHomepage();
-        setEvents(data);
-      } catch (err) {
-        console.error("Error loading events for homepage:", err);
-        setErrorMsg("Failed to load events. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
-
-  // Helper: make category nice
-  const formatCategory = (cat) => {
-    if (!cat) return "Event";
-    if (cat === "innovation-and-entrepreneurship") {
-      return "Innovation & Entrepreneurship";
-    }
-    return cat.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  };
+  const {
+    data: events,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchEventsForHomepage, [], {
+    initialData: [],
+    errorMessage: "Failed to load events. Please try again later.",
+  });
 
   // Compute the 3 nearest events (upcoming first, then recent past)
   const nearestEvents = useMemo(() => {
@@ -202,7 +180,7 @@ export default function EventSection() {
                           <div>
                             <div className="flex items-center gap-2 mb-0.5">
                               <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide text-white/80">
-                                {formatCategory(event.category)}
+                                {formatEventCategory(event.category)}
                               </span>
                               {isPast && (
                                 <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[11px] uppercase tracking-wide text-white/60">

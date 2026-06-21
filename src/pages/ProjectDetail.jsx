@@ -1,43 +1,23 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchProjectBySlug } from "@data";
 import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
+import { useAsyncData } from "@hooks/useAsyncData";
+import { formatProjectCategory } from "@utils/formatCategory";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  // Load project by slug from Supabase
-  useEffect(() => {
-    const loadProject = async () => {
-      setLoading(true);
-      setErrorMsg("");
-      setProject(null);
-
-      try {
-        const data = await fetchProjectBySlug(slug);
-        if (!data) {
-          setErrorMsg("Project not found.");
-        }
-        setProject(data);
-      } catch (error) {
-        console.error("Error loading project:", error);
-        setErrorMsg("Failed to load project. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (slug) {
-      loadProject();
-    }
-  }, [slug]);
+  const {
+    data: project,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(() => fetchProjectBySlug(slug), [slug], {
+    errorMessage: "Failed to load project. Please try again later.",
+  });
 
   // Update document title when project is loaded
   useEffect(() => {
@@ -86,14 +66,7 @@ export default function ProjectDetail() {
     );
   }
 
-  // Helper to format enum category nicely
-  const formattedCategory = project.category
-    ? project.category
-        .toString()
-        .toLowerCase()
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase())
-    : "Project";
+  const formattedCategory = formatProjectCategory(project.category);
 
   return (
     <>

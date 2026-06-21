@@ -1,35 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { fetchEvents } from "@data";
 import { formatEventDateRange } from "@utils/date-range";
+import { useAsyncData } from "@hooks/useAsyncData";
 
 export default function PreviousEventsSection() {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  // Load all events
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchEvents();
-        setEvents(data);
-      } catch (err) {
-        console.error("Error loading previous events:", err);
-        setErrorMsg("Failed to load previous events. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
+  const {
+    data: events,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchEvents, [], {
+    initialData: [],
+    errorMessage: "Failed to load previous events. Please try again later.",
+  });
 
   // Only past & featured events
   const pastFeaturedEvents = useMemo(() => {

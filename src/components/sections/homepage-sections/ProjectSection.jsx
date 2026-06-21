@@ -3,13 +3,30 @@ import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
 import { fetchFeaturedProjects } from "@data";
+import { useAsyncData } from "@hooks/useAsyncData";
+
+// Featured projects, with "Humanoid" pinned first.
+async function loadFeaturedOrdered() {
+  const data = await fetchFeaturedProjects();
+  const featuredOnly = (data ?? []).filter((p) => p.is_featured === true);
+  const isHumanoid = (p) => p.slug === "humanoid" || p.name === "Humanoid";
+  return [
+    ...featuredOnly.filter(isHumanoid),
+    ...featuredOnly.filter((p) => !isHumanoid(p)),
+  ];
+}
 
 export default function ProjectSection() {
-  const [projects, setProjects] = useState([]);
   const [current, setCurrent] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
   const trackRef = useRef(null);
+  const {
+    data: projects,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(loadFeaturedOrdered, [], {
+    initialData: [],
+    errorMessage: "Failed to load featured projects. Please try again later.",
+  });
 
   const scrollToIndex = (idx) => {
     const track = trackRef.current;
@@ -23,43 +40,6 @@ export default function ProjectSection() {
         block: "nearest",
       });
   };
-
-  // Load featured projects from Supabase
-  useEffect(() => {
-    const loadProjects = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchFeaturedProjects(); // from Supabase
-        // keep only rows where is_featured = true
-        const featuredOnly = (data ?? []).filter((p) => p.is_featured === true);
-
-        // 🧠 Ensure "Humanoid" (slug = "humanoid") is always first
-        const HUMANOID_SLUG = "humanoid";
-        const humanoidProjects = featuredOnly.filter(
-          (p) => p.slug === HUMANOID_SLUG || p.name === "Humanoid",
-        );
-        const otherProjects = featuredOnly.filter(
-          (p) => !(p.slug === HUMANOID_SLUG || p.name === "Humanoid"),
-        );
-        const ordered = [...humanoidProjects, ...otherProjects];
-
-        setProjects(ordered);
-        setCurrent(0);
-      } catch (error) {
-        console.error("Error loading featured projects:", error);
-        setErrorMsg(
-          "Failed to load featured projects. Please try again later.",
-        );
-        setProjects([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProjects();
-  }, []);
 
   const nextProject = () => {
     if (current < projects.length - 1) setCurrent((prev) => prev + 1);

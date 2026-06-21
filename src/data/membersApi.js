@@ -1,4 +1,5 @@
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 
 // These must match your enum labels in public.membership_type
 export const MEMBER_CATEGORIES = [
@@ -31,7 +32,7 @@ export async function fetchTeamMembers() {
     .in("membership_type", MEMBER_CATEGORIES); // only the 3 categories we care about
 
   if (error) {
-    console.error("Error fetching member memberships:", error);
+    logger.error("Error fetching member memberships:", error);
     throw error;
   }
 
@@ -85,7 +86,7 @@ export async function fetchTeamMembers() {
       .in("project_lead_id", projectLeadIds);
 
     if (projError) {
-      console.error("Error fetching projects for project leads:", projError);
+      logger.error("Error fetching projects for project leads:", projError);
       throw projError;
     }
 
@@ -131,7 +132,7 @@ export async function fetchMemberStories() {
     .not("story", "is", null);
 
   if (error) {
-    console.error("Error fetching member stories:", error);
+    logger.error("Error fetching member stories:", error);
     throw error;
   }
 

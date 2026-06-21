@@ -1,4 +1,5 @@
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 
 export const ADMIN_ASSET_BUCKET = "asset";
 export const MAX_IMAGE_FILE_SIZE_BYTES = 10 * 1024 * 1024;
@@ -127,7 +128,7 @@ export async function uploadPublicImage({
     });
 
   if (uploadError) {
-    console.error("Error uploading image to storage:", uploadError);
+    logger.error("Error uploading image to storage:", uploadError);
     throw new Error("Failed to upload image. Please try again.");
   }
 
@@ -156,7 +157,7 @@ export async function deletePublicImageByUrl({
 
   const { error } = await supabase.storage.from(bucketName).remove([storagePath]);
   if (error) {
-    console.warn("Failed to delete old storage image:", error);
+    logger.warn("Failed to delete old storage image:", error);
     return false;
   }
 

@@ -40,7 +40,7 @@ src/
       <page>-sections/  # homepage-, about-us-, events-, join-us-, partners-, faqs- sections
   pages/                # one file per route (+ pages/admin/*)
 ```
-Path aliases (`vite.config.js` + `jsconfig.json`): `@ @assets @components @pages @styles @utils @data @lib`. Use `@components/...` (not `@/components/...`).
+Path aliases (`vite.config.js` + `jsconfig.json`): `@ @assets @components @pages @styles @utils @data @lib @hooks`. Use `@components/...` (not `@/components/...`).
 
 ## Data & API rules (IMPORTANT)
 - **All** data access goes through `src/data/*Api.js`. **UI never calls Supabase directly** — including auth (`src/data/authApi.js` wraps `supabase.auth.*` + `profiles`).

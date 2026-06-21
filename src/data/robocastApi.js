@@ -1,5 +1,6 @@
 // src/data/robocastApi.js
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 
 const EP_FIELDS = `
   id,
@@ -51,7 +52,7 @@ export async function fetchPublishedRobocastEpisodes() {
     });
 
   if (error) {
-    console.error("Error loading published robocast episodes:", error);
+    logger.error("Error loading published robocast episodes:", error);
     throw error;
   }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { supabase } from "@lib/supabaseClient";
+import { signInAdmin, verifyAdminAccess } from "@data";
 import Button from "@components/ui/Button";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 import * as assets from "@assets";
@@ -21,22 +21,9 @@ export default function AdminLogin() {
     let cancelled = false;
 
     const checkExistingSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (cancelled || !session) {
-        setInitialChecking(false);
-        return;
-      }
-
-      const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", session.user.id)
-        .maybeSingle();
-
-      if (!cancelled && !error && profile?.is_admin) {
+      const { allowed } = await verifyAdminAccess();
+      if (cancelled) return;
+      if (allowed) {
         navigate("/admin", { replace: true });
       } else {
         setInitialChecking(false);
@@ -58,45 +45,12 @@ export default function AdminLogin() {
     setSubmitting(true);
 
     try {
-      // 1) Sign in with Supabase Auth
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error("Login error:", error);
-        setErrorMsg(error.message || "Failed to sign in. Please try again.");
+      const { ok, error } = await signInAdmin({ email, password });
+      if (!ok) {
+        setErrorMsg(error);
         return;
       }
-
-      const user = data.user;
-      if (!user) {
-        setErrorMsg("No user returned from sign-in.");
-        return;
-      }
-
-      // 2) Check profile + is_admin flag
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", user.id)
-        .maybeSingle();
-
-      if (profileError) {
-        console.error("Error loading profile:", profileError);
-        setErrorMsg("Could not load your profile. Please contact an admin.");
-        return;
-      }
-
-      if (!profile?.is_admin) {
-        // Not an admin → sign out for safety
-        await supabase.auth.signOut();
-        setErrorMsg("You don’t have admin permissions for this site.");
-        return;
-      }
-
-      // 3) Success → go to /admin or previous target
+      // Success → go to /admin or previous target
       navigate(fromPath, { replace: true });
     } finally {
       setSubmitting(false);

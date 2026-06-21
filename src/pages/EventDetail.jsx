@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import * as assets from "@assets";
 import Navbar from "@components/sections/common-sections/Navbar";
@@ -8,40 +8,18 @@ import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
 import { fetchEventBySlug } from "@data"; // from eventsApi.js
 import { formatEventDateRange } from "@utils/date-range";
-
-function formatCategoryLabel(cat) {
-  if (!cat) return "";
-  return cat.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
+import { useAsyncData } from "@hooks/useAsyncData";
+import { formatEventCategory } from "@utils/formatCategory";
 
 export default function EventDetail() {
   const { slug } = useParams();
-  const [event, setEvent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchEventBySlug(slug);
-        if (!data) {
-          setErrorMsg("Event not found.");
-        } else {
-          setEvent(data);
-        }
-      } catch (err) {
-        console.error("Error loading event:", err);
-        setErrorMsg("Failed to load event details.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, [slug]);
+  const {
+    data: event,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(() => fetchEventBySlug(slug), [slug], {
+    errorMessage: "Failed to load event details.",
+  });
 
   useEffect(() => {
     if (event) {
@@ -115,7 +93,7 @@ export default function EventDetail() {
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm">
               <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 uppercase tracking-wide text-white/80">
-                {formatCategoryLabel(event.category)}
+                {formatEventCategory(event.category, { fallback: "" })}
               </span>
               <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 uppercase tracking-wide text-white/70">
                 {event.format}

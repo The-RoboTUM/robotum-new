@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import * as assets from "@assets";
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import ImageFrame from "@components/ui/ImageFrame";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
 import { fetchPublishedRobocastEpisodes } from "@data";
+import { useAsyncData } from "@hooks/useAsyncData";
 
 function getPlatformLinks(ep) {
   const links = [];
@@ -150,29 +151,17 @@ function EpisodeCard({ ep }) {
 }
 
 export default function RobocastPage() {
-  const [episodes, setEpisodes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const {
+    data: episodes,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchPublishedRobocastEpisodes, [], {
+    initialData: [],
+    errorMessage: "Failed to load episodes. Please try again later.",
+  });
 
   useEffect(() => {
     document.title = "Robocast | RoboTUM";
-  }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-      try {
-        const data = await fetchPublishedRobocastEpisodes();
-        setEpisodes(data);
-      } catch (e) {
-        console.error(e);
-        setErrorMsg("Failed to load episodes. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
   }, []);
 
   const featured = useMemo(

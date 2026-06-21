@@ -1,30 +1,12 @@
 import PartnerLogo from "@components/ui/PartnerLogo";
-import { useEffect, useState } from "react";
 import { fetchActivePartners } from "@data";
+import { useAsyncData } from "@hooks/useAsyncData";
+import { formatPartnerCategory } from "@utils/formatCategory";
 
 const PartnerCategories = () => {
-  const [partners, setPartners] = useState([]);
-  const [, setLoading] = useState(true);
-  const [, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    const loadPartners = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchActivePartners(); // ✅ reuse
-        setPartners(data);
-      } catch (error) {
-        console.error(error);
-        setErrorMsg("Failed to load partners.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPartners();
-  }, []);
+  const { data: partners } = useAsyncData(fetchActivePartners, [], {
+    initialData: [],
+  });
 
   // Identify NEXT Prototypes from Supabase
   const isNextPrototypes = (p) =>
@@ -37,20 +19,11 @@ const PartnerCategories = () => {
   const groupedPartners = partners.filter((p) => !isNextPrototypes(p));
 
   const grouped = groupedPartners.reduce((acc, item) => {
-    const cat = formatCategory(item.category);
+    const cat = formatPartnerCategory(item.category);
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(item);
     return acc;
   }, {});
-
-  function formatCategory(category) {
-    if (!category) return "Partner";
-    return category
-      .toString()
-      .toLowerCase()
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-  }
 
   function getPartnerTileSizeClass(category) {
     if (category === "Lead Sponsors") return "w-36 sm:w-44 md:w-52";

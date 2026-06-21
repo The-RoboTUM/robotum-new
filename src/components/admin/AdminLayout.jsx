@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "@components/ui/Button";
-import { supabase } from "@lib/supabaseClient";
+import { getSessionEmail, onAuthEmailChange, signOutAdmin } from "@data";
 import * as assets from "@assets";
 
 export default function AdminLayout({ children, title, description }) {
@@ -12,23 +12,14 @@ export default function AdminLayout({ children, title, description }) {
     let mounted = true;
 
     const loadSessionEmail = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Failed to load admin session:", error);
-        return;
-      }
-
-      if (mounted) {
-        setAdminEmail(data.session?.user?.email || "");
-      }
+      const email = await getSessionEmail();
+      if (mounted) setAdminEmail(email);
     };
 
     loadSessionEmail();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setAdminEmail(session?.user?.email || "");
+    const subscription = onAuthEmailChange((email) => {
+      setAdminEmail(email);
     });
 
     return () => {
@@ -45,7 +36,7 @@ export default function AdminLayout({ children, title, description }) {
   }, [adminEmail]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOutAdmin();
     window.location.href = "/admin/login";
   };
 

@@ -1,5 +1,6 @@
 // src/data/faqsApi.js
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 
 export const FAQ_CATEGORIES = [
   { value: "About RoboTUM", label: "About RoboTUM" },
@@ -27,7 +28,7 @@ export async function fetchFaqs() {
     .order("created_at", { ascending: true });
 
   if (error) {
-    console.error("Error loading FAQs:", error);
+    logger.error("Error loading FAQs:", error);
     throw error;
   }
 

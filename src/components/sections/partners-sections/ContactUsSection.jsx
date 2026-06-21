@@ -2,6 +2,7 @@ import { useState } from "react";
 import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
 import * as assets from "@assets";
+import { logger } from "@utils/logger";
 
 import emailjs from "emailjs-com";
 
@@ -51,7 +52,7 @@ export default function ContactUsSection() {
         setIsSubmitting(false);
       })
       .catch((error) => {
-        console.error("EmailJS error:", error);
+        logger.error("EmailJS error:", error);
         setErrorMessage(
           "Something went wrong while sending your message. Please try again in a moment.",
         );

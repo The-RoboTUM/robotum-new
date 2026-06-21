@@ -1,4 +1,5 @@
 import { supabase } from "@lib/supabaseClient";
+import { logger } from "@utils/logger";
 import {
   deletePublicImageByUrl,
   getAdminImageUploadTarget,
@@ -58,7 +59,7 @@ export async function fetchFeaturedProjects({ limit } = {}) {
   const { data, error } = await query;
 
   if (error) {
-    console.error("Error loading featured projects:", error);
+    logger.error("Error loading featured projects:", error);
     throw error;
   }
 
@@ -76,7 +77,7 @@ export async function fetchProjectBySlug(slug) {
     .maybeSingle();
 
   if (error) {
-    console.error("Error loading project by slug:", error);
+    logger.error("Error loading project by slug:", error);
     throw error;
   }
 
@@ -114,7 +115,7 @@ export async function fetchProjects(options = {}) {
   const { data, error } = await query;
 
   if (error) {
-    console.error("Error loading projects with filters:", error);
+    logger.error("Error loading projects with filters:", error);
     throw error;
   }
 
@@ -137,7 +138,7 @@ export async function adminFetchProjects() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Error fetching projects (admin):", error);
+    logger.error("Error fetching projects (admin):", error);
     throw error;
   }
 
@@ -157,7 +158,7 @@ export async function adminFetchProjectsPage({ page = 1, pageSize = 10 } = {}) {
     .range(from, to);
 
   if (error) {
-    console.error("Error fetching projects page (admin):", error);
+    logger.error("Error fetching projects page (admin):", error);
     throw error;
   }
 
@@ -234,7 +235,7 @@ export async function adminUpsertProject(project) {
       .eq("id", project.id);
 
     if (error) {
-      console.error("Error updating project:", error);
+      logger.error("Error updating project:", error);
       throw error;
     }
 
@@ -250,7 +251,7 @@ export async function adminUpsertProject(project) {
     const { error } = await supabase.from("projects").insert(payload);
 
     if (error) {
-      console.error("Error inserting project:", error);
+      logger.error("Error inserting project:", error);
       throw error;
     }
   }
@@ -263,7 +264,7 @@ export async function adminDeleteProject(id) {
   const { error } = await supabase.from("projects").delete().eq("id", id);
 
   if (error) {
-    console.error("Error deleting project:", error);
+    logger.error("Error deleting project:", error);
     throw error;
   }
 }

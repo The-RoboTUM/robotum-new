@@ -1,31 +1,18 @@
 // src/components/sections/about/MemberStories.jsx
-import { useEffect, useState } from "react";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { fetchMemberStories } from "@data"; // make sure it's exported in src/data/index.js
+import { useAsyncData } from "@hooks/useAsyncData";
 
 export default function MemberStoriesSection() {
-  const [stories, setStories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-      try {
-        const data = await fetchMemberStories();
-        setStories(data);
-      } catch (err) {
-        console.error("Error loading member stories:", err);
-        setErrorMsg("Failed to load member stories. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
+  const {
+    data: stories,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchMemberStories, [], {
+    initialData: [],
+    errorMessage: "Failed to load member stories. Please try again later.",
+  });
 
   const hasStories = !loading && !errorMsg && stories.length > 0;
 

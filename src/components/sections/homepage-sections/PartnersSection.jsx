@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
 import Button from "@components/ui/Button";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
 import { fetchActivePartners } from "@data"; // centralized data logic
+import { useAsyncData } from "@hooks/useAsyncData";
+import { formatPartnerCategory } from "@utils/formatCategory";
 
 /**
  * PartnersSection
@@ -9,32 +10,18 @@ import { fetchActivePartners } from "@data"; // centralized data logic
  * - Logos are raw <img> with no backgrounds, tiles, or borders.
  */
 export default function PartnersSection() {
-  const [partners, setPartners] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    const loadPartners = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchActivePartners();
-        setPartners(data);
-      } catch (error) {
-        console.error(error);
-        setErrorMsg("Failed to load partners. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPartners();
-  }, []);
+  const {
+    data: partners,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchActivePartners, [], {
+    initialData: [],
+    errorMessage: "Failed to load partners. Please try again later.",
+  });
 
   const allPartners = partners.map((p) => ({
     ...p,
-    groupTitle: formatCategory(p.category),
+    groupTitle: formatPartnerCategory(p.category),
   }));
 
   // Duplicate for seamless loop
@@ -114,14 +101,4 @@ export default function PartnersSection() {
       )}
     </section>
   );
-}
-
-/** Format enum category */
-function formatCategory(category) {
-  if (!category) return "Partner";
-  return category
-    .toString()
-    .toLowerCase()
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
