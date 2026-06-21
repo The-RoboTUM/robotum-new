@@ -48,7 +48,7 @@ const Home = () => {
         <Suspense fallback={<SectionLoader />}>
           <MissionSection />
           <ProjectSection />
-          <FundraisingSection />
+          {/* <FundraisingSection /> */}
           <EventSection />
           <JoinUsSection />
           <PartnersSection />
