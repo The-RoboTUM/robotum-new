@@ -20,6 +20,18 @@
   --text-h2: clamp(2rem, 3vw + 0.5rem, 3.25rem);
   --text-text1: clamp(1.125rem, 1.1vw + 0.25rem, 1.5rem);
   --text-text2: clamp(0.9375rem, 0.6vw + 0.2rem, 1.125rem);
+
+  /* Elevated dark surfaces (consolidates previously hardcoded navies).
+     Compose with opacity, e.g. bg-elevated-1/80, like the old raw hexes. */
+  --color-base: #020617;
+  --color-elevated-1: #0b1530;
+  --color-elevated-2: #0d1a37;
+  --color-inset: #050a1a;
+  --color-elevated-border: #173155;
+
+  /* Elevation shadows */
+  --shadow-card: 0 18px 45px rgba(15, 23, 42, 0.55);
+  --shadow-card-lg: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
 /* ==========================================================================
@@ -466,6 +478,18 @@ body {
   @apply opacity-80 cursor-default;
 }
 
+/* Sizes — declared after the variants so size padding wins on equal specificity.
+   .btn-md equals the previous default (px-6 py-3); existing md buttons unchanged. */
+.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+.btn-md {
+  @apply px-6 py-3;
+}
+.btn-lg {
+  @apply px-8 py-4 text-lg;
+}
+
 /* ==========================================================================
    ICONS & UTILITIES
    ========================================================================== */
@@ -485,6 +509,40 @@ body {
   transition:
     backdrop-filter 0.3s ease,
     background-color 0.3s ease;
+}
+
+/* ==========================================================================
+   COMPONENT UTILITIES (consolidated card / input / label surfaces)
+   ========================================================================== */
+
+/* Canonical glass card. Add .card-surface-hover for interactive lift. */
+.card-surface {
+  @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300;
+}
+.card-surface-hover {
+  @apply hover:border-white/20 hover:bg-white/10;
+}
+
+/* Recessed inner block (e.g. nested panels). */
+.card-inset {
+  @apply rounded-2xl border border-white/15 bg-inset/40;
+}
+
+/* Form control on dark surfaces. */
+.field-input {
+  @apply w-full rounded-lg border border-white/15 bg-base/40 px-3 py-2 text-sm text-white outline-none transition placeholder:text-white/40;
+  @apply focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent;
+}
+
+/* Small uppercase label / tag. */
+.chip {
+  @apply inline-flex items-center rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-white/80;
+}
+
+/* Deliberate bright accent surface (replaces accidental white inversions). */
+.feature-panel {
+  @apply rounded-3xl border border-white/50 text-primary shadow-card-lg;
+  background: linear-gradient(135deg, #eef4ff 0%, #e5f0ff 55%, #dbe8ff 100%);
 }
 
 /* Section container with consistent padding */
@@ -539,5 +597,20 @@ body {
   }
   100% {
     transform: translateX(-100%);
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION — honor user OS preference globally.
+   Neutralizes hero orbs, marquee, ticker, entrance + transition animations.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
