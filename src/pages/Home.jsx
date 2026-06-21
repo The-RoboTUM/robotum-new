@@ -23,6 +23,9 @@ const JoinUsSection = lazy(
 const PartnersSection = lazy(
   () => import("@components/sections/homepage-sections/PartnersSection"),
 );
+const FundraisingSection = lazy(
+  () => import("@components/sections/homepage-sections/FundraisingSection"),
+);
 
 const Home = () => {
   useEffect(() => {
@@ -47,6 +50,7 @@ const Home = () => {
           <ProjectSection />
           <EventSection />
           <JoinUsSection />
+          <FundraisingSection />
           <PartnersSection />
         </Suspense>
       </main>
