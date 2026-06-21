@@ -1,6 +1,8 @@
 import Button from "@components/ui/Button";
 
-const TYPEFORM_APPLICATION_URL = "https://form.typeform.com/to/Uojt4r1b";
+// Applications are currently closed. To reopen, restore the "Start application"
+// button in the panel below and link it to the Typeform:
+//   https://form.typeform.com/to/Uojt4r1b
 
 const ApplicationFormSection = () => {
   return (
@@ -54,41 +56,6 @@ const ApplicationFormSection = () => {
             </div>
 
             <div className="flex flex-col gap-4 rounded-2xl border border-white/15 bg-[#050A1A]/40 p-5 sm:p-6 min-h-full">
-              {/*
-              <div>
-                <p className="text-sm font-medium text-white">Ready to apply?</p>
-                <p className="mt-2 text-sm text-white/70 leading-relaxed">
-                  The application will open in a new tab so you can return to the
-                  website anytime.
-                </p>
-              </div>
-
-              <Button
-                as="a"
-                href={TYPEFORM_APPLICATION_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="primary"
-                className="w-full justify-center"
-              >
-                Start application →
-              </Button>
-
-              <div className="pt-1 border-t border-white/10">
-                <p className="text-[11px] text-white/45 leading-relaxed mb-2">
-                  If the form does not open, copy this link into your browser:
-                </p>
-                <a
-                  href={TYPEFORM_APPLICATION_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-accent break-all hover:underline"
-                >
-                  {TYPEFORM_APPLICATION_URL}
-                </a>
-              </div>
-              */}
-
               <div>
                 <p className="text-sm font-medium text-white">
                   Applications are currently closed

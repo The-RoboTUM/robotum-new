@@ -4,7 +4,7 @@ import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import ImageFrame from "@components/ui/ImageFrame";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
-import { fetchPublishedRobocastEpisodes } from "@data/robocastApi";
+import { fetchPublishedRobocastEpisodes } from "@data";
 
 function getPlatformLinks(ep) {
   const links = [];

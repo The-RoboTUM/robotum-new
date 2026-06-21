@@ -5,3 +5,4 @@ export * from "./eventsApi";
 
 export * from "./membersApi";
 export * from "./storageApi";
+export * from "./robocastApi";

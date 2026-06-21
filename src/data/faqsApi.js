@@ -11,11 +11,19 @@ export const FAQ_CATEGORIES = [
   { value: "Contact", label: "Contact" },
 ];
 
+const FAQ_SELECT = `
+  id,
+  created_at,
+  question,
+  answer,
+  category
+`;
+
 export async function fetchFaqs() {
   // You can change order if you later add a sort_order column
   const { data, error } = await supabase
     .from("faqs")
-    .select("*")
+    .select(FAQ_SELECT)
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -25,14 +33,6 @@ export async function fetchFaqs() {
 
   return data ?? [];
 }
-
-const FAQ_SELECT = `
-  id,
-  created_at,
-  question,
-  answer,
-  category
-`;
 
 export async function adminFetchFaqs() {
   const { data, error } = await supabase

@@ -2,18 +2,11 @@
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import HeroSection from "@components/sections/homepage-sections/HeroSection";
-import SectionLoader from "@/components/sections/common-sections/SectionLoader";
+import SectionLoader from "@components/sections/common-sections/SectionLoader";
 import NewsTicker from "@components/sections/common-sections/NewsTicker";
 
 // Lazily load below-the-fold sections to reduce initial bundle size
 import { lazy, Suspense, useEffect } from "react";
-
-// FOR TESTING PURPOSES ONLY
-// const MissionSection = lazy(
-//   () => new Promise(resolve =>
-//     setTimeout(() => resolve(import("@components/sections/homepage-sections/MissionSection")), 5500)
-//   )
-// );
 
 const MissionSection = lazy(
   () => import("@components/sections/homepage-sections/MissionSection"),
@@ -42,10 +35,6 @@ const Home = () => {
       <Navbar />
       <main className="pt-13 md:pt-15">
         <NewsTicker
-          // messages={[
-          //   "Applications for Summer Semester 2026 are now open.",
-          //   "Please submit your application by the end of this month.",
-          // ]}
           messages={[
             "SS 2026 applications are closed",
             "Next application phase opens in September 2026",

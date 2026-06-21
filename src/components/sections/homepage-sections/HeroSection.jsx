@@ -97,14 +97,6 @@ export default function HeroSection({
 
       {/* Main content centered vertically */}
       <div className="section-container relative z-10 flex flex-col items-center justify-center min-h-screen text-center pt-20 sm:pt-24">
-        {/* Badge */}
-        {/* <div className="mb-6 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
-          <span className="inline-block h-2 w-2 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
-          <span className="text-[12px] tracking-[0.12em] uppercase text-white/70">
-            Student Robotics at TUM
-          </span>
-        </div> */}
-
         {/* Logo */}
         <img
           src={assets.navLogo}
