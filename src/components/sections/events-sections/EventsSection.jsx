@@ -5,6 +5,7 @@ import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
 import { EVENT_CATEGORY_OPTIONS, fetchEvents } from "@data";
 import { formatEventDateRange } from "@utils/date-range";
+import { useAsyncData } from "@hooks/useAsyncData";
 
 // Map UI labels → DB event.category values (from EVENT_CATEGORY_OPTIONS)
 const normalizeCategory = (label) => {
@@ -21,9 +22,14 @@ const normalizeCategory = (label) => {
 export default function EventsSection() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [timeframe, setTimeframe] = useState("All"); // 'All' | 'Upcoming' | 'Past'
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const {
+    data: events,
+    loading,
+    error: errorMsg,
+  } = useAsyncData(fetchEvents, [], {
+    initialData: [],
+    errorMessage: "Failed to load events. Please try again later.",
+  });
 
   const { hash } = useLocation();
 
@@ -39,26 +45,6 @@ export default function EventsSection() {
       }
     }
   }, [hash]);
-
-  // Load all events from Supabase
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setErrorMsg("");
-
-      try {
-        const data = await fetchEvents();
-        setEvents(data);
-      } catch (err) {
-        console.error("Error loading events:", err);
-        setErrorMsg("Failed to load events. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
 
   // Derived lists (filter + sort)
   const { filteredEvents, counts } = useMemo(() => {
