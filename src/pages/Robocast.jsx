@@ -193,7 +193,7 @@ export default function RobocastPage() {
               <h2 className="text-sm font-semibold text-white/90 mb-2">
                 What Is RoboCast?
               </h2>
-              <p className="text-sm md:text-base text-white/75 leading-relaxed">
+              <p className="text-sm md:text-base text-white/80 leading-relaxed">
                 RoboCast is an engaging podcast series hosted by RoboTUM,
                 bringing together robotics enthusiasts, students, and experts.
                 Each episode dives deep into the world of robotics, featuring

@@ -222,7 +222,7 @@ export default function EventsSection() {
                     className={`cursor-pointer px-5 py-2 text-sm md:text-base font-medium rounded-full transition-all duration-300 border ${
                       active
                         ? "bg-accent text-white border-accent shadow-[0_0_15px_rgba(59,130,246,0.4)] scale-[1.03]"
-                        : "border-white/20 text-white/80 hover:border-white/40 hover:text-white"
+                        : "bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40"
                     }`}
                   >
                     {cat}
@@ -249,7 +249,7 @@ export default function EventsSection() {
                   className={`cursor-pointer px-3.5 py-1.5 text-sm rounded-full transition-all ${
                     active
                       ? "bg-accent text-white shadow"
-                      : "text-white/80 hover:bg-white/10"
+                      : "text-white hover:bg-white/10"
                   }`}
                 >
                   {tf}
