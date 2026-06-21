@@ -41,7 +41,7 @@ function ProjectDropdown({ open, onEnter, onLeave, onItemClick, onSelect }) {
   return (
     <div
       role="menu"
-      className="absolute left-0 top-full mt-2 min-w-52 rounded-xl bg-[#0E1C3D]/80 px-2.5 py-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.45)] ring-1 ring-white/10 z-50 backdrop-blur-md"
+      className="absolute left-0 top-full mt-2 min-w-52 rounded-xl bg-elevated-2/90 px-2.5 py-2.5 shadow-card-lg ring-1 ring-white/10 z-50 backdrop-blur-md"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
@@ -211,7 +211,7 @@ export default function Navbar() {
     "relative group inline-flex items-center justify-center whitespace-nowrap px-4 py-3 text-[14px] tracking-[0.8px] font-medium text-white/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 hover:text-white md:px-2.5 md:py-2.5 md:text-[12px] md:tracking-[0.4px] lg:px-4 lg:py-3 lg:text-[14px] lg:tracking-[0.8px]";
 
   const mobileItemBase =
-    "block w-full rounded-xl border border-white/10 bg-[#10213C]/95 px-4 py-3.5 text-[14px] tracking-[0.8px] text-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition-all duration-200 hover:border-white/15 hover:bg-[#173155] active:scale-[0.995] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70";
+    "block w-full rounded-xl border border-white/10 bg-elevated-2/95 px-4 py-3.5 text-[14px] tracking-[0.8px] text-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition-all duration-200 hover:border-white/15 hover:bg-white/10 active:scale-[0.995] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70";
 
   const mobileSubItemBase =
     "block w-full cursor-pointer rounded-lg px-4 py-2 text-left text-[13px] text-white/90 transition-colors duration-200 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70";
@@ -228,8 +228,8 @@ export default function Navbar() {
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       className={`fixed inset-x-0 top-0 z-60 flex h-14 items-center font-sans md:h-16 border-b border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)] transition-colors duration-500 ${
         scrolled
-          ? "bg-[#0B1530]/80 backdrop-blur-2xl"
-          : "bg-[#0B1530]/60 backdrop-blur-xl"
+          ? "bg-elevated-1/80 backdrop-blur-2xl"
+          : "bg-elevated-1/60 backdrop-blur-xl"
       }`}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -416,7 +416,7 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Main navigation"
-        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu border-t border-white/10 bg-linear-to-b from-[#0D1A37]/95 to-[#081429]/95 shadow-[0_24px_45px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-300 ease-out md:hidden ${
+        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu border-t border-white/10 bg-linear-to-b from-elevated-2/95 to-base/95 shadow-[0_24px_45px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-300 ease-out md:hidden ${
           isMobileOpen
             ? "pointer-events-auto max-h-[calc(100vh-56px)] translate-y-0 overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] opacity-100"
             : "pointer-events-none max-h-0 -translate-y-3 overflow-hidden opacity-0"

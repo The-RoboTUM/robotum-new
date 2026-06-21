@@ -513,7 +513,9 @@ body {
 
 /* ==========================================================================
    COMPONENT UTILITIES (consolidated card / input / label surfaces)
+   In @layer components so inline utility classes can still override them.
    ========================================================================== */
+@layer components {
 
 /* Canonical glass card. Add .card-surface-hover for interactive lift. */
 .card-surface {
@@ -543,6 +545,8 @@ body {
 .feature-panel {
   @apply rounded-3xl border border-white/50 text-primary shadow-card-lg;
   background: linear-gradient(135deg, #eef4ff 0%, #e5f0ff 55%, #dbe8ff 100%);
+}
+
 }
 
 /* Section container with consistent padding */
