@@ -85,7 +85,7 @@ function StoryCard({ story, layout }) {
 
   const wrapperClasses =
     layout === "mobile"
-      ? "group relative min-w-[260px] max-w-xs flex-1 shrink-0 snap-start " +
+      ? "group relative min-w-[min(260px,82vw)] max-w-xs flex-1 shrink-0 snap-start " +
         containerClasses
       : containerClasses;
 

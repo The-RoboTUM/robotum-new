@@ -104,7 +104,7 @@ export default function ContactUsSection() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full rounded-md bg-[#0B1B2E]/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full rounded-md bg-elevated-1/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="Your full name"
               />
             </div>
@@ -124,7 +124,7 @@ export default function ContactUsSection() {
                 value={formData.company}
                 onChange={handleChange}
                 required
-                className="w-full rounded-md bg-[#0B1B2E]/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full rounded-md bg-elevated-1/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="Company name"
               />
             </div>
@@ -144,7 +144,7 @@ export default function ContactUsSection() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full rounded-md bg-[#0B1B2E]/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full rounded-md bg-elevated-1/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="your@email.com"
               />
             </div>
@@ -164,7 +164,7 @@ export default function ContactUsSection() {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className="w-full rounded-md bg-[#0B1B2E]/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
+                className="w-full rounded-md bg-elevated-1/40 border border-white/10 px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="Write your message here..."
               ></textarea>
             </div>
@@ -198,7 +198,7 @@ export default function ContactUsSection() {
         </div>
 
         {/* Right side: contact card */}
-        <div className="flex flex-col items-center bg-[#0B1B2E]/40 border border-white/10 rounded-2xl p-8 text-center">
+        <div className="flex flex-col items-center bg-elevated-1/40 border border-white/10 rounded-2xl p-8 text-center">
           <ImageFrame
             src={assets.violetImg}
             alt="Violet Hsu"

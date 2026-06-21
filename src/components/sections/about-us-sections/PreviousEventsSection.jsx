@@ -58,7 +58,7 @@ export default function PreviousEventsSection() {
     );
 
     return (
-      <article className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-accent/80 hover:shadow-[0_8px_24px_rgba(59,130,246,0.18)] min-w-[260px] sm:min-w-0">
+      <article className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-accent/80 hover:shadow-[0_8px_24px_rgba(59,130,246,0.18)] min-w-[min(260px,82vw)] sm:min-w-0">
         {event.cover_url && (
           <div className="relative">
             <ImageFrame

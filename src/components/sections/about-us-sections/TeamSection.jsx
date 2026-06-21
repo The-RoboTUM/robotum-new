@@ -79,19 +79,26 @@ export default function TeamSection() {
                 key={`${member.id}-${member.category}`}
                 className="group bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer text-center"
               >
-                {/* Avatar from avatar_url */}
+                {/* Avatar from avatar_url, with branded initials fallback */}
                 <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-white/10 border border-white/5">
-                  <ImageFrame
-                    src={
-                      member.photo ||
-                      "https://placehold.co/400x400?text=RoboTUM"
-                    }
-                    alt={member.name}
-                    variant="soft"
-                    rounded="xl"
-                    fit="cover"
-                    className="group-hover:scale-[1.05] transition-transform duration-500 ease-out"
-                  />
+                  {member.photo ? (
+                    <ImageFrame
+                      src={member.photo}
+                      alt={member.name}
+                      variant="soft"
+                      rounded="xl"
+                      fit="cover"
+                      className="group-hover:scale-[1.05] transition-transform duration-500 ease-out"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-accent/30 to-[#7C3AED]/30 text-2xl font-semibold text-white/90">
+                      {member.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </div>
+                  )}
                 </div>
 
                 {/* Text */}
