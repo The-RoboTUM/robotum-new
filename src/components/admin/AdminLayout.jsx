@@ -52,7 +52,7 @@ export default function AdminLayout({ children, title, description }) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white md:flex">
+    <div className="min-h-screen bg-base text-white md:flex">
       {/* Sidebar */}
       <aside className="hidden md:flex w-64 shrink-0 h-screen sticky top-0 flex-col border-r border-white/10 bg-black/40 backdrop-blur-xl">
         <div className="px-5 py-4 border-b border-white/10 flex items-center gap-3">

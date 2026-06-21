@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { logger } from "@utils/logger";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
@@ -92,7 +93,7 @@ export default function AdminEvents() {
         totalItems: total,
       });
     } catch (err) {
-      console.error("Error loading events (admin):", err);
+      logger.error("Error loading events (admin):", err);
       setErrorMsg(
         err.message ||
           "Failed to load events. Please try again or contact an admin.",
@@ -200,7 +201,7 @@ export default function AdminEvents() {
       });
       resetForm();
     } catch (err) {
-      console.error("Error saving event:", err);
+      logger.error("Error saving event:", err);
       setErrorMsg(err.message || "Failed to save event.");
     } finally {
       setSaving(false);
@@ -223,7 +224,7 @@ export default function AdminEvents() {
         resetForm();
       }
     } catch (err) {
-      console.error("Error deleting event:", err);
+      logger.error("Error deleting event:", err);
       setErrorMsg("Failed to delete event.");
     }
   };

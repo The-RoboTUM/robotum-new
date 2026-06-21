@@ -62,8 +62,8 @@ export default function AdminLogin() {
   }
 
   return (
-    <main className="min-h-screen w-full bg-[#020617] hero-orbit-bg flex items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_20px_60px_rgba(15,23,42,0.9)] p-8 space-y-8">
+    <main className="min-h-screen w-full bg-base hero-orbit-bg flex items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-card-lg p-8 space-y-8">
         {/* Logo / header */}
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-black/20 px-6 py-3">
@@ -104,7 +104,7 @@ export default function AdminLogin() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent transition"
+              className="field-input"
               placeholder="you@robotum.info"
             />
           </div>
@@ -123,7 +123,7 @@ export default function AdminLogin() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/40 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent transition"
+              className="field-input"
               placeholder="••••••••"
             />
           </div>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { logger } from "@utils/logger";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
@@ -80,7 +81,7 @@ export default function AdminPartners() {
         totalItems: total,
       });
     } catch (error) {
-      console.error("Error loading partners:", error);
+      logger.error("Error loading partners:", error);
       setErrorMsg("Failed to load partners.");
     } finally {
       setLoading(false);
@@ -176,7 +177,7 @@ export default function AdminPartners() {
       startNew();
       setSuccessMsg("Partner saved successfully.");
     } catch (err) {
-      console.error("Error saving partner:", err);
+      logger.error("Error saving partner:", err);
       setErrorMsg(err.message || "Failed to save partner.");
     } finally {
       setSaving(false);
@@ -194,7 +195,7 @@ export default function AdminPartners() {
       });
       setSuccessMsg("Partner deleted.");
     } catch (error) {
-      console.error("Error deleting partner:", error);
+      logger.error("Error deleting partner:", error);
       setErrorMsg("Failed to delete partner.");
     }
   };

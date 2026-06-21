@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { logger } from "@utils/logger";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
@@ -70,7 +71,7 @@ export default function AdminFaqs() {
         totalItems: total,
       });
     } catch (error) {
-      console.error("Error loading FAQs:", error);
+      logger.error("Error loading FAQs:", error);
       setErrorMsg("Failed to load FAQs.");
     } finally {
       setLoading(false);
@@ -120,7 +121,7 @@ export default function AdminFaqs() {
       });
       startNew();
     } catch (err) {
-      console.error("Error saving FAQ:", err);
+      logger.error("Error saving FAQ:", err);
       setErrorMsg(err.message || "Failed to save FAQ.");
     } finally {
       setSaving(false);
@@ -137,7 +138,7 @@ export default function AdminFaqs() {
         pageSize: pagination.pageSize,
       });
     } catch (error) {
-      console.error("Error deleting FAQ:", error);
+      logger.error("Error deleting FAQ:", error);
       setErrorMsg("Failed to delete FAQ.");
     }
   };

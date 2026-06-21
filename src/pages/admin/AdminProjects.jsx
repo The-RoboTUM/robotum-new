@@ -1,5 +1,6 @@
 // src/pages/admin/AdminProjects.jsx
 import { useCallback, useEffect, useState } from "react";
+import { logger } from "@utils/logger";
 import AdminLayout from "@components/admin/AdminLayout";
 import Button from "@components/ui/Button";
 
@@ -88,7 +89,7 @@ export default function AdminProjects() {
         totalItems: total,
       });
     } catch (err) {
-      console.error("Error loading projects:", err);
+      logger.error("Error loading projects:", err);
       setErrorMsg(
         err.message || "Failed to load projects. Please try again later.",
       );
@@ -215,7 +216,7 @@ export default function AdminProjects() {
       });
       resetForm();
     } catch (err) {
-      console.error("Error saving project:", err);
+      logger.error("Error saving project:", err);
       setErrorMsg(err.message || "Failed to save project.");
     } finally {
       setSaving(false);
@@ -243,7 +244,7 @@ export default function AdminProjects() {
         resetForm();
       }
     } catch (err) {
-      console.error("Error deleting project:", err);
+      logger.error("Error deleting project:", err);
       setErrorMsg(err.message || "Failed to delete project.");
     }
   };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { logger } from "@utils/logger";
 import { Link } from "react-router-dom";
 import AdminLayout from "@components/admin/AdminLayout";
 import AdminErrorBanner from "@components/admin/AdminErrorBanner";
@@ -43,7 +44,7 @@ export default function AdminDashboard() {
           events: events.length,
         });
       } catch (err) {
-        console.error("Error loading admin dashboard counts:", err);
+        logger.error("Error loading admin dashboard counts:", err);
         if (!mounted) return;
 
         setCounts({ faqs: null, partners: null, projects: null, events: null });
