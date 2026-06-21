@@ -62,7 +62,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <main className="min-h-screen w-full bg-base hero-orbit-bg flex items-center justify-center px-4">
+    <main className="min-h-screen w-full bg-canvas hero-orbit-bg flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-card-lg p-8 space-y-8">
         {/* Logo / header */}
         <div className="flex flex-col items-center gap-3 text-center">

@@ -416,7 +416,7 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Main navigation"
-        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu border-t border-white/10 bg-linear-to-b from-elevated-2/95 to-base/95 shadow-[0_24px_45px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-300 ease-out md:hidden ${
+        className={`fixed left-0 right-0 top-14 z-40 px-4 transform-gpu border-t border-white/10 bg-linear-to-b from-elevated-2/95 to-canvas/95 shadow-[0_24px_45px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-300 ease-out md:hidden ${
           isMobileOpen
             ? "pointer-events-auto max-h-[calc(100vh-56px)] translate-y-0 overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] opacity-100"
             : "pointer-events-none max-h-0 -translate-y-3 overflow-hidden opacity-0"

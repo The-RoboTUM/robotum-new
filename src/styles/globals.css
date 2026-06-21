@@ -22,8 +22,10 @@
   --text-text2: clamp(0.9375rem, 0.6vw + 0.2rem, 1.125rem);
 
   /* Elevated dark surfaces (consolidates previously hardcoded navies).
-     Compose with opacity, e.g. bg-elevated-1/80, like the old raw hexes. */
-  --color-base: #020617;
+     Compose with opacity, e.g. bg-elevated-1/80, like the old raw hexes.
+     NOTE: named --color-canvas not --color-base to avoid shadowing Tailwind's
+     built-in text-base / bg-base font-size utilities. */
+  --color-canvas: #020617;
   --color-elevated-1: #0b1530;
   --color-elevated-2: #0d1a37;
   --color-inset: #050a1a;
@@ -532,7 +534,7 @@ body {
 
 /* Form control on dark surfaces. */
 .field-input {
-  @apply w-full rounded-lg border border-white/15 bg-base/40 px-3 py-2 text-sm text-white outline-none transition placeholder:text-white/40;
+  @apply w-full rounded-lg border border-white/15 bg-canvas/40 px-3 py-2 text-sm text-white outline-none transition placeholder:text-white/40;
   @apply focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent;
 }
 

@@ -112,7 +112,7 @@ export default function EventDetail() {
 
             <h1 className="heading heading-h1 leading-tight">{event.title}</h1>
 
-            <p className="text-text2 text-white/75 text-sm md:text-base">
+            <p className="text-text2 text-white/70 text-sm md:text-base">
               {formatEventDateRange(event.start_at, event.end_at)} ·{" "}
               {locationElement}
             </p>
