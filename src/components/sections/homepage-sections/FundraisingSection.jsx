@@ -77,7 +77,7 @@ export default function FundraisingSection() {
             </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-4">
             <Button
               as="a"
               href={donateUrl}
@@ -87,6 +87,21 @@ export default function FundraisingSection() {
             >
               Donate on betterplace →
             </Button>
+
+            <div className="max-w-xl rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center">
+              <p className="text-sm leading-relaxed text-white/65">
+                Interested in making a larger contribution? For donations of{" "}
+                <span className="font-semibold text-white">€300 or more</span>, or for
+                corporate sponsorship opportunities, please contact us directly at{" "}
+                <a
+                  href="mailto:outreach@robotum.info"
+                  className="font-medium text-accent hover:underline"
+                >
+                  outreach@robotum.info
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </div>
       </div>

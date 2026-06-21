@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk npm *)",
+      "Bash(rtk git *)",
+      "Bash(ssh-add -l)",
+      "Bash(rtk ls *)",
+      "Bash(ssh *)"
+    ]
+  }
+}
