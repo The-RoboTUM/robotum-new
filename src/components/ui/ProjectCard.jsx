@@ -7,7 +7,7 @@ export default function ProjectCard({ project }) {
   const imageSrc = project.cover_url || project.cover || "/placeholder.png";
 
   return (
-    <article className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+    <article className="group card-surface card-surface-hover overflow-hidden focus-within:border-white/20">
       <div className="relative">
         <ImageFrame
           src={imageSrc}

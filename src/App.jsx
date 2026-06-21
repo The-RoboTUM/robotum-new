@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import ScrollToHashElement from "@components/ui/ScrollToHashElement";
 import PageLoader from "@components/sections/common-sections/PageLoader";
+import ErrorBoundary from "@components/ErrorBoundary";
 
 // 🔐 Admin route guard
 import AdminRoute from "@components/admin/AdminRoute";
@@ -20,6 +21,7 @@ const Projects = lazy(() => import("@pages/Projects"));
 const ProjectDetail = lazy(() => import("@pages/ProjectDetail"));
 const Robocast = lazy(() => import("@pages/Robocast"));
 const Faqs = lazy(() => import("@pages/Faqs"));
+const NotFound = lazy(() => import("@pages/NotFound"));
 
 // 🔐 Admin pages
 const AdminLogin = lazy(() => import("@pages/admin/AdminLogin"));
@@ -31,6 +33,7 @@ const AdminEvents = lazy(() => import("@pages/admin/AdminEvents"));
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <Suspense fallback={<PageLoader />}>
       <ScrollToHashElement />
       <Routes>
@@ -61,7 +64,11 @@ export default function App() {
           <Route path="/admin/events" element={<AdminEvents />} />
           {/* later: /admin/applications, /admin/members */}
         </Route>
+
+        {/* 404 — must stay last */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
+    </ErrorBoundary>
   );
 }
