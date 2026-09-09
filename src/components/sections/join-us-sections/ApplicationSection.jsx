@@ -1,3 +1,10 @@
+import Button from "@components/ui/Button";
+import {
+  applications,
+  applicationsOpen,
+  formatApplicationDeadline,
+} from "@config/applications";
+
 const steps = [
   {
     number: 1,
@@ -20,6 +27,8 @@ const steps = [
 ];
 
 const ApplicationSection = () => {
+  const deadline = formatApplicationDeadline();
+
   return (
     <section
       className="section-container font-sans text-white section-dark-secondary surface-pattern"
@@ -37,8 +46,11 @@ const ApplicationSection = () => {
           Interested in joining RoboTUM? Great! Here’s how our application
           process works.
           <br />
-          The next application phase will open soon - stay tuned on our website
-          or social media.
+          {applicationsOpen
+            ? `Applications for the ${applications.semester} are open${
+                deadline ? ` until ${deadline}` : ""
+              } - three steps, no hidden rounds.`
+            : "The next application phase will open soon - stay tuned on our website or social media."}
         </p>
       </div>
 
@@ -73,6 +85,14 @@ const ApplicationSection = () => {
           </article>
         ))}
       </div>
+
+      {applicationsOpen && (
+        <div className="mt-14 text-center">
+          <Button variant="primary" scrollTarget="application">
+            Go to the application form ↓
+          </Button>
+        </div>
+      )}
     </section>
   );
 };

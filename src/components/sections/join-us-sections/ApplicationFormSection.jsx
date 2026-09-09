@@ -1,87 +1,184 @@
-import Button from "@components/ui/Button";
+import {
+  CheckCircleIcon,
+  ClockIcon,
+  CalendarDaysIcon,
+  DocumentTextIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/outline";
 
-// Applications are currently closed. To reopen, restore the "Start application"
-// button in the panel below and link it to the Typeform:
-//   https://form.typeform.com/to/Uojt4r1b
+import ApplyButton from "@components/ui/ApplyButton";
+import {
+  applications,
+  applicationsOpen,
+  hasApplicationForm,
+  formatApplicationDeadlineWithTime,
+} from "@config/applications";
+
+// Everything on this page is driven by src/config/applications.js -
+// flip `isOpen` / paste the Google Form link there, no code changes needed.
+
+const CHECKLIST = [
+  "Your TUM (or university) email address",
+  "An up-to-date CV and your transcript of records",
+  "Which kind of project work you want to contribute to",
+  "Time for the motivation section - it is the part we read closest",
+];
 
 const ApplicationFormSection = () => {
+  const deadline = formatApplicationDeadlineWithTime();
+
+  const facts = [
+    {
+      icon: DocumentTextIcon,
+      label: "Format",
+      value: "Google Form, submitted online",
+    },
+    {
+      icon: ClockIcon,
+      label: "Time needed",
+      value: applications.durationLabel,
+    },
+    {
+      icon: CalendarDaysIcon,
+      label: "Deadline",
+      value: deadline || "Rolling - we review as applications arrive",
+    },
+    {
+      icon: MapPinIcon,
+      label: "Requirement",
+      value: applications.locationNote,
+    },
+  ];
+
   return (
     <section
       id="application"
       className="section-dark-secondary surface-pattern"
+      aria-labelledby="application-form-heading"
     >
       <div className="section-container">
         <div className="mx-auto max-w-4xl bg-elevated-1/80 border border-white/10 rounded-3xl px-5 py-6 sm:px-8 sm:py-8 shadow-card-lg backdrop-blur-xl flex flex-col gap-8">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div>
-              <p className="text-xs tracking-widest text-white/60 uppercase mb-2">
-                Join RoboTUM
-              </p>
-              <h2 className="heading heading-h2 text-3xl md:text-4xl mt-2">
-                Application form
-              </h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-3">
+              {applicationsOpen ? (
+                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-200">
+                  <span className="relative flex h-2 w-2" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  Applications open
+                </span>
+              ) : (
+                <span className="chip">Applications closed</span>
+              )}
+              <span className="chip">{applications.semester}</span>
             </div>
 
-            <div className="rounded-2xl border border-accent/30 bg-elevated-2/90 px-4 py-4 text-sm text-white/85 max-w-md">
-              <p className="font-semibold text-white mb-2">Before you start:</p>
-              <ul className="space-y-1 list-disc list-inside text-white/80">
-                <li>The application takes around 30–45 minutes.</li>
-                <li>Please answer the motivation questions thoughtfully.</li>
-                <li>Use your university email if possible.</li>
-                <li>Have your CV and transcript of records ready as PDF.</li>
-              </ul>
-            </div>
+            <h2
+              id="application-form-heading"
+              className="heading heading-h2 text-3xl md:text-4xl text-balance"
+            >
+              {applicationsOpen ? (
+                <>
+                  Apply for the{" "}
+                  <span className="text-gradient">{applications.semester}</span>
+                </>
+              ) : (
+                "Application form"
+              )}
+            </h2>
+
+            <p className="text-text2 text-white/75 leading-relaxed max-w-2xl">
+              {applicationsOpen
+                ? `Set aside ${applications.durationLabel} and have your documents ready. We review applications as they arrive, so the earlier you apply, the sooner we can match you with a project.`
+                : "Thank you for your interest in joining RoboTUM. The current application phase has ended and new submissions are not accepted at this time."}
+            </p>
           </div>
 
           {/* Main content */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.92fr] gap-6 lg:gap-8 items-stretch">
-            <div className="rounded-2xl border border-white/15 bg-inset/40 p-5 sm:p-6 text-sm text-white/75 leading-relaxed flex flex-col justify-between min-h-full">
-              <div>
-                <p className="text-sm font-medium text-white mb-3">
-                  After submitting
-                </p>
-                <p>
-                  Our team will review your application and get back to you via
-                  email. If you have any questions, you can always reach us at{" "}
-                  <a
-                    href="mailto:operations@robotum.info"
-                    className="underline hover:text-white"
-                  >
-                    operations@robotum.info
-                  </a>
-                  .
-                </p>
-              </div>
+            {/* Checklist */}
+            <div className="card-inset p-5 sm:p-6 flex flex-col gap-4">
+              <p className="text-sm font-medium text-white">
+                Have this ready before you start
+              </p>
+              <ul className="flex flex-col gap-3">
+                {CHECKLIST.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <CheckCircleIcon
+                      className="mt-0.5 h-5 w-5 shrink-0 text-accent"
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm text-white/75 leading-relaxed">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-auto pt-2 text-[11px] text-white/45 leading-relaxed">
+                You don't need to study robotics - we welcome applicants from
+                every field, technical and non-technical alike.
+              </p>
             </div>
 
-            <div className="flex flex-col gap-4 rounded-2xl border border-white/15 bg-inset/40 p-5 sm:p-6 min-h-full">
-              <div>
-                <p className="text-sm font-medium text-white">
-                  Applications are currently closed
-                </p>
-                <p className="mt-2 text-sm text-white/70 leading-relaxed">
-                  Thank you for your interest in joining RoboTUM. The current
-                  application phase has ended, and new submissions are no longer
-                  accepted at this time.
-                </p>
-              </div>
+            {/* Call to action */}
+            <div className="rounded-2xl bg-linear-to-br from-accent/50 via-[#7C3AED]/45 to-[#22D3EE]/35 p-px shadow-card">
+              <div className="flex h-full flex-col gap-5 rounded-2xl bg-elevated-2/95 p-5 sm:p-6">
+                <div className="flex flex-col gap-3">
+                  {facts.map(({ icon: Icon, label, value }) => (
+                    <div key={label} className="flex items-start gap-3">
+                      <Icon
+                        className="mt-0.5 h-5 w-5 shrink-0 text-white/45"
+                        aria-hidden="true"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-[11px] uppercase tracking-wide text-white/45">
+                          {label}
+                        </p>
+                        <p className="text-sm text-white/85 leading-snug">
+                          {value}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-              <Button
-                variant="secondaryStatic"
-                disabled
-                className="w-full justify-center"
+                <div className="mt-auto flex flex-col gap-2">
+                  <ApplyButton
+                    label="Open application form"
+                    fullWidth
+                    className="justify-center"
+                  />
+                  <p className="text-center text-[11px] text-white/45 leading-relaxed">
+                    {applicationsOpen && hasApplicationForm
+                      ? "Opens Google Forms in a new tab."
+                      : applicationsOpen
+                        ? "The form goes live shortly - check back soon."
+                        : "Follow our channels to hear when the next phase opens."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* After submitting */}
+          <div className="card-inset p-5 sm:p-6 text-sm text-white/75 leading-relaxed">
+            <p className="text-sm font-medium text-white mb-2">
+              What happens after you submit
+            </p>
+            <p>
+              You'll get a confirmation by email. Our team reviews every
+              application and invites matching candidates to a short, informal
+              interview. Questions at any point? Write to{" "}
+              <a
+                href={`mailto:${applications.contactEmail}`}
+                className="underline underline-offset-2 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
               >
-                Applications closed
-              </Button>
-
-              <div className="pt-1 border-t border-white/10">
-                <p className="text-[11px] text-white/45 leading-relaxed">
-                  Please check back during the next application phase or follow
-                  RoboTUM announcements for reopening updates.
-                </p>
-              </div>
-            </div>
+                {applications.contactEmail}
+              </a>
+              .
+            </p>
           </div>
         </div>
       </div>

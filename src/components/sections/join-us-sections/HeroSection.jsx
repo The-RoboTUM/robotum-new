@@ -1,22 +1,33 @@
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
 import ImageFrame from "@components/ui/ImageFrame";
+import ApplicationBanner from "@components/ui/ApplicationBanner";
+import { applications, applicationsOpen } from "@config/applications";
 
 const HeroSection = () => {
   return (
     <section className="section-container min-h-[70vh] lg:min-h-screen flex flex-col lg:flex-row items-center justify-between text-white font-sans overflow-hidden section-dark-primary surface-pattern">
       {/* Left side: text content */}
       <div className="w-full lg:w-1/2 order-2 lg:order-1 space-y-6 text-center lg:text-left">
+        <ApplicationBanner to={null} align="start" className="hero-animate" />
+
         <h1 className="heading heading-display md:text-display leading-tight text-balance hero-animate">
           Get <span className="text-gradient">inspired</span> <br /> Get{" "}
           <span className="text-gradient">involved</span>
         </h1>
         <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0 hero-animate">
           Hands-on. Future-focused. Together.
+          {applicationsOpen && (
+            <>
+              {" "}
+              Applications for the {applications.semester} are open - your spot
+              on a robotics team starts with one form.
+            </>
+          )}
         </p>
         <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4 hero-animate">
-          <Button variant="primary" scrollTarget="application" target="_blank">
-            Apply Now
+          <Button variant="primary" scrollTarget="application">
+            {applicationsOpen ? "Apply Now ↓" : "Application info ↓"}
           </Button>
           <Button variant="secondary" scrollTarget="why-we-section">
             Learn More ↓

@@ -4,6 +4,11 @@ import FooterSection from "@components/sections/common-sections/FooterSection";
 import HeroSection from "@components/sections/homepage-sections/HeroSection";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
 import NewsTicker from "@components/sections/common-sections/NewsTicker";
+import {
+  applications,
+  applicationsOpen,
+  applicationTickerMessages,
+} from "@config/applications";
 
 // Lazily load below-the-fold sections to reduce initial bundle size
 import { lazy, Suspense, useEffect } from "react";
@@ -38,10 +43,11 @@ const Home = () => {
       <Navbar />
       <main className="pt-13 md:pt-15">
         <NewsTicker
-          messages={[
-            "SS 2026 applications are closed",
-            "Next application phase opens in September 2026",
-          ]}
+          messages={applicationTickerMessages()}
+          badge={
+            applicationsOpen ? `${applications.semesterShort} intake` : "Latest"
+          }
+          tone={applicationsOpen ? "highlight" : "default"}
         />
         <HeroSection />
 

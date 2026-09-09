@@ -1,5 +1,7 @@
 import * as assets from "@assets";
 import Button from "@components/ui/Button";
+import ApplicationBanner from "@components/ui/ApplicationBanner";
+import { applicationsOpen } from "@config/applications";
 import HeroBackground from "./HeroBackground";
 
 export default function HeroSection({
@@ -20,6 +22,9 @@ export default function HeroSection({
 
       {/* Main content centered vertically */}
       <div className="section-container relative z-10 flex flex-col items-center justify-center min-h-screen text-center pt-20 sm:pt-24">
+        {/* Open application phase announcement (renders nothing when closed) */}
+        <ApplicationBanner className="mb-6 hero-animate" />
+
         {/* Logo */}
         <img
           src={assets.navLogo}
@@ -40,7 +45,7 @@ export default function HeroSection({
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 hero-animate">
           <Button variant="primary" as="link" to={ctaPrimaryTo}>
-            {ctaPrimary}
+            {applicationsOpen ? "Apply Now" : ctaPrimary}
           </Button>
           {ctaSecondary && (
             <Button variant="secondary" to={ctaSecondaryTo}>
