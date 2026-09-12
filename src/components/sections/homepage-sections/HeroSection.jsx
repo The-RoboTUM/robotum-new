@@ -29,7 +29,7 @@ export default function HeroSection({
         <img
           src={assets.navLogo}
           alt="RoboTUM logo"
-          className="w-46 sm:w-44 md:w-66 h-auto drop-shadow-lg mb-6"
+          className="w-80 sm:w-64 md:w-96 h-auto drop-shadow-lg mb-6"
           loading="eager"
           decoding="async"
         />
