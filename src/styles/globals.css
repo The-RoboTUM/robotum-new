@@ -956,8 +956,8 @@ body::before {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   /* ↓ SLIMMER HEIGHT */
-  padding: 4px 0;
-  height: 28px; /* reduced from 40–50px */
+  padding: 7px 0;
+  height: 38px; /* reduced from 40–50px */
 }
 
 .news-ticker-content {
