@@ -84,7 +84,7 @@ export default function ContactUsSection() {
         <div>
           <h2 className="heading heading-h2 mb-6">Become a Partner</h2>
           <p className="text-text2 text-white/80 mb-8 max-w-prose">
-            Interested in collaborating with RoboTUM? Fill out the form below
+            Interested in collaborating with roboTUM? Fill out the form below
             and we’ll get in touch soon.
           </p>
 

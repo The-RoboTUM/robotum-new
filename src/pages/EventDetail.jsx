@@ -23,9 +23,9 @@ export default function EventDetail() {
 
   useEffect(() => {
     if (event) {
-      document.title = `${event.title} | RoboTUM Events`;
+      document.title = `${event.title} | roboTUM Events`;
     } else {
-      document.title = "Event | RoboTUM";
+      document.title = "Event | roboTUM";
     }
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [event]);

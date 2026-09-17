@@ -15,7 +15,7 @@ const WhyWeSection = () => {
             id="why-heading"
             className="heading heading-h1 font-bold leading-tight text-balance mb-6"
           >
-            Why RoboTUM?
+            Why roboTUM?
           </h2>
           <p className="text-text2 md:text-text1 text-white/80 max-w-3xl mx-auto leading-relaxed">
             Learn, build, and innovate together with students who share your
@@ -27,7 +27,7 @@ const WhyWeSection = () => {
         <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
           role="list"
-          aria-label="Why RoboTUM features"
+          aria-label="Why roboTUM features"
         >
           {[
             { icon: assets.handsOnIcon, title: "Hands-on experience" },
@@ -57,7 +57,7 @@ const WhyWeSection = () => {
             Who are we looking for?
           </h3>
           <p className="text-text2 md:text-text1 text-white/80 mb-4 leading-relaxed">
-            At RoboTUM, we are seeking high-performing, motivated, and efficient
+            At roboTUM, we are seeking high-performing, motivated, and efficient
             students to help transform Munich into the robotics hub it is
             destined to be. We are highly selective and expect the highest
             quality of work. In exchange, we offer you value in the form of a

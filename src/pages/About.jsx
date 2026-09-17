@@ -18,7 +18,7 @@ const PreviousEventsSection = lazy(
 
 const About = () => {
   useEffect(() => {
-    document.title = "About Us | RoboTUM";
+    document.title = "About Us | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

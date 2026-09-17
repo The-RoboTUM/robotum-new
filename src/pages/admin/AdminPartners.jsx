@@ -212,7 +212,7 @@ export default function AdminPartners() {
   return (
     <AdminLayout
       title="Partners"
-      description="Manage RoboTUM partners shown on the public site."
+      description="Manage roboTUM partners shown on the public site."
     >
       <AdminBanner message={errorMsg} />
       <AdminBanner message={successMsg} tone="success" />

@@ -52,11 +52,11 @@ export default function ImageFrame({
 
   // style variants (modernized)
   const variantClass = clsx({
-    "bg-[rgba(255,255,255,0.04)] outline outline-[rgba(255,255,255,0.08)] shadow-[0_6px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_10px_28px_rgba(0,0,0,0.55)] transition-all duration-500":
+    "bg-[rgba(255,255,255,0.04)] outline outline-[rgba(255,255,255,0.08)] transition-all duration-500":
       variant === "soft",
-    "bg-[rgba(255,255,255,0.06)] outline outline-[rgba(99,102,241,0.35)] shadow-[0_8px_26px_rgba(2,0,53,0.45)] transition-all duration-500 hover:shadow-[0_10px_32px_rgba(59,130,246,0.35)]":
+    "bg-[rgba(255,255,255,0.06)] outline outline-[rgba(99,102,241,0.35)] transition-all duration-500":
       variant === "border",
-    "bg-[rgba(12,19,36,0.35)] outline outline-[rgba(59,130,246,0.45)] shadow-[0_0_15px_rgba(59,130,246,.35),0_12px_36px_rgba(59,130,246,.25),0_24px_60px_rgba(124,58,237,.18)] transition-all duration-500":
+    "bg-[rgba(12,19,36,0.35)] outline outline-[rgba(59,130,246,0.45)] transition-all duration-500":
       variant === "glow",
   });
 

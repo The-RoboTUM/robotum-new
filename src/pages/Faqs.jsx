@@ -20,7 +20,7 @@ const Faqs = () => {
   });
 
   useEffect(() => {
-    document.title = "Q&A | RoboTUM";
+    document.title = "Q&A | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

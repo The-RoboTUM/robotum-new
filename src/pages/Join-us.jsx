@@ -21,7 +21,7 @@ const ApplicationFormSection = lazy(
 
 const JoinUs = () => {
   useEffect(() => {
-    document.title = "Join Us | RoboTUM";
+    document.title = "Join Us | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

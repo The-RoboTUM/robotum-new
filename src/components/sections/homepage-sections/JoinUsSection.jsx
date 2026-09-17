@@ -30,7 +30,7 @@ export default function JoinUsSection() {
               Become a Member
             </h2>
             <p className="text-text2 md:text-text1 text-white/80 leading-relaxed">
-              Join RoboTUM and shape the future of robotics with us. Attend our
+              Join roboTUM and shape the future of robotics with us. Attend our
               events, participate in projects, and grow your skills alongside
               passionate innovators.
             </p>
@@ -66,7 +66,7 @@ export default function JoinUsSection() {
               Become a Partner
             </h2>
             <p className="text-text2 md:text-text1 text-white/80 leading-relaxed">
-              Collaborate with RoboTUM to sponsor innovation, support future
+              Collaborate with roboTUM to sponsor innovation, support future
               engineers, and gain visibility in our events and projects.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">

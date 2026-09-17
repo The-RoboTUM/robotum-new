@@ -10,7 +10,7 @@ const steps = [
     number: 1,
     title: "Apply",
     description:
-      "Fill out our short application form and tell us about yourself, your interests, and what you’d like to contribute to RoboTUM.",
+      "Fill out our short application form and tell us about yourself, your interests, and what you’d like to contribute to roboTUM.",
   },
   {
     number: 2,
@@ -22,7 +22,7 @@ const steps = [
     number: 3,
     title: "Welcome!",
     description:
-      "If it’s a fit on both sides - welcome to the RoboTUM team! We’ll onboard you, introduce you to your project group, and get you started.",
+      "If it’s a fit on both sides - welcome to the roboTUM team! We’ll onboard you, introduce you to your project group, and get you started.",
   },
 ];
 
@@ -43,7 +43,7 @@ const ApplicationSection = () => {
           Application Process
         </h2>
         <p className="text-text2 md:text-text1 text-white/80 leading-relaxed max-w-3xl mx-auto">
-          Interested in joining RoboTUM? Great! Here’s how our application
+          Interested in joining roboTUM? Great! Here’s how our application
           process works.
           <br />
           {applicationsOpen

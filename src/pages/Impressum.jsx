@@ -7,7 +7,7 @@ import { useEffect, Suspense } from "react";
 
 export default function Impressum() {
   useEffect(() => {
-    document.title = "Impressum | RoboTUM";
+    document.title = "Impressum | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

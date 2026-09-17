@@ -5,7 +5,7 @@ import Button from "@components/ui/Button";
 
 export default function NotFound() {
   useEffect(() => {
-    document.title = "Page not found | RoboTUM";
+    document.title = "Page not found | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

@@ -14,10 +14,10 @@ export default function SectionLoader() {
       "
       aria-label="Section loading"
     >
-      <div className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur-md shadow-[0_14px_35px_rgba(15,23,42,0.55)]">
+      <div className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur-md">
         <img
           src={assets.navLogo}
-          alt="RoboTUM logo"
+          alt="roboTUM logo"
           className="h-8 w-auto opacity-90"
         />
       </div>

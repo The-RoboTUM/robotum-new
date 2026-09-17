@@ -42,12 +42,12 @@ export default function WhatIsRobotum({ illustration }) {
             id="what-robotum-heading"
             className="heading heading-h1 mb-5 text-white leading-tight text-balance"
           >
-            What is <span className="text-gradient">RoboTUM</span>?
+            What is <span className="text-gradient">roboTUM</span>?
           </h2>
           <p className="text-text1 text-white/85 leading-relaxed mb-6">
             Germany's leading student-led robotics initiative, dedicated to
             advancing robotics engineering and education at the Technical
-            University of Munich and beyond. As a member of RoboTUM, you will
+            University of Munich and beyond. As a member of roboTUM, you will
             have the opportunity to collaborate with a diverse group of talented
             students, industry professionals, and academics to innovate and
             excel in the field of robotics.
@@ -105,7 +105,7 @@ export default function WhatIsRobotum({ illustration }) {
           {illustration ? (
             <ImageFrame
               src={illustration}
-              alt="RoboTUM community - projects and people"
+              alt="roboTUM community - projects and people"
               aspect="3/2"
               fit="cover"
               variant="border"

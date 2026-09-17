@@ -73,7 +73,7 @@ export default function AdminDashboard() {
   return (
     <AdminLayout
       title="Admin Dashboard"
-      description="Manage RoboTUM content and internal data."
+      description="Manage roboTUM content and internal data."
     >
       <div className="space-y-8">
         {errorMsg && <AdminBanner message={errorMsg} />}

@@ -37,7 +37,7 @@ const SOCIAL_LINKS = [
     invert: true,
   },
   {
-    href: "https://t.me/theRoboTUM",
+    href: "https://t.me/theroboTUM",
     label: "Telegram",
     icon: assets.telegramIcon,
     invert: true,
@@ -73,9 +73,9 @@ export default function FooterSection() {
       <div className="flex flex-wrap justify-center gap-8 text-left md:justify-between">
         {/* Logo + description */}
         <div className="flex min-w-40 flex-col items-center gap-4 md:items-start">
-          <img src={assets.logo} alt="RoboTUM Logo" className="h-10" />
+          <img src={assets.logo} alt="roboTUM Logo" className="h-10" />
           <p className="max-w-xs text-sm text-white/60">
-            RoboTUM - Student Initiative at the Technical University of Munich
+            roboTUM - Student Initiative at the Technical University of Munich
           </p>
         </div>
 
@@ -112,8 +112,8 @@ export default function FooterSection() {
 
       {/* Bottom bar */}
       <div className="flex flex-col items-center justify-between gap-2 text-center text-sm text-white/50 md:flex-row">
-        <span>© 2026 RoboTUM. All rights reserved.</span>
-        <span>Built with ❤️ by the RoboTUM Team</span>
+        <span>© 2026 roboTUM. All rights reserved.</span>
+        <span>Built with ❤️ by the roboTUM Team</span>
       </div>
     </footer>
   );

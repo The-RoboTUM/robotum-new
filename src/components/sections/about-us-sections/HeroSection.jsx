@@ -81,7 +81,7 @@ export default function AboutHero() {
         <div className="md:w-1/2">
           <ImageFrame
             src={assets.aboutUsHeroImg}
-            alt="RoboTUM students collaborating during a robotics session"
+            alt="roboTUM students collaborating during a robotics session"
             aspect="3/2"
             fit="cover"
             variant="soft"
@@ -97,7 +97,7 @@ export default function AboutHero() {
         ref={statsRef}
         className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-8 text-center"
         role="list"
-        aria-label="RoboTUM key figures"
+        aria-label="roboTUM key figures"
       >
         <div
           className="rounded-xl p-6 bg-white/5 border border-white/10 backdrop-blur-sm"

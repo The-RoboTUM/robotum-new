@@ -34,7 +34,7 @@ const FundraisingSection = lazy(
 
 const Home = () => {
   useEffect(() => {
-    document.title = "Home | RoboTUM";
+    document.title = "Home | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

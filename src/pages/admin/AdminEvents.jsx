@@ -244,7 +244,7 @@ export default function AdminEvents() {
   return (
     <AdminLayout
       title="Events"
-      description="Create, edit, and organize RoboTUM events."
+      description="Create, edit, and organize roboTUM events."
     >
       <AdminBanner message={errorMsg} />
       <AdminBanner message={successMsg} tone="success" />
