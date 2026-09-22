@@ -7,7 +7,7 @@ import { useEffect, Suspense } from "react";
 
 export default function GenderAndDiversity() {
   useEffect(() => {
-    document.title = "Gender & Biodiversity | RoboTUM";
+    document.title = "Gender & Biodiversity | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
@@ -23,23 +23,23 @@ export default function GenderAndDiversity() {
 
             <section className="mb-8">
               <h2 className="text-text1 font-semibold">
-                RoboTUM Diversity &amp; Gender Equality Plan
+                roboTUM Diversity &amp; Gender Equality Plan
               </h2>
               <p>
-                RoboTUM fosters a culture of integrity, open mindedness, and
+                roboTUM fosters a culture of integrity, open mindedness, and
                 tolerance. It recognizes the value created through diversity and
                 respect as a central guiding principle for its proven success:
                 It is the diversity of its scientists, students, and employees
-                that makes RoboTUM an innovative and dynamic organization.
-                RoboTUM is thus committed to holistic diversity management that
+                that makes roboTUM an innovative and dynamic organization.
+                roboTUM is thus committed to holistic diversity management that
                 actively promotes the equality of talent, irrespective of
                 gender, nationality, religion, ideology, physical ability, age,
-                sexual identity, or socioeconomic status. RoboTUM translates
+                sexual identity, or socioeconomic status. roboTUM translates
                 this commitment into numerous concrete measures, many of which
                 have already been successfully implemented, established, and
                 optimized since the publication of the first Diversity &amp;
                 Gender Equality Plan at the end of 2024. With the publication of
-                the current Diversity &amp; Gender Equality Plan, RoboTUM
+                the current Diversity &amp; Gender Equality Plan, roboTUM
                 reaffirms its forward looking vision of establishing an ever
                 more inclusive organizational culture through ongoing efforts in
                 the context of systematic diversity management, which is
@@ -51,14 +51,14 @@ export default function GenderAndDiversity() {
             <section className="mb-8">
               <h2 className="text-text1 font-semibold">Commitment</h2>
               <p>
-                This Diversity &amp; Gender Equality Plan represents RoboTUM’s
+                This Diversity &amp; Gender Equality Plan represents roboTUM’s
                 continued commitment to the principle of an open minded
                 organization that attracts and supports the best talents in all
                 their diversity. These measures are intended to create the best
                 possible conditions for each person to develop their individual
-                potential. Equality is an elementary pillar of RoboTUM, and the
+                potential. Equality is an elementary pillar of roboTUM, and the
                 organization is committed to a focus on diversity and talent
-                management. The RoboTUM Board of Management fosters gender
+                management. The roboTUM Board of Management fosters gender
                 equality and wholeheartedly supports the Diversity &amp; Gender
                 Equality Plan. In order to promote equality in a diverse
                 community in the best possible way, the implementation status of

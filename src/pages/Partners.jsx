@@ -18,7 +18,7 @@ const ContactUsSection = lazy(
 
 export default function Partners() {
   useEffect(() => {
-    document.title = "Partners | RoboTUM";
+    document.title = "Partners | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

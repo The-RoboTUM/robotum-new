@@ -61,7 +61,7 @@ export default function Projects() {
 
   // scroll to top
   useEffect(() => {
-    document.title = "Projects | RoboTUM";
+    document.title = "Projects | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

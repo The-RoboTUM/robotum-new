@@ -255,7 +255,7 @@ export default function AdminFaqs() {
                 value={form.question}
                 onChange={handleChange}
                 className="field-input"
-                placeholder="What is RoboTUM?"
+                placeholder="What is roboTUM?"
               />
             </div>
 
@@ -271,7 +271,7 @@ export default function AdminFaqs() {
                 value={form.answer}
                 onChange={handleChange}
                 className="field-input resize-y"
-                placeholder="RoboTUM is the official robotics student team at TUM…"
+                placeholder="roboTUM is the official robotics student team at TUM…"
               />
             </div>
 

@@ -69,12 +69,12 @@ export default function AdminLogin() {
           <div className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-black/20 px-6 py-3">
             <img
               src={assets.navLogo}
-              alt="RoboTUM logo"
+              alt="roboTUM logo"
               className="h-10 w-auto"
             />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">RoboTUM Admin</h1>
+            <h1 className="text-xl font-semibold text-white">roboTUM Admin</h1>
             <p className="text-sm text-white/70 mt-1">
               Sign in with your admin credentials.
             </p>
@@ -141,7 +141,7 @@ export default function AdminLogin() {
         </form>
 
         <p className="text-[11px] text-center text-white/40">
-          This area is restricted to authorized RoboTUM admins.
+          This area is restricted to authorized roboTUM admins.
         </p>
 
         {/* Optional: link back to public site */}

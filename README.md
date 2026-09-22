@@ -1,10 +1,10 @@
-# RoboTUM Website
+# roboTUM Website
 
-Official RoboTUM web application.
+Official roboTUM web application.
 
 ## Overview
 
-This repository contains the public website and admin pages for RoboTUM.
+This repository contains the public website and admin pages for roboTUM.
 It is a React single-page application with route-based pages and Supabase-backed data.
 
 ## Tech Stack

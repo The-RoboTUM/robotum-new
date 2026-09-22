@@ -92,7 +92,7 @@ const ApplicationFormSection = () => {
             <p className="text-text2 text-white/75 leading-relaxed max-w-2xl">
               {applicationsOpen
                 ? `Set aside ${applications.durationLabel} and have your documents ready. We review applications as they arrive, so the earlier you apply, the sooner we can match you with a project.`
-                : "Thank you for your interest in joining RoboTUM. The current application phase has ended and new submissions are not accepted at this time."}
+                : "Thank you for your interest in joining roboTUM. The current application phase has ended and new submissions are not accepted at this time."}
             </p>
           </div>
 

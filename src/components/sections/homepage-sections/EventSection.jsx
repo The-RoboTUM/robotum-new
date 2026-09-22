@@ -82,7 +82,7 @@ export default function EventSection() {
             fit="cover"
             variant="soft"
             rounded="2xl"
-            className="w-full shadow-lg"
+            className="w-full"
           />
           <div className="mt-6 md:hidden">
             <Button

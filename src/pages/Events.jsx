@@ -13,7 +13,7 @@ const EventsSection = lazy(
 
 const Events = () => {
   useEffect(() => {
-    document.title = "Events | RoboTUM";
+    document.title = "Events | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 

@@ -91,7 +91,7 @@ function StoryCard({ story, layout }) {
 
   const joinedLabel = story.joinedYear
     ? `Joined ${story.joinedYear}`
-    : "Joined RoboTUM";
+    : "Joined roboTUM";
 
   const programUniversity =
     story.studyProgram && story.university
@@ -105,7 +105,7 @@ function StoryCard({ story, layout }) {
 
       <div className="flex items-start gap-4">
         {/* Avatar */}
-        <div className="h-11 w-11 rounded-full overflow-hidden bg-white/10 flex items-center justify-center shadow-[0_8px_20px_rgba(15,23,42,0.7)]">
+        <div className="h-11 w-11 rounded-full overflow-hidden bg-white/10 flex items-center justify-center">
           {story.avatarUrl ? (
             <ImageFrame
               src={story.avatarUrl}

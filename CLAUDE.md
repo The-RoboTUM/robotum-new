@@ -1,6 +1,6 @@
-# CLAUDE.md - RoboTUM Website
+# CLAUDE.md - roboTUM Website
 
-Marketing + content site for the RoboTUM student robotics club (TUM). Public pages are content-driven from Supabase; a protected `/admin` area does CRUD.
+Marketing + content site for the roboTUM student robotics club (TUM). Public pages are content-driven from Supabase; a protected `/admin` area does CRUD.
 
 ## Tech stack
 - **React 19** + **Vite 5** (`npm run dev | build | preview`)

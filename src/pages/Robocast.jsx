@@ -161,7 +161,7 @@ export default function RobocastPage() {
   });
 
   useEffect(() => {
-    document.title = "Robocast | RoboTUM";
+    document.title = "Robocast | roboTUM";
   }, []);
 
   const featured = useMemo(
@@ -178,7 +178,7 @@ export default function RobocastPage() {
         <div className="grid gap-8 md:gap-10 lg:grid-cols-12 items-center">
           <div className="lg:col-span-6 space-y-3 sm:space-y-4">
             <p className="text-xs tracking-widest text-white/60 uppercase">
-              RoboTUM Media
+              roboTUM Media
             </p>
 
             <h1 className="heading heading-h1 leading-tight text-balance">
@@ -194,7 +194,7 @@ export default function RobocastPage() {
                 What Is RoboCast?
               </h2>
               <p className="text-sm md:text-base text-white/80 leading-relaxed">
-                RoboCast is an engaging podcast series hosted by RoboTUM,
+                RoboCast is an engaging podcast series hosted by roboTUM,
                 bringing together robotics enthusiasts, students, and experts.
                 Each episode dives deep into the world of robotics, featuring
                 conversations with industry leaders, researchers, and innovators.

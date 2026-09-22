@@ -17,6 +17,7 @@ import AdminBanner from "@components/admin/AdminBanner";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
 import AdminPagination from "@components/admin/AdminPagination";
+import { AVAILABLE_PROJECT_VIEWERS } from "@pages/project-viewers/viewerConfig";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -31,6 +32,8 @@ const emptyForm = (defaultCategory = "") => ({
   used_tools: "",
   future_plans: "",
   cover_url: "",
+  show_cover_image: true,
+  viewer_id: "",
   tagsText: "", // comma-separated in the form
   is_featured: false,
 });
@@ -152,6 +155,8 @@ export default function AdminProjects() {
       used_tools: project.used_tools || "",
       future_plans: project.future_plans || "",
       cover_url: project.cover_url || "",
+      show_cover_image: project.show_cover_image !== false,
+      viewer_id: project.viewer_id || "",
       tagsText: (project.tags || []).join(", "),
       is_featured: !!project.is_featured,
     });
@@ -206,6 +211,8 @@ export default function AdminProjects() {
         used_tools: form.used_tools,
         future_plans: form.future_plans,
         cover_url: form.cover_url,
+        show_cover_image: form.show_cover_image,
+        viewer_id: form.viewer_id,
         // tags will be parsed inside adminUpsertProject
         tags: form.tagsText,
         is_featured: form.is_featured,
@@ -597,6 +604,45 @@ export default function AdminProjects() {
                 </div>
               )}
             </div>
+
+            {/* Optional direct 3D viewer */}
+            <div className="space-y-1">
+              <label
+                className="text-xs text-white/70"
+                htmlFor="proj-viewer-id"
+              >
+                3D viewer (optional)
+              </label>
+              <select
+                id="proj-viewer-id"
+                name="viewer_id"
+                value={form.viewer_id}
+                onChange={handleChange}
+                className="field-input"
+              >
+                <option value="">No viewer</option>
+                {AVAILABLE_PROJECT_VIEWERS.map((viewer) => (
+                  <option key={viewer.id} value={viewer.id}>
+                    {viewer.title}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] text-white/40">
+                The selected direct viewer is shown on the project page. Add more
+                viewers in viewerConfig.js.
+              </p>
+            </div>
+
+            <label className="flex items-center gap-2 text-xs text-white/80">
+              <input
+                type="checkbox"
+                name="show_cover_image"
+                checked={form.show_cover_image}
+                onChange={handleChange}
+                className="h-4 w-4 rounded border-white/30 bg-black/40 text-accent focus-visible:ring-accent"
+              />
+              <span>Show preview image on the project page</span>
+            </label>
 
             {/* Tags */}
             <div className="space-y-1">

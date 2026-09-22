@@ -51,7 +51,7 @@ const ENUM_FALLBACKS = {
     "Academic Collaborators",
   ],
   [ENUM_TYPES.FAQ_CATEGORY]: [
-    "About RoboTUM",
+    "About roboTUM",
     "Membership & Recruitment",
     "Collaboration & Partnerships",
     "Contact",

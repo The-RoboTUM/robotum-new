@@ -63,9 +63,9 @@ export default function AdminLayout({ children, title, description }) {
       {/* Sidebar (desktop) */}
       <aside className="hidden md:flex w-64 shrink-0 h-screen sticky top-0 flex-col border-r border-white/10 bg-elevated-1/60 backdrop-blur-xl">
         <div className="px-5 py-4 border-b border-white/10 flex items-center gap-3">
-          <img src={assets.navLogo} alt="RoboTUM" className="h-9 w-auto" />
+          <img src={assets.navLogo} alt="roboTUM" className="h-9 w-auto" />
           <div>
-            <p className="text-sm font-semibold">RoboTUM Admin</p>
+            <p className="text-sm font-semibold">roboTUM Admin</p>
             <p className="text-[11px] text-white/60">Internal dashboard</p>
           </div>
         </div>
@@ -120,8 +120,8 @@ export default function AdminLayout({ children, title, description }) {
         <header className="md:hidden sticky top-0 z-20 border-b border-white/10 bg-elevated-1/80 backdrop-blur-xl">
           <div className="flex items-center justify-between gap-3 px-4 py-3">
             <Link to="/admin" className="flex items-center gap-2 shrink-0">
-              <img src={assets.navLogo} alt="RoboTUM" className="h-7 w-auto" />
-              <span className="text-sm font-semibold">RoboTUM Admin</span>
+              <img src={assets.navLogo} alt="roboTUM" className="h-7 w-auto" />
+              <span className="text-sm font-semibold">roboTUM Admin</span>
             </Link>
             <div className="min-w-0 flex items-center gap-2">
               <p

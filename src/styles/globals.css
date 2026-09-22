@@ -902,6 +902,62 @@ body::before {
    ========================================================================== */
 @layer components {
 
+.viewer-control {
+  position: relative;
+  isolation: isolate;
+  @apply rounded-full px-3 py-2 font-semibold text-white overflow-hidden transition-transform duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/80;
+  background: transparent;
+}
+
+.viewer-control::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, #2563eb, #7c3aed, #2563eb);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  animation: rotate-gradient 3s linear infinite;
+}
+
+.viewer-control:hover {
+  background-color: rgb(255 255 255 / 5%);
+  box-shadow: 0 0 18px rgb(99 102 241 / 24%);
+  transform: scale(1.03);
+}
+
+.viewer-control:not(.is-active) {
+  text-shadow: 0 1px 4px rgb(0 0 0 / 85%);
+}
+
+.viewer-control.is-active {
+  background: linear-gradient(115deg, #2563eb, #7c3aed);
+  box-shadow: 0 0 18px rgb(99 102 241 / 28%);
+}
+
+.viewer-control.is-active:hover {
+  background: linear-gradient(115deg, #3b82f6, #8b5cf6);
+}
+
+.viewer-control:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.viewer-control:disabled {
+  background: transparent;
+  box-shadow: none;
+}
+
+.viewer-control:disabled::before {
+  background: rgb(148 163 184 / 35%);
+  animation: none;
+}
+
 /* Canonical glass card. Add .card-surface-hover for interactive lift. */
 .card-surface {
   @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300;

@@ -7,7 +7,7 @@ import { useEffect, Suspense } from "react";
 
 export default function PrivacyPolicy() {
   useEffect(() => {
-    document.title = "Privacy Policy | RoboTUM";
+    document.title = "Privacy Policy | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
             </h1>
 
             <p>
-              This Application (hereinafter referred to as “RoboTUM” or “this
+              This Application (hereinafter referred to as “roboTUM” or “this
               Application”) collects some Personal Data from its Users. This
               Privacy Policy describes how and why we collect, store, use, and
               share your information when you use our services. By using this
@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
                 1. Owner and Data Controller
               </h2>
               <address className="not-italic leading-relaxed">
-                RoboTUM
+                roboTUM
                 <br />
                 c/o NEXT Prototypes e.V.
                 <br />
@@ -140,7 +140,7 @@ export default function PrivacyPolicy() {
                 <li>
                   <strong>Freely Provided Data:</strong> Personal Data may be
                   freely provided by the User (for example, when contacting
-                  RoboTUM).
+                  roboTUM).
                 </li>
                 <li>
                   <strong>Usage Data:</strong> Collected automatically when
@@ -510,7 +510,7 @@ export default function PrivacyPolicy() {
 
             <p className="mt-4">
               If you have any questions about this Privacy Policy, please
-              contact RoboTUM at:
+              contact roboTUM at:
               <br />
               Email:{" "}
               <a

@@ -43,4 +43,8 @@ export { default as robocastHeroImg } from "./images/robocast-page/hero-image.jp
 // General images
 export { default as navLogo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
 export { default as logo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
+export { default as whiteLogo } from "./images/robotum-logos/robotum-logo-white.svg";
 export { default as heroBackground } from "./images/partners-page/hero-background.jpg";
+
+// 3d viewer previews
+export { default as humanoidPreview } from "./images/viewer-previews/humanoid-preview.png";

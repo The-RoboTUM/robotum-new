@@ -18,7 +18,7 @@ export default function MissionSection() {
           Our Motivation
         </p>
         <h2 className="heading heading-h1 font-bold leading-tight text-left mb-10 md:mb-14">
-          <span className="text-gradient">Foundations</span> of RoboTUM
+                <span className="text-gradient">Foundations</span> of roboTUM
         </h2>
 
         {/* Content container - deliberate light feature panel for contrast */}
@@ -59,7 +59,7 @@ export default function MissionSection() {
             </p>
             <div className="mt-6">
               <Button variant="primary-light" as="link" to="/about">
-                Discover RoboTUM →
+                Discover roboTUM →
               </Button>
             </div>
           </div>

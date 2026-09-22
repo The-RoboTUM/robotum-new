@@ -9,6 +9,8 @@ import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 import { useAsyncData } from "@hooks/useAsyncData";
 import { formatProjectCategory } from "@utils/formatCategory";
+import { getProjectViewerConfig } from "@pages/project-viewers/viewerConfig";
+import ProjectViewer from "@pages/ProjectViewer";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -23,8 +25,8 @@ export default function ProjectDetail() {
   // Update document title when project is loaded
   useEffect(() => {
     document.title = project
-      ? `${project.name} | RoboTUM`
-      : "Project | RoboTUM";
+      ? `${project.name} | roboTUM`
+      : "Project | roboTUM";
   }, [project]);
 
   // Scroll to top on slug change
@@ -68,6 +70,7 @@ export default function ProjectDetail() {
   }
 
   const formattedCategory = formatProjectCategory(project.category);
+  const viewerConfig = getProjectViewerConfig(project.viewer_id);
 
   return (
     <>
@@ -76,15 +79,20 @@ export default function ProjectDetail() {
         <div className="max-w-6xl mx-auto">
           <div className="grid gap-12 md:grid-cols-2 items-start">
             <div>
-              <ImageFrame
-                src={project.cover_url}
-                alt={project.name}
-                aspect="16/9"
-                fit="cover"
-                variant="border"
-                vignette
-                className="w-full rounded-lg"
-              />
+              {project.show_cover_image !== false && (
+                <ImageFrame
+                  src={project.cover_url}
+                  alt={project.name}
+                  aspect="16/9"
+                  fit="cover"
+                  variant="border"
+                  vignette
+                  className="w-full rounded-lg"
+                />
+              )}
+              {viewerConfig?.showOnProjectPage && (
+                <ProjectViewer project={project} inline />
+              )}
             </div>
             <div className="flex flex-col">
               <h1 className="heading heading-h1 mb-4">{project.name}</h1>
@@ -96,6 +104,18 @@ export default function ProjectDetail() {
                 text={project.description || project.summary}
                 className="text-text1 text-white/80 mb-8 leading-relaxed text-base md:text-lg whitespace-pre-line"
               />
+              {project.future_plans && (
+                <div className="mb-8 border-l-2 border-accent/60 pl-4">
+                  <h2 className="text-lg font-semibold text-white mb-2">
+                    Future plans
+                  </h2>
+                  <LinkifiedText
+                    as="p"
+                    text={project.future_plans}
+                    className="text-white/75 leading-relaxed whitespace-pre-line"
+                  />
+                </div>
+              )}
               <div className="flex flex-wrap gap-3 mb-8">
                 {project.tags?.map((t) => (
                   <span

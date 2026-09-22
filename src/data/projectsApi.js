@@ -26,6 +26,8 @@ const PROJECT_FIELDS = `
   used_tools,
   future_plans,
   cover_url,
+  show_cover_image,
+  viewer_id,
   tags,
   is_featured
 `;
@@ -192,7 +194,6 @@ export async function adminUpsertProject(project) {
   }
 
   const previousCoverUrl = project.previous_cover_url?.trim() || null;
-
   const payload = {
     slug,
     name: project.name?.trim(),
@@ -203,6 +204,8 @@ export async function adminUpsertProject(project) {
     used_tools: project.used_tools?.trim() || null,
     future_plans: project.future_plans?.trim() || null,
     cover_url: finalCoverUrl,
+    show_cover_image: project.show_cover_image !== false,
+    viewer_id: project.viewer_id?.trim() || null,
     tags,
     is_featured: !!project.is_featured,
   };

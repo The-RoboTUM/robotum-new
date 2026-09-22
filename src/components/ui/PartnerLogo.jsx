@@ -30,7 +30,6 @@ const LOGO_TILE_BASE =
 // Stronger outline so white logos are visible on light tiles too
 const LOGO_IMG_BASE =
   "w-auto object-contain transition-transform duration-300 " +
-  "filter drop-shadow-[0_0_2px_rgba(15,23,42,0.8)] " +
   "group-hover/logo:scale-[1.05]";
 
 export default function PartnerLogo({
@@ -47,8 +46,8 @@ export default function PartnerLogo({
   // On light pages we use a soft grey tile.
   const surfaceClass =
     theme === "dark"
-      ? "bg-slate-100 border border-slate-300 shadow-[0_18px_45px_rgba(15,23,42,0.65)]"
-      : "bg-[#F3F4F6] border border-slate-200 shadow-sm";
+      ? "bg-slate-100 border border-slate-300"
+      : "bg-[#F3F4F6] border border-slate-200";
 
   const Wrapper = partner.website_url ? "a" : "div";
 
