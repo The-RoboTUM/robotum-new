@@ -110,6 +110,8 @@ const iconButtonClass =
 export default function ProjectViewer({
   project: initialProject = null,
   inline = false,
+  withTopMargin = true,
+  previewSrc: previewOverride = null,
 }) {
   const { slug } = useParams();
 
@@ -138,7 +140,9 @@ export default function ProjectViewer({
     },
   );
 
-  const project = loadedProject || initialProject;
+  // Prefer an explicitly supplied project so inline viewer switches do not
+  // briefly render stale async data from the previously selected project.
+  const project = initialProject || loadedProject;
 
   const config = getProjectViewerConfig(
     project?.viewer_id,
@@ -279,8 +283,7 @@ export default function ProjectViewer({
   if (
     error ||
     !project ||
-    !config ||
-    !config.showOnProjectPage
+    !config
   ) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-black px-6 text-white">
@@ -306,7 +309,7 @@ export default function ProjectViewer({
     return (
       <div className="relative h-full w-full section-dark-primary surface-pattern">
         <img
-          src={config.previewSrc}
+          src={previewOverride || config.previewSrc}
           alt={config.alt}
           className="h-full w-full object-cover"
         />
@@ -415,7 +418,9 @@ export default function ProjectViewer({
     return (
       <section
         ref={interactionContainerRef}
-        className="group relative mt-6 h-[min(78vh,760px)] min-h-[460px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black transition-colors hover:border-white/20"
+        className={`group relative h-[min(78vh,760px)] min-h-[460px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black transition-colors hover:border-white/20 ${
+          withTopMargin ? "mt-6" : ""
+        }`}
       >
         {renderViewerContent()}
 

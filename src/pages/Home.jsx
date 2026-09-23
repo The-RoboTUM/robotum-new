@@ -19,6 +19,9 @@ const MissionSection = lazy(
 const ProjectSection = lazy(
   () => import("@components/sections/homepage-sections/ProjectSection"),
 );
+const ViewerSection = lazy(
+  () => import("@components/sections/homepage-sections/ViewerSection"),
+);
 const EventSection = lazy(
   () => import("@components/sections/homepage-sections/EventSection"),
 );
@@ -54,6 +57,7 @@ const Home = () => {
         <Suspense fallback={<SectionLoader />}>
           <MissionSection />
           <ProjectSection />
+          <ViewerSection />
           {/* <FundraisingSection /> */}
           <EventSection />
           <JoinUsSection />
