@@ -7,11 +7,8 @@ import { ENUM_TYPES, fetchTeamMembers } from "@data";
 import { useAsyncData } from "@hooks/useAsyncData";
 import { useEnumOptions } from "@hooks/useEnumOptions";
 
-// Board tiles show only name + LinkedIn; every other tab shows a title line.
-const BOARD_CATEGORY = "Board";
-
+// Every tile shows its membership title between the name and LinkedIn.
 function getSubtitle(member) {
-  if (member.category === BOARD_CATEGORY) return null;
   if (member.title) return member.title;
   // Project Leads without a title fall back to their project name(s).
   if (member.category === "Project Leads" && member.projects?.length > 0) {
