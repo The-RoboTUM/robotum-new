@@ -357,9 +357,13 @@ export default function ProjectViewer({
      */
     if (isExpanded) {
       return (
+        <>
+        <div
+          className="inset-0 z-[999999] h-dvh w-screen overflow-hidden bg-black text-white"
+        > </div>
         <div
           ref={interactionContainerRef}
-          className="fixed inset-0 z-[9999] h-dvh w-screen overflow-hidden bg-black text-white"
+          className="fixed inset-0 z-[999999] h-dvh w-screen overflow-hidden bg-black text-white"
           role="dialog"
           aria-modal="true"
           aria-label={`${config.title} fullscreen viewer`}
@@ -367,7 +371,7 @@ export default function ProjectViewer({
           {renderViewerContent()}
 
           {viewerEnabled && (
-            <div className="absolute inset-x-5 top-24 z-[10000] grid h-11 grid-cols-[1fr_auto_1fr] items-center sm:inset-x-8">
+            <div className="absolute inset-x-5 top-24 z-[100000] grid h-11 grid-cols-[1fr_auto_1fr] items-center sm:inset-x-8">
               {/* Turn viewer off */}
               <div className="justify-self-start">
                 <button
@@ -409,6 +413,7 @@ export default function ProjectViewer({
             Esc to exit
           </div>
         </div>
+        </>
       );
     }
 

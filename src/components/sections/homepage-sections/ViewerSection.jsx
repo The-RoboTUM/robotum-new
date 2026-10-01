@@ -43,13 +43,13 @@ export default function ViewerSection() {
     >
       <div className="mb-10 md:mb-14">
         <p className="mb-2 text-xs uppercase tracking-widest text-white/60">
-          Interactive models
+          Our Flagship Project
         </p>
         <h2
           id="project-viewers-heading"
           className="heading heading-h2 max-w-3xl font-bold leading-tight"
         >
-          Meet Our Robots <span className="text-gradient">in 3D</span>
+          <span className="text-gradient">Interact</span> with our custom-built humanoid
         </h2>
       </div>
 
