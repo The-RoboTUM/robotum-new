@@ -7,6 +7,16 @@ import { ENUM_TYPES, fetchTeamMembers } from "@data";
 import { useAsyncData } from "@hooks/useAsyncData";
 import { useEnumOptions } from "@hooks/useEnumOptions";
 
+// Every tile shows its membership title between the name and LinkedIn.
+function getSubtitle(member) {
+  if (member.title) return member.title;
+  // Project Leads without a title fall back to their project name(s).
+  if (member.category === "Project Leads" && member.projects?.length > 0) {
+    return member.projects.map((p) => p.name).join(", ");
+  }
+  return null;
+}
+
 export default function TeamSection() {
   // Categories come from the Supabase membership_type enum.
   const { options: categoryOptions } = useEnumOptions(
@@ -117,18 +127,11 @@ export default function TeamSection() {
                 {/* Text */}
                 <div className="mt-4 space-y-1">
                   <h3 className="text-text1 font-semibold">{member.name}</h3>
-                  {/* <p className="text-text2 text-white/70 text-sm">
-                    {member.role}
-                  </p> */}
-
-                  {/* Extra label for Project Leads: show project name(s) */}
-                  {member.category === "Project Leads" &&
-                    member.projects &&
-                    member.projects.length > 0 && (
-                      <p className="text-[11px] text-accent mt-1">
-                        {member.projects.map((p) => p.name).join(", ")}
-                      </p>
-                    )}
+                  {getSubtitle(member) && (
+                    <p className="text-[11px] text-accent mt-1">
+                      {getSubtitle(member)}
+                    </p>
+                  )}
                 </div>
 
                 {/* LinkedIn from linkedin_url */}

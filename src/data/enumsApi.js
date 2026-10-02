@@ -57,23 +57,26 @@ const ENUM_FALLBACKS = {
     "Contact",
   ],
   [ENUM_TYPES.MEMBERSHIP_TYPE]: [
-    "Founders",
+    "Board",
     "Department Heads",
     "Project Leads",
+    "Founders",
   ],
 };
 
 /**
  * Enums the site deliberately renders only a subset of.
  * `membership_type` also contains values (e.g. Seniors, Alumni) that exist in
- * the DB but are not shown in the About page team grid. Anything not listed
- * here shows every value the enum has.
+ * the DB but are not shown in the About page team grid. The allowlist order is
+ * also the tab order (Board first, Founders last). Anything not listed here
+ * shows every value the enum has.
  */
 const ENUM_ALLOWLIST = {
   [ENUM_TYPES.MEMBERSHIP_TYPE]: [
-    "Founders",
+    "Board",
     "Department Heads",
     "Project Leads",
+    "Founders",
   ],
 };
 

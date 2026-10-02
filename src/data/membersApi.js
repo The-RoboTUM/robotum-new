@@ -31,6 +31,7 @@ export async function fetchTeamMembers() {
     .select(
       `
       membership_type,
+      title,
       member:members_personal (
         id,
         full_name,
@@ -66,6 +67,7 @@ export async function fetchTeamMembers() {
         linkedin: m.linkedin_url,
         category: membershipType, // a public.membership_type enum label
         role: roleLabel,
+        title: row.title, // per-membership title, e.g. "Head of Software"
         projects: [], // filled below for project leads
       };
     });
