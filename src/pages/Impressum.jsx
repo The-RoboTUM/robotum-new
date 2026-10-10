@@ -41,18 +41,12 @@ export default function Impressum() {
 
             <section className="mb-8">
               <h2 className="text-text1 font-semibold">Kontakt</h2>
-              <p className="mt-2">
-                Owner contact phone:{" "}
-                <a
-                  href="tel:+4915222178503"
-                  className="text-accent hover:underline"
-                >
-                  +49 (0) 15222178503
+             
                 </a>
                 <br />
                 Owner contact email:{" "}
                 <a
-                  href="mailto:outreach@robotum.info"
+                  href="mailto:it@robotum.info"
                   className="text-accent hover:underline"
                 >
                   outreach@robotum.info
