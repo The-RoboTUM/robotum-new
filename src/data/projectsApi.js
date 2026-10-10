@@ -32,6 +32,14 @@ const PROJECT_FIELDS = `
   is_featured
 `;
 
+const VIEWER_PROJECT_FIELDS = `
+  id,
+  slug,
+  name,
+  summary,
+  viewer_id
+`;
+
 /**
  * Fetch featured projects (for homepage section)
  */
@@ -50,6 +58,24 @@ export async function fetchFeaturedProjects({ limit } = {}) {
 
   if (error) {
     logger.error("Error loading featured projects:", error);
+    throw error;
+  }
+
+  return data ?? [];
+}
+
+/**
+ * Fetch projects that have an interactive viewer assigned (for homepage).
+ */
+export async function fetchProjectsWithViewers() {
+  const { data, error } = await supabase
+    .from("projects")
+    .select(VIEWER_PROJECT_FIELDS)
+    .not("viewer_id", "is", null)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    logger.error("Error loading projects with viewers:", error);
     throw error;
   }
 
