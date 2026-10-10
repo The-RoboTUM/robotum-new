@@ -7,7 +7,7 @@ import { useEffect, Suspense } from "react";
 
 export default function GenderAndDiversity() {
   useEffect(() => {
-    document.title = "Gender & Biodiversity | roboTUM";
+    document.title = "Gender & Diversity | roboTUM";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
