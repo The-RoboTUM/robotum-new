@@ -18,7 +18,7 @@ export default function GenderAndDiversity() {
         <main className="section-container hero-offset w-full px-6 md:px-16 py-16 font-sans section-dark-primary surface-pattern">
           <article className="prose prose-invert max-w-3xl mx-auto">
             <h1 className="heading heading-h2 font-bold mb-6">
-              Gender and Biodiversity
+              Gender and Diversity
             </h1>
 
             <section className="mb-8">
