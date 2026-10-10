@@ -205,12 +205,12 @@ export default function ContactUsSection() {
             className="w-40 h-40 rounded-full mb-5"
           />
           <h3 className="heading text-xl mb-2">Pavel Fenskii</h3>
-          <p className="text-white/80 mb-4">Head of External Relations</p>
+          <p className="text-white/80 mb-4">CBDO</p>
           <a
             href="mailto:operations@robotum.info"
             className="underline hover:text-white"
           >
-            operations@robotum.info
+            outreach@robotum.info
           </a>
           <p className="text-white/70 text-sm">+49 1737 401924</p>
         </div>
