@@ -19,9 +19,10 @@
 export const FORM_URL_PLACEHOLDER = "REPLACE_WITH_GOOGLE_FORM_LINK";
 
 export const applications = {
-  isOpen: true, // ← master switch: open / closed
+  isOpen: false, // ← master switch: open / closed
   semester: "Winter Semester 2026/27", // long label used in headings + copy
   semesterShort: "WS 2026/27", // compact label used in chips/ticker
+  nextPhase: "Summer Semester 2027", // shown while closed ("" hides it)
   formUrl:
     "https://docs.google.com/forms/d/e/1FAIpQLSeYFHXS8hFRGdnU9vZuH8o7RhZwF9frOhkTzSv6_EMEjB-N6A/viewform", // ← the live Google Form
   deadline: "2026-10-21", // ← e.g. "2026-10-15" ("" hides the deadline)
@@ -65,7 +66,9 @@ export function applicationTickerMessages() {
   if (!applications.isOpen) {
     return [
       `${applications.semesterShort} applications are closed`,
-      "Follow our channels for the next application phase",
+      applications.nextPhase
+        ? `Next application phase opens in the ${applications.nextPhase}`
+        : "Follow our channels for the next application phase",
     ];
   }
 

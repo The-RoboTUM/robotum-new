@@ -50,7 +50,11 @@ const ApplicationSection = () => {
             ? `Applications for the ${applications.semester} are open${
                 deadline ? ` until ${deadline}` : ""
               } - three steps, no hidden rounds.`
-            : "The next application phase will open soon - stay tuned on our website or social media."}
+            : `The next application phase will open ${
+                applications.nextPhase
+                  ? `in the ${applications.nextPhase}`
+                  : "soon"
+              } - stay tuned on our website or social media.`}
         </p>
       </div>
 
