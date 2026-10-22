@@ -48,3 +48,4 @@ export { default as heroBackground } from "./images/partners-page/hero-backgroun
 
 // 3d viewer previews
 export { default as humanoidPreview } from "./images/viewer-previews/humanoid-preview.png";
+export { default as humanoidHomepagePreview } from "./images/viewer-previews/humanoid-homepage-preview.png";
