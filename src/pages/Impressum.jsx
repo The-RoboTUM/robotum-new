@@ -41,15 +41,13 @@ export default function Impressum() {
 
             <section className="mb-8">
               <h2 className="text-text1 font-semibold">Kontakt</h2>
-             
-                </a>
-                <br />
+              <p className="mt-2">
                 Owner contact email:{" "}
                 <a
                   href="mailto:it@robotum.info"
                   className="text-accent hover:underline"
                 >
-                  outreach@robotum.info
+                  it@robotum.info
                 </a>
               </p>
             </section>
