@@ -34,41 +34,41 @@ const AdminEvents = lazy(() => import("@pages/admin/AdminEvents"));
 export default function App() {
   return (
     <ErrorBoundary>
-    <Suspense fallback={<PageLoader />}>
-      <ScrollToHashElement />
-      <Routes>
-        {/* Public site */}
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/events/:slug" element={<EventDetail />} />
-        <Route path="/partners" element={<Partners />} />
-        <Route path="/impressum" element={<Impressum />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/gender-and-diversity" element={<GenderAndDiversity />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="/robocast" element={<Robocast />} />
-        <Route path="/faqs" element={<Faqs />} />
+      <Suspense fallback={<PageLoader />}>
+        <ScrollToHashElement />
+        <Routes>
+          {/* Public site */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/:slug" element={<EventDetail />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/impressum" element={<Impressum />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/gender-and-diversity" element={<GenderAndDiversity />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/robocast" element={<Robocast />} />
+          <Route path="/faqs" element={<Faqs />} />
 
-        {/* 🔐 Admin auth (public login page) */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+          {/* 🔐 Admin auth (public login page) */}
+          <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* 🔐 Admin area (protected by AdminRoute) */}
-        <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/faqs" element={<AdminFaqs />} />
-          <Route path="/admin/partners" element={<AdminPartners />} />
-          <Route path="/admin/projects" element={<AdminProjects />} />
-          <Route path="/admin/events" element={<AdminEvents />} />
-          {/* later: /admin/applications, /admin/members */}
-        </Route>
+          {/* 🔐 Admin area (protected by AdminRoute) */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/faqs" element={<AdminFaqs />} />
+            <Route path="/admin/partners" element={<AdminPartners />} />
+            <Route path="/admin/projects" element={<AdminProjects />} />
+            <Route path="/admin/events" element={<AdminEvents />} />
+            {/* later: /admin/applications, /admin/members */}
+          </Route>
 
-        {/* 404 - must stay last */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
+          {/* 404 - must stay last */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </ErrorBoundary>
   );
 }

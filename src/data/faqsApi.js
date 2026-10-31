@@ -1,6 +1,7 @@
 // src/data/faqsApi.js
 import { supabase } from "@lib/supabaseClient";
 import { logger } from "@utils/logger";
+import { pageRange } from "./pagination";
 
 // Category options are NOT defined here - they come from the Supabase
 // faq_category enum via `useEnumOptions`. See src/data/enumsApi.js.
@@ -39,10 +40,7 @@ export async function adminFetchFaqs() {
 }
 
 export async function adminFetchFaqsPage({ page = 1, pageSize = 10 } = {}) {
-  const safePage = Math.max(1, Number(page) || 1);
-  const safePageSize = Math.max(1, Number(pageSize) || 10);
-  const from = (safePage - 1) * safePageSize;
-  const to = from + safePageSize - 1;
+  const [from, to] = pageRange(page, pageSize);
 
   const { data, error, count } = await supabase
     .from("faqs")

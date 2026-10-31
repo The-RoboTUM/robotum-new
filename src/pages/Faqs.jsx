@@ -1,5 +1,4 @@
 // Faqs.jsx
-import { useEffect } from "react";
 
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
@@ -8,6 +7,7 @@ import FaqSection from "@components/sections/faqs-sections/FaqSection";
 
 import { fetchFaqs } from "@data"; // ✅ use your helper
 import { useAsyncData } from "@hooks/useAsyncData";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 const Faqs = () => {
   const {
@@ -19,10 +19,7 @@ const Faqs = () => {
     errorMessage: "Failed to load FAQs. Please try again later.",
   });
 
-  useEffect(() => {
-    document.title = "Q&A | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Q&A | roboTUM");
 
   if (loading) {
     return (

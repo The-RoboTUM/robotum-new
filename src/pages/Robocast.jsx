@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import * as assets from "@assets";
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
@@ -6,6 +6,7 @@ import ImageFrame from "@components/ui/ImageFrame";
 import SectionLoader from "@components/sections/common-sections/SectionLoader";
 import { fetchPublishedRobocastEpisodes } from "@data";
 import { useAsyncData } from "@hooks/useAsyncData";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 function getPlatformLinks(ep) {
   const links = [];
@@ -160,9 +161,7 @@ export default function RobocastPage() {
     errorMessage: "Failed to load episodes. Please try again later.",
   });
 
-  useEffect(() => {
-    document.title = "Robocast | roboTUM";
-  }, []);
+  usePageTitle("Robocast | roboTUM");
 
   const featured = useMemo(
     () => episodes.find((e) => e.is_featured) || episodes[0],

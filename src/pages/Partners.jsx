@@ -1,11 +1,12 @@
 // Above-the-fold imports
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
-import HeroSection from "@/components/sections/partners-sections/HeroSection";
+import HeroSection from "@components/sections/partners-sections/HeroSection";
 
 // Lazy-load below-the-fold content for performance
-import { lazy, Suspense, useEffect } from "react";
-import SectionLoader from "@/components/sections/common-sections/SectionLoader";
+import { lazy, Suspense } from "react";
+import SectionLoader from "@components/sections/common-sections/SectionLoader";
+import { usePageTitle } from "@hooks/usePageTitle";
 const PartnerCategories = lazy(
   () => import("@components/sections/partners-sections/PartnerCategories"),
 );
@@ -17,10 +18,7 @@ const ContactUsSection = lazy(
 );
 
 export default function Partners() {
-  useEffect(() => {
-    document.title = "Partners | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Partners | roboTUM");
 
   return (
     <>

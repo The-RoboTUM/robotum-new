@@ -1,10 +1,11 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 
 // General imports
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import HeroSection from "@components/sections/events-sections/HeroSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 // Lazy load sections for performance
 const EventsSection = lazy(
@@ -12,10 +13,7 @@ const EventsSection = lazy(
 );
 
 const Events = () => {
-  useEffect(() => {
-    document.title = "Events | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Events | roboTUM");
 
   return (
     <>

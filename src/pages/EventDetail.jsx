@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import * as assets from "@assets";
 import Navbar from "@components/sections/common-sections/Navbar";
@@ -9,6 +8,7 @@ import Button from "@components/ui/Button";
 import { fetchEventBySlug } from "@data"; // from eventsApi.js
 import { formatEventDateRange } from "@utils/date-range";
 import { useAsyncData } from "@hooks/useAsyncData";
+import { usePageTitle } from "@hooks/usePageTitle";
 import { formatEventCategory } from "@utils/formatCategory";
 
 export default function EventDetail() {
@@ -21,14 +21,10 @@ export default function EventDetail() {
     errorMessage: "Failed to load event details.",
   });
 
-  useEffect(() => {
-    if (event) {
-      document.title = `${event.title} | roboTUM Events`;
-    } else {
-      document.title = "Event | roboTUM";
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [event]);
+  usePageTitle(
+    event ? `${event.title} | roboTUM Events` : "Event | roboTUM",
+    slug,
+  );
 
   if (loading) {
     return (

@@ -30,7 +30,7 @@ src/
   styles/globals.css    # @theme tokens, surfaces, buttons, utilities, animations - design SoT
   lib/supabaseClient.js # the ONLY place Supabase is constructed
   data/                 # API layer: *Api.js + index.js barrel (import from "@data")
-  hooks/                # useAsyncData (shared fetch state), useEnumOptions (DB enums)
+  hooks/                # useAsyncData (shared fetch state), useEnumOptions (DB enums), usePageTitle (title + scroll-to-top per page)
   utils/                # formatCategory, logger, date-range, scrollToSection
   components/
     ui/                 # Button, ImageFrame, ProjectCard, PartnerLogo, LinkifiedText, ScrollToHashElement
@@ -59,7 +59,7 @@ Path aliases (`vite.config.js` + `jsconfig.json`): `@ @assets @components @pages
 - `/robocast` is a **separate page**, NOT a projects tab.
 - All routes must work on direct nav AND reload (deep links: `/events/:slug`, `/projects/:slug`).
 - Use `<Link>` for internal nav, not `<a>`.
-- `vercel.json` has an external redirect for the humanoid 3D viewer - keep it.
+- `vercel.json` rewrites every path to `/index.html` (SPA fallback) - required for deep links and reloads; keep it.
 
 ## Design language - "refined futuristic" (dark + deliberate light accents)
 Tokens + reusable classes live in `src/styles/globals.css`. **Use them; don't hardcode.**

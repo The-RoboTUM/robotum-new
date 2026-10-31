@@ -1,15 +1,13 @@
 // General imports
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
-import PageLoader from "@/components/sections/common-sections/PageLoader";
+import PageLoader from "@components/sections/common-sections/PageLoader";
 
-import { useEffect, Suspense } from "react";
+import { Suspense } from "react";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 export default function PrivacyPolicy() {
-  useEffect(() => {
-    document.title = "Privacy Policy | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Privacy Policy | roboTUM");
 
   return (
     <>

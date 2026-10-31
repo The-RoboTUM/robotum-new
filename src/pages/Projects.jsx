@@ -8,6 +8,7 @@ import Button from "@components/ui/Button";
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 // Top tabs come from the Supabase `project_category` enum - see
 // src/data/enumsApi.js. The `?type=` query param stays the category value.
@@ -59,11 +60,7 @@ export default function Projects() {
   const [query, setQuery] = useState(params.get("q") || "");
   const [tag, setTag] = useState(params.get("tag") || "");
 
-  // scroll to top
-  useEffect(() => {
-    document.title = "Projects | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Projects | roboTUM");
 
   // sync URL
   useEffect(() => {

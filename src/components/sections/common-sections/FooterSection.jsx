@@ -73,7 +73,7 @@ export default function FooterSection() {
       <div className="flex flex-wrap justify-center gap-8 text-left md:justify-between">
         {/* Logo + description */}
         <div className="flex min-w-40 flex-col items-center gap-4 md:items-start">
-          <img src={assets.logo} alt="roboTUM Logo" className="h-10" />
+          <img src={assets.navLogo} alt="roboTUM Logo" className="h-10" />
           <p className="max-w-xs text-sm text-white/60">
             roboTUM - Student Initiative at the Technical University of Munich
           </p>

@@ -1,7 +1,6 @@
 // Social media icons
 export { default as instagramIcon } from "./icons/social-media/instagram.svg";
 export { default as linkedinIcon } from "./icons/social-media/linkedin.svg";
-export { default as emailIcon } from "./icons/social-media/email.svg";
 export { default as whatsappIcon } from "./icons/social-media/whatsapp.svg";
 export { default as telegramIcon } from "./icons/social-media/telegram.png";
 export { default as spotifyIcon } from "./icons/social-media/spotify.png";
@@ -42,8 +41,6 @@ export { default as robocastHeroImg } from "./images/robocast-page/hero-image.jp
 
 // General images
 export { default as navLogo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
-export { default as logo } from "./images/robotum-logos/robotum-logo-blue-white.svg";
-export { default as whiteLogo } from "./images/robotum-logos/robotum-logo-white.svg";
 export { default as heroBackground } from "./images/partners-page/hero-background.jpg";
 
 // 3d viewer previews

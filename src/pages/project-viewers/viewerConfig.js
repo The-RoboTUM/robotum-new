@@ -1,5 +1,5 @@
 import HumanoidViewer from "./HumanoidViewer.jsx";
-import {humanoidPreview} from "@assets";
+import { humanoidPreview } from "@assets";
 
 export const PROJECT_VIEWERS = {
   humanoid: {

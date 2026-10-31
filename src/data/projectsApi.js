@@ -1,5 +1,6 @@
 import { supabase } from "@lib/supabaseClient";
 import { logger } from "@utils/logger";
+import { pageRange } from "./pagination";
 import {
   deletePublicImageByUrl,
   getAdminImageUploadTarget,
@@ -136,10 +137,7 @@ export async function adminFetchProjects() {
 }
 
 export async function adminFetchProjectsPage({ page = 1, pageSize = 10 } = {}) {
-  const safePage = Math.max(1, Number(page) || 1);
-  const safePageSize = Math.max(1, Number(pageSize) || 10);
-  const from = (safePage - 1) * safePageSize;
-  const to = from + safePageSize - 1;
+  const [from, to] = pageRange(page, pageSize);
 
   const { data, error, count } = await supabase
     .from("projects")

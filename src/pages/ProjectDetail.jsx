@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { fetchProjectBySlug } from "@data";
 import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
@@ -8,9 +7,10 @@ import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 import { useAsyncData } from "@hooks/useAsyncData";
+import { usePageTitle } from "@hooks/usePageTitle";
 import { formatProjectCategory } from "@utils/formatCategory";
 import { getProjectViewerConfig } from "@pages/project-viewers/viewerConfig";
-import ProjectViewer from "@pages/ProjectViewer";
+import ProjectViewer from "@pages/project-viewers/ProjectViewer";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -22,17 +22,10 @@ export default function ProjectDetail() {
     errorMessage: "Failed to load project. Please try again later.",
   });
 
-  // Update document title when project is loaded
-  useEffect(() => {
-    document.title = project
-      ? `${project.name} | roboTUM`
-      : "Project | roboTUM";
-  }, [project]);
-
-  // Scroll to top on slug change
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [slug]);
+  usePageTitle(
+    project ? `${project.name} | roboTUM` : "Project | roboTUM",
+    slug,
+  );
 
   if (loading) {
     return (
@@ -91,7 +84,7 @@ export default function ProjectDetail() {
                 />
               )}
               {viewerConfig?.showOnProjectPage && (
-                <ProjectViewer project={project} inline />
+                <ProjectViewer project={project} config={viewerConfig} />
               )}
             </div>
             <div className="flex flex-col">

@@ -86,14 +86,6 @@ body {
   @apply bg-clip-text text-transparent bg-linear-to-r from-[#60A5FA] via-[#A78BFA] to-[#22D3EE];
 }
 
-.text-gradient-futuristic {
-  @apply bg-clip-text text-transparent bg-linear-to-r from-[#7C3AED] via-[#3B82F6] to-[#06B6D4];
-}
-
-.text-gradient-sunrise {
-  @apply bg-clip-text text-transparent bg-linear-to-r from-[#F59E0B] via-[#EC4899] to-[#8B5CF6];
-}
-
 /* ==========================================================================
    PAGE CANVAS & SECTION SURFACES
    The whole page sits on ONE continuous ambient field, and each section adds
@@ -155,12 +147,6 @@ body::before {
       rgba(34, 211, 238, 0.1),
       transparent 66%
     );
-}
-
-/* Generic relative wrapper (clips decorative children). */
-.surface-wrap {
-  position: relative;
-  overflow: hidden;
 }
 
 /* --- Shared base for every section surface --- */

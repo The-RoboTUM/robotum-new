@@ -1,13 +1,10 @@
-import { useEffect } from "react";
 import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import Button from "@components/ui/Button";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 export default function NotFound() {
-  useEffect(() => {
-    document.title = "Page not found | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Page not found | roboTUM");
 
   return (
     <>

@@ -11,7 +11,8 @@ import {
 } from "@config/applications";
 
 // Lazily load below-the-fold sections to reduce initial bundle size
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
+import { usePageTitle } from "@hooks/usePageTitle";
 
 const MissionSection = lazy(
   () => import("@components/sections/homepage-sections/MissionSection"),
@@ -28,15 +29,14 @@ const JoinUsSection = lazy(
 const PartnersSection = lazy(
   () => import("@components/sections/homepage-sections/PartnersSection"),
 );
-const FundraisingSection = lazy(
-  () => import("@components/sections/homepage-sections/FundraisingSection"),
-);
+// Fundraising section is temporarily hidden. To re-enable, restore:
+//   const FundraisingSection = lazy(
+//     () => import("@components/sections/homepage-sections/FundraisingSection"),
+//   );
+// and render <FundraisingSection /> between <ProjectSection /> and <EventSection />.
 
 const Home = () => {
-  useEffect(() => {
-    document.title = "Home | roboTUM";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  usePageTitle("Home | roboTUM");
 
   return (
     <>
@@ -54,7 +54,6 @@ const Home = () => {
         <Suspense fallback={<SectionLoader />}>
           <MissionSection />
           <ProjectSection />
-          {/* <FundraisingSection /> */}
           <EventSection />
           <JoinUsSection />
           <PartnersSection />
