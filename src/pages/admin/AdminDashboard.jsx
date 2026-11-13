@@ -137,6 +137,16 @@ export default function AdminDashboard() {
             </p>
           </Link>
 
+          <Link
+            to="/admin/inventory"
+            className="card-surface card-surface-hover px-6 py-8 transition-all backdrop-blur-md block"
+          >
+            <h3 className="text-lg font-semibold text-white mb-2">Inventory</h3>
+            <p className="text-white/70 text-sm">
+              Manage roboTUM inventory and equipment.
+            </p>
+          </Link>
+
           <div className="card-surface px-6 py-8 opacity-40 cursor-not-allowed backdrop-blur-md">
             <h3 className="text-lg font-semibold text-white mb-2">
               Applications
