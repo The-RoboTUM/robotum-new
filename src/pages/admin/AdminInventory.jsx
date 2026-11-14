@@ -1,10 +1,12 @@
 
+
 import { useCallback, useEffect, useState } from "react";
 import {
   adminFetchInventoryPage,
   adminUpsertInventoryItem,
   adminDeleteInventoryItem,
   adminFetchInventoryLoans,
+  adminFetchActiveInventoryLoans,
   adminCreateInventoryLoan,
   adminReturnInventoryLoan,
 } from "@data";
@@ -28,7 +30,7 @@ const emptyLoan = {
 function formatDate(value) {
   if (!value) return "–";
 
-  return new Date(value).toLocaleString("de-DE", {
+  return new Date(value).toLocaleString("en-GB", {
     dateStyle: "medium",
     timeStyle: "short",
   });
@@ -36,10 +38,10 @@ function formatDate(value) {
 
 function statusLabel(status) {
   const labels = {
-    active: "Im Bestand",
-    maintenance: "In Wartung",
-    lost: "Verloren",
-    retired: "Ausgemustert",
+    active: "Available",
+    maintenance: "Under Maintenance",
+    lost: "Lost",
+    retired: "Retired",
   };
 
   return labels[status] || status;
@@ -47,10 +49,10 @@ function statusLabel(status) {
 
 function conditionLabel(condition) {
   const labels = {
-    new: "Neu",
-    good: "Gut",
-    fair: "Gebraucht",
-    poor: "Beschädigt",
+    new: "New",
+    good: "Good",
+    fair: "Used",
+    poor: "Damaged",
   };
 
   return labels[condition] || condition;
@@ -59,6 +61,8 @@ function conditionLabel(condition) {
 export default function AdminInventory() {
   const [items, setItems] = useState([]);
   const [loans, setLoans] = useState([]);
+  const [currentLoans, setCurrentLoans] = useState([]);
+
   const [selectedItemId, setSelectedItemId] = useState(null);
 
   const [itemForm, setItemForm] = useState(emptyItem);
@@ -70,7 +74,9 @@ export default function AdminInventory() {
   const [statusFilter, setStatusFilter] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const [loadingCurrentLoans, setLoadingCurrentLoans] = useState(false);
   const [saving, setSaving] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -91,11 +97,11 @@ export default function AdminInventory() {
         lifecycleStatus: statusFilter,
       });
 
-      setItems(result.items);
+      setItems(result.items || []);
     } catch (err) {
       console.error(err);
       setError(
-        err.message || "Der Inventarbestand konnte nicht geladen werden.",
+        err.message || "Failed to load inventory.",
       );
     } finally {
       setLoading(false);
@@ -113,14 +119,30 @@ export default function AdminInventory() {
         itemId: selectedItemId,
       });
 
-      setLoans(result);
+      setLoans(result || []);
     } catch (err) {
       console.error(err);
       setError(
-        err.message || "Die Ausleihhistorie konnte nicht geladen werden.",
+        err.message || "Failed to load loan history.",
       );
     }
   }, [selectedItemId]);
+
+  const loadActiveLoans = useCallback(async () => {
+    setLoadingCurrentLoans(true);
+
+    try {
+      const result = await adminFetchActiveInventoryLoans();
+      setCurrentLoans(result || []);
+    } catch (err) {
+      console.error(err);
+      setError(
+        err.message || "Failed to load current loans.",
+      );
+    } finally {
+      setLoadingCurrentLoans(false);
+    }
+  }, []);
 
   useEffect(() => {
     loadInventory();
@@ -129,6 +151,10 @@ export default function AdminInventory() {
   useEffect(() => {
     loadLoans();
   }, [loadLoans]);
+
+  useEffect(() => {
+    loadActiveLoans();
+  }, [loadActiveLoans]);
 
   function updateItemField(event) {
     const { name, value } = event.target;
@@ -157,6 +183,7 @@ export default function AdminInventory() {
 
   function startEdit(item) {
     setEditingItemId(item.id);
+
     setItemForm({
       inventory_number: item.inventory_number || "",
       name: item.name || "",
@@ -174,6 +201,7 @@ export default function AdminInventory() {
 
   async function handleSaveItem(event) {
     event.preventDefault();
+
     setSaving(true);
     setError("");
     setSuccess("");
@@ -188,14 +216,17 @@ export default function AdminInventory() {
 
       setEditingItemId(null);
       setItemForm(emptyItem);
+
       setSuccess(
         editingItemId
-          ? "Gegenstand wurde aktualisiert."
-          : "Gegenstand wurde angelegt.",
+          ? "Item updated successfully."
+          : "Item created successfully.",
       );
     } catch (err) {
       console.error(err);
-      setError(err.message || "Der Gegenstand konnte nicht gespeichert werden.");
+      setError(
+        err.message || "Failed to save item.",
+      );
     } finally {
       setSaving(false);
     }
@@ -203,7 +234,7 @@ export default function AdminInventory() {
 
   async function handleDeleteItem(item) {
     const confirmed = window.confirm(
-      `Möchtest du "${item.name}" wirklich löschen?`,
+      `Are you sure you want to delete "${item.name}"?`,
     );
 
     if (!confirmed) return;
@@ -223,12 +254,14 @@ export default function AdminInventory() {
       }
 
       await loadInventory();
-      setSuccess("Gegenstand wurde gelöscht.");
+      await loadActiveLoans();
+
+      setSuccess("Item deleted successfully.");
     } catch (err) {
       console.error(err);
       setError(
         err.message ||
-          "Der Gegenstand konnte nicht gelöscht werden. Möglicherweise existieren noch Ausleihen.",
+          "Failed to delete item. There may still be existing loans.",
       );
     }
   }
@@ -254,11 +287,14 @@ export default function AdminInventory() {
 
       await loadInventory();
       await loadLoans();
+      await loadActiveLoans();
 
-      setSuccess("Ausleihe wurde erfolgreich eingetragen.");
+      setSuccess("Loan created successfully.");
     } catch (err) {
       console.error(err);
-      setError(err.message || "Die Ausleihe konnte nicht angelegt werden.");
+      setError(
+        err.message || "Failed to create loan.",
+      );
     } finally {
       setSaving(false);
     }
@@ -266,7 +302,7 @@ export default function AdminInventory() {
 
   async function handleReturnLoan(loanId) {
     const confirmed = window.confirm(
-      "Möchtest du die Rückgabe dieses Gegenstands bestätigen?",
+      "Are you sure you want to confirm the return of this item?",
     );
 
     if (!confirmed) return;
@@ -279,11 +315,14 @@ export default function AdminInventory() {
 
       await loadInventory();
       await loadLoans();
+      await loadActiveLoans();
 
-      setSuccess("Rückgabe wurde erfolgreich verbucht.");
+      setSuccess("Item returned successfully.");
     } catch (err) {
       console.error(err);
-      setError(err.message || "Die Rückgabe konnte nicht verbucht werden.");
+      setError(
+        err.message || "Failed to process item return.",
+      );
     }
   }
 
@@ -292,13 +331,13 @@ export default function AdminInventory() {
 
     if (selectedItem.isBorrowed) {
       setError(
-        "Ein ausgeliehener Gegenstand kann nicht ausgemustert werden.",
+        "A borrowed item cannot be retired.",
       );
       return;
     }
 
     const confirmed = window.confirm(
-      `Möchtest du "${selectedItem.name}" wirklich ausmustern?`,
+      `Are you sure you want to retire "${selectedItem.name}"?`,
     );
 
     if (!confirmed) return;
@@ -313,15 +352,21 @@ export default function AdminInventory() {
       });
 
       await loadInventory();
+      await loadActiveLoans();
 
-      setSuccess("Gegenstand wurde ausgemustert.");
+      setSuccess("Item retired successfully.");
     } catch (err) {
       console.error(err);
-      setError(err.message || "Der Gegenstand konnte nicht ausgemustert werden.");
+      setError(
+        err.message || "Failed to retire item.",
+      );
     }
   }
 
-  const activeLoans = loans.filter((loan) => !loan.returned_at);
+  const selectedItemActiveLoans = loans.filter(
+    (loan) => !loan.returned_at,
+  );
+
   const selectedItemIsAvailable =
     selectedItem &&
     selectedItem.lifecycle_status === "active" &&
@@ -336,10 +381,14 @@ export default function AdminInventory() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="mb-2 text-sm text-white/50">Admin / Verwaltung</p>
+            <p className="mb-2 text-sm text-white/50">
+              Admin / Management
+            </p>
+
             <h1 className="text-3xl font-bold">Inventory</h1>
+
             <p className="mt-2 text-sm text-white/60">
-              Inventargegenstände, Ausleihen und Rückgaben verwalten.
+              Manage inventory items, loans and returns.
             </p>
           </div>
 
@@ -348,7 +397,7 @@ export default function AdminInventory() {
             onClick={startNewItem}
             className="rounded-lg bg-white px-5 py-3 font-semibold text-black transition hover:bg-white/80"
           >
-            + Neuer Gegenstand
+            + Add New Item
           </button>
         </div>
 
@@ -366,19 +415,21 @@ export default function AdminInventory() {
 
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-            <p className="text-sm text-white/50">Gegenstände</p>
+            <p className="text-sm text-white/50">Total Items</p>
             <p className="mt-2 text-3xl font-bold">{items.length}</p>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-            <p className="text-sm text-white/50">Aktuell ausgeliehen</p>
+            <p className="text-sm text-white/50">
+              Currently Borrowed
+            </p>
             <p className="mt-2 text-3xl font-bold">
-              {items.filter((item) => item.isBorrowed).length}
+              {currentLoans.length}
             </p>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-            <p className="text-sm text-white/50">Verfügbar</p>
+            <p className="text-sm text-white/50">Available</p>
             <p className="mt-2 text-3xl font-bold">
               {
                 items.filter(
@@ -391,12 +442,105 @@ export default function AdminInventory() {
           </div>
         </div>
 
+        {/* Current loans overview */}
+        <section className="mb-6 rounded-xl border border-amber-400/20 bg-white/5 p-5">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-semibold">
+                Currently Borrowed Items
+              </h2>
+
+              <p className="mt-1 text-sm text-white/50">
+                All items that are currently on loan.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="rounded-full bg-amber-500/20 px-3 py-1 text-sm text-amber-200">
+                {currentLoans.length} borrowed
+              </span>
+
+              <button
+                type="button"
+                onClick={loadActiveLoans}
+                disabled={loadingCurrentLoans}
+                className="text-sm text-white/60 hover:text-white disabled:opacity-50"
+              >
+                {loadingCurrentLoans ? "Loading..." : "Refresh"}
+              </button>
+            </div>
+          </div>
+
+          {loadingCurrentLoans ? (
+            <p className="py-6 text-center text-white/50">
+              Loading current loans...
+            </p>
+          ) : currentLoans.length === 0 ? (
+            <p className="rounded-lg border border-white/10 bg-black/10 p-5 text-center text-sm text-white/50">
+              No items are currently borrowed.
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {currentLoans.map((loan) => (
+                <div
+                  key={loan.loan_id}
+                  className="rounded-lg border border-white/10 bg-black/10 p-4"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-semibold text-white">
+                        {loan.item_name}
+                      </h3>
+
+                      <p className="mt-1 text-xs text-white/50">
+                        {loan.inventory_number} · {loan.category}
+                      </p>
+
+                      <p className="mt-3 text-sm text-white/80">
+                        <span className="text-white/50">
+                          Borrowed by:
+                        </span>{" "}
+                        {loan.borrower_name}
+                      </p>
+
+                      <p className="mt-1 break-all text-sm text-white/50">
+                        {loan.borrower_email}
+                      </p>
+
+                      <p className="mt-3 text-sm text-white/80">
+                        <span className="text-white/50">
+                          Due date:
+                        </span>{" "}
+                        {formatDate(loan.due_at)}
+                      </p>
+
+                      {loan.location && (
+                        <p className="mt-1 text-xs text-white/40">
+                          Location: {loan.location}
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleReturnLoan(loan.loan_id)}
+                      className="rounded-lg border border-green-400/30 px-4 py-2 text-sm text-green-200 hover:bg-green-500/10"
+                    >
+                      Record Return
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
         <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-3">
           <input
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Name oder Inventarnummer suchen..."
+            placeholder="Search by name or inventory number..."
             className="rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/40"
           />
 
@@ -405,7 +549,7 @@ export default function AdminInventory() {
             onChange={(event) => setCategoryFilter(event.target.value)}
             className="rounded-lg border border-white/15 bg-[#171717] px-4 py-3 text-white"
           >
-            <option value="">Alle Kategorien</option>
+            <option value="">All Categories</option>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -418,34 +562,37 @@ export default function AdminInventory() {
             onChange={(event) => setStatusFilter(event.target.value)}
             className="rounded-lg border border-white/15 bg-[#171717] px-4 py-3 text-white"
           >
-            <option value="">Alle Status</option>
-            <option value="active">Im Bestand</option>
-            <option value="maintenance">In Wartung</option>
-            <option value="lost">Verloren</option>
-            <option value="retired">Ausgemustert</option>
+            <option value="">All Statuses</option>
+            <option value="active">Available</option>
+            <option value="maintenance">Under Maintenance</option>
+            <option value="lost">Lost</option>
+            <option value="retired">Retired</option>
           </select>
         </div>
 
         <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-2">
           <section className="min-w-0 rounded-xl border border-white/10 bg-white/5 p-5">
             <div className="mb-5 flex items-center justify-between gap-3">
-              <h2 className="text-xl font-semibold">Inventarbestand</h2>
+              <h2 className="text-xl font-semibold">
+                Inventory Items
+              </h2>
+
               <button
                 type="button"
                 onClick={loadInventory}
                 className="text-sm text-white/60 hover:text-white"
               >
-                Aktualisieren
+                Refresh
               </button>
             </div>
 
             {loading ? (
               <p className="py-8 text-center text-white/50">
-                Inventar wird geladen...
+                Loading inventory...
               </p>
             ) : items.length === 0 ? (
               <p className="py-8 text-center text-white/50">
-                Keine Gegenstände gefunden.
+                No items found.
               </p>
             ) : (
               <div className="space-y-3">
@@ -466,6 +613,7 @@ export default function AdminInventory() {
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
                           <p className="font-semibold">{item.name}</p>
+
                           <p className="mt-1 text-xs text-white/50">
                             {item.inventory_number} · {item.category}
                           </p>
@@ -481,14 +629,14 @@ export default function AdminInventory() {
                           }`}
                         >
                           {item.isBorrowed
-                            ? "Ausgeliehen"
+                            ? "Borrowed"
                             : statusLabel(item.lifecycle_status)}
                         </span>
                       </div>
 
                       <p className="mt-2 text-sm text-white/50">
-                        Standort: {item.location || "Nicht angegeben"} ·
-                        Zustand: {conditionLabel(item.condition)}
+                        Location: {item.location || "Not specified"} ·
+                        Condition: {conditionLabel(item.condition)}
                       </p>
                     </button>
 
@@ -498,7 +646,7 @@ export default function AdminInventory() {
                         onClick={() => startEdit(item)}
                         className="text-sm text-white/70 hover:text-white"
                       >
-                        Bearbeiten
+                        Edit
                       </button>
 
                       <button
@@ -506,7 +654,7 @@ export default function AdminInventory() {
                         onClick={() => handleDeleteItem(item)}
                         className="text-sm text-red-300 hover:text-red-200"
                       >
-                        Löschen
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -519,20 +667,20 @@ export default function AdminInventory() {
             <section className="rounded-xl border border-white/10 bg-white/5 p-5">
               <h2 className="mb-5 text-xl font-semibold">
                 {editingItemId
-                  ? "Gegenstand bearbeiten"
-                  : "Neuen Gegenstand anlegen"}
+                  ? "Edit Item"
+                  : "Add New Item"}
               </h2>
 
               <form onSubmit={handleSaveItem} className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <label className="block text-sm text-white/70">
-                    Inventarnummer *
+                    Inventory Number *
                     <input
                       required
                       name="inventory_number"
                       value={itemForm.inventory_number}
                       onChange={updateItemField}
-                      placeholder="z. B. RT-001"
+                      placeholder="e.g. RT-001"
                       className="mt-2 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2.5 text-white"
                     />
                   </label>
@@ -544,73 +692,73 @@ export default function AdminInventory() {
                       name="name"
                       value={itemForm.name}
                       onChange={updateItemField}
-                      placeholder="z. B. Arduino Uno"
+                      placeholder="e.g. Arduino Uno"
                       className="mt-2 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2.5 text-white"
                     />
                   </label>
 
                   <label className="block text-sm text-white/70">
-                    Kategorie *
+                    Category *
                     <input
                       required
                       name="category"
                       value={itemForm.category}
                       onChange={updateItemField}
-                      placeholder="z. B. Elektronik"
+                      placeholder="e.g. Electronics"
                       className="mt-2 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2.5 text-white"
                     />
                   </label>
 
                   <label className="block text-sm text-white/70">
-                    Standort
+                    Location
                     <input
                       name="location"
                       value={itemForm.location}
                       onChange={updateItemField}
-                      placeholder="z. B. Lager A"
+                      placeholder="e.g. Storage Room A"
                       className="mt-2 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2.5 text-white"
                     />
                   </label>
 
                   <label className="block text-sm text-white/70">
-                    Zustand
+                    Condition
                     <select
                       name="condition"
                       value={itemForm.condition}
                       onChange={updateItemField}
                       className="mt-2 w-full rounded-lg border border-white/15 bg-[#171717] px-3 py-2.5 text-white"
                     >
-                      <option value="new">Neu</option>
-                      <option value="good">Gut</option>
-                      <option value="fair">Gebraucht</option>
-                      <option value="poor">Beschädigt</option>
+                      <option value="new">New</option>
+                      <option value="good">Good</option>
+                      <option value="fair">Used</option>
+                      <option value="poor">Damaged</option>
                     </select>
                   </label>
 
                   <label className="block text-sm text-white/70">
-                    Lebenszyklus-Status
+                    Lifecycle Status
                     <select
                       name="lifecycle_status"
                       value={itemForm.lifecycle_status}
                       onChange={updateItemField}
                       className="mt-2 w-full rounded-lg border border-white/15 bg-[#171717] px-3 py-2.5 text-white"
                     >
-                      <option value="active">Im Bestand</option>
-                      <option value="maintenance">In Wartung</option>
-                      <option value="lost">Verloren</option>
-                      <option value="retired">Ausgemustert</option>
+                      <option value="active">Available</option>
+                      <option value="maintenance">Under Maintenance</option>
+                      <option value="lost">Lost</option>
+                      <option value="retired">Retired</option>
                     </select>
                   </label>
                 </div>
 
                 <label className="block text-sm text-white/70">
-                  Beschreibung
+                  Description
                   <textarea
                     name="description"
                     value={itemForm.description}
                     onChange={updateItemField}
                     rows={3}
-                    placeholder="Weitere Informationen..."
+                    placeholder="Additional information..."
                     className="mt-2 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2.5 text-white"
                   />
                 </label>
@@ -622,10 +770,10 @@ export default function AdminInventory() {
                     className="rounded-lg bg-white px-5 py-2.5 font-semibold text-black hover:bg-white/80 disabled:opacity-50"
                   >
                     {saving
-                      ? "Wird gespeichert..."
+                      ? "Saving..."
                       : editingItemId
-                        ? "Änderungen speichern"
-                        : "Gegenstand anlegen"}
+                        ? "Save Changes"
+                        : "Create Item"}
                   </button>
 
                   <button
@@ -633,7 +781,7 @@ export default function AdminInventory() {
                     onClick={startNewItem}
                     className="rounded-lg border border-white/20 px-5 py-2.5 text-white/70 hover:bg-white/10"
                   >
-                    Zurücksetzen
+                    Reset
                   </button>
                 </div>
               </form>
@@ -643,30 +791,33 @@ export default function AdminInventory() {
               <>
                 <section className="rounded-xl border border-white/10 bg-white/5 p-5">
                   <h2 className="mb-2 text-xl font-semibold">
-                    Ausleihe verwalten
+                    Manage Loan
                   </h2>
 
                   <p className="mb-5 text-sm text-white/60">
-                    Ausgewählt: {selectedItem.name} (
+                    Selected item: {selectedItem.name} (
                     {selectedItem.inventory_number})
                   </p>
 
                   {selectedItemIsAvailable ? (
-                    <form onSubmit={handleCreateLoan} className="space-y-4">
+                    <form
+                      onSubmit={handleCreateLoan}
+                      className="space-y-4"
+                    >
                       <label className="block text-sm text-white/70">
-                        Name des Ausleihers *
+                        Borrower Name *
                         <input
                           required
                           name="borrower_name"
                           value={loanForm.borrower_name}
                           onChange={updateLoanField}
-                          placeholder="Vor- und Nachname"
+                          placeholder="Full name"
                           className="mt-2 w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2.5 text-white"
                         />
                       </label>
 
                       <label className="block text-sm text-white/70">
-                        E-Mail-Adresse *
+                        Email Address *
                         <input
                           required
                           type="email"
@@ -679,7 +830,7 @@ export default function AdminInventory() {
                       </label>
 
                       <label className="block text-sm text-white/70">
-                        Geplantes Rückgabedatum *
+                        Due Date *
                         <input
                           required
                           type="datetime-local"
@@ -696,13 +847,14 @@ export default function AdminInventory() {
                         disabled={saving}
                         className="rounded-lg bg-white px-5 py-2.5 font-semibold text-black hover:bg-white/80 disabled:opacity-50"
                       >
-                        {saving ? "Wird gespeichert..." : "Ausleihe eintragen"}
+                        {saving
+                          ? "Saving..."
+                          : "Create Loan"}
                       </button>
                     </form>
                   ) : (
                     <p className="rounded-lg bg-amber-500/10 p-4 text-sm text-amber-200">
-                      Dieser Gegenstand ist derzeit nicht für eine neue
-                      Ausleihe verfügbar.
+                      This item is currently unavailable for new loans.
                     </p>
                   )}
 
@@ -715,18 +867,18 @@ export default function AdminInventory() {
                     }
                     className="mt-5 text-sm text-red-300 hover:text-red-200 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    Gegenstand ausmustern
+                    Retire Item
                   </button>
                 </section>
 
                 <section className="rounded-xl border border-white/10 bg-white/5 p-5">
                   <h2 className="mb-4 text-xl font-semibold">
-                    Ausleihhistorie
+                    Loan History
                   </h2>
 
                   {loans.length === 0 ? (
                     <p className="text-sm text-white/50">
-                      Für diesen Gegenstand gibt es noch keine Ausleihen.
+                      No loan history for this item yet.
                     </p>
                   ) : (
                     <div className="space-y-4">
@@ -740,6 +892,7 @@ export default function AdminInventory() {
                               <p className="font-medium">
                                 {loan.borrower_name}
                               </p>
+
                               <p className="mt-1 break-all text-sm text-white/50">
                                 {loan.borrower_email}
                               </p>
@@ -753,17 +906,23 @@ export default function AdminInventory() {
                               }`}
                             >
                               {loan.returned_at
-                                ? "Zurückgegeben"
-                                : "Aktiv ausgeliehen"}
+                                ? "Returned"
+                                : "Currently Borrowed"}
                             </span>
                           </div>
 
                           <div className="mt-3 space-y-1 text-xs text-white/50">
-                            <p>Ausgeliehen: {formatDate(loan.borrowed_at)}</p>
-                            <p>Rückgabe geplant: {formatDate(loan.due_at)}</p>
+                            <p>
+                              Borrowed: {formatDate(loan.borrowed_at)}
+                            </p>
+
+                            <p>
+                              Due Date: {formatDate(loan.due_at)}
+                            </p>
+
                             {loan.returned_at && (
                               <p>
-                                Zurückgegeben am:{" "}
+                                Returned on:{" "}
                                 {formatDate(loan.returned_at)}
                               </p>
                             )}
@@ -775,7 +934,7 @@ export default function AdminInventory() {
                               onClick={() => handleReturnLoan(loan.id)}
                               className="mt-4 rounded-lg border border-green-400/30 px-4 py-2 text-sm text-green-200 hover:bg-green-500/10"
                             >
-                              Rückgabe verbuchen
+                              Record Return
                             </button>
                           )}
                         </div>
@@ -784,7 +943,8 @@ export default function AdminInventory() {
                   )}
 
                   <p className="mt-4 text-xs text-white/40">
-                    Aktive Ausleihen: {activeLoans.length}
+                    Active loans for this item:{" "}
+                    {selectedItemActiveLoans.length}
                   </p>
                 </section>
               </>

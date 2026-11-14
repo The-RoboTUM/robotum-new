@@ -1,7 +1,7 @@
+
 import { supabase } from "@lib/supabaseClient";
 import { logger } from "@utils/logger";
 import { pageRange } from "./pagination";
-
 
 const INVENTORY_FIELDS = `
   id,
@@ -16,7 +16,6 @@ const INVENTORY_FIELDS = `
   updated_at
 `;
 
-
 const INVENTORY_LOAN_FIELDS = `
   id,
   item_id,
@@ -27,7 +26,6 @@ const INVENTORY_LOAN_FIELDS = `
   returned_at,
   created_at
 `;
-
 
 export async function fetchPublicInventoryCatalog() {
   const { data, error } = await supabase
@@ -79,6 +77,7 @@ export async function adminFetchInventoryPage({
 
   if (search.trim()) {
     const pattern = `%${search.trim()}%`;
+
     query = query.or(
       `name.ilike.${pattern},inventory_number.ilike.${pattern},category.ilike.${pattern}`,
     );
@@ -94,7 +93,6 @@ export async function adminFetchInventoryPage({
   const items = data ?? [];
   const itemIds = items.map((item) => item.id);
 
-  
   let activeLoans = [];
 
   if (itemIds.length > 0) {
@@ -124,6 +122,31 @@ export async function adminFetchInventoryPage({
     })),
     total: count ?? 0,
   };
+}
+
+export async function adminFetchActiveInventoryLoans() {
+  const { data, error } = await supabase
+    .from("inventory_active_loans")
+    .select(`
+      loan_id,
+      item_id,
+      inventory_number,
+      item_name,
+      category,
+      location,
+      borrower_name,
+      borrower_email,
+      borrowed_at,
+      due_at
+    `)
+    .order("due_at", { ascending: true });
+
+  if (error) {
+    logger.error("Error fetching all active inventory loans:", error);
+    throw error;
+  }
+
+  return data ?? [];
 }
 
 
@@ -172,7 +195,6 @@ export async function adminUpsertInventoryItem(item) {
   }
 }
 
-
 export async function adminDeleteInventoryItem(id) {
   const { error } = await supabase
     .from("inventory_items")
@@ -184,7 +206,6 @@ export async function adminDeleteInventoryItem(id) {
     throw error;
   }
 }
-
 
 export async function adminFetchInventoryLoans({ itemId } = {}) {
   let query = supabase
@@ -211,7 +232,6 @@ export async function adminFetchInventoryLoans({ itemId } = {}) {
 
   return data ?? [];
 }
-
 
 export async function adminCreateInventoryLoan({
   item_id,
@@ -280,7 +300,6 @@ export async function adminCreateInventoryLoan({
     throw error;
   }
 }
-
 
 export async function adminReturnInventoryLoan(id) {
   const { data, error } = await supabase
