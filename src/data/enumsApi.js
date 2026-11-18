@@ -22,6 +22,7 @@ export const ENUM_TYPES = {
   PARTNER_CATEGORY: "partner_category",
   FAQ_CATEGORY: "faq_category",
   MEMBERSHIP_TYPE: "membership_type",
+  MEMBER_STATUS: "member_status",
 };
 
 /**
@@ -56,11 +57,22 @@ const ENUM_FALLBACKS = {
     "Collaboration & Partnerships",
     "Contact",
   ],
+  // Full declared list; the public team grid narrows it via ENUM_ALLOWLIST.
   [ENUM_TYPES.MEMBERSHIP_TYPE]: [
     "Board",
+    "Founders",
+    "Juniors",
+    "Seniors",
     "Department Heads",
     "Project Leads",
-    "Founders",
+  ],
+  // supabase/migrations/0005_member_status.sql
+  [ENUM_TYPES.MEMBER_STATUS]: [
+    "active",
+    "inactive",
+    "paused",
+    "graduated",
+    "deleted",
   ],
 };
 
@@ -84,8 +96,8 @@ function toOptions(values) {
   return values.map((value) => ({ value, label: formatEnumLabel(value) }));
 }
 
-function applyAllowlist(enumType, values) {
-  const allowed = ENUM_ALLOWLIST[enumType];
+function applyAllowlist(enumType, values, { includeAll = false } = {}) {
+  const allowed = includeAll ? null : ENUM_ALLOWLIST[enumType];
   if (!allowed) return values;
   // Keep the allowlist's order, but only for values the DB actually still has.
   return allowed.filter((value) => values.includes(value));
@@ -94,9 +106,12 @@ function applyAllowlist(enumType, values) {
 /**
  * Fallback options for an enum. Synchronous, so components can seed state with
  * it and always have a valid `options[0]` on first render.
+ * `includeAll` skips ENUM_ALLOWLIST (admin screens need every value).
  */
-export function getFallbackEnumOptions(enumType) {
-  return toOptions(applyAllowlist(enumType, ENUM_FALLBACKS[enumType] ?? []));
+export function getFallbackEnumOptions(enumType, { includeAll = false } = {}) {
+  return toOptions(
+    applyAllowlist(enumType, ENUM_FALLBACKS[enumType] ?? [], { includeAll }),
+  );
 }
 
 // Cached in-flight/resolved fetch, so the RPC runs once per page load even
@@ -141,16 +156,16 @@ export function loadEnums({ force = false } = {}) {
  * fallback values otherwise. Always resolves to a non-empty array for a
  * known enum.
  */
-export async function fetchEnumOptions(enumType) {
+export async function fetchEnumOptions(enumType, { includeAll = false } = {}) {
   const all = await loadEnums();
   const live = all[enumType];
 
   if (!Array.isArray(live) || live.length === 0) {
-    return getFallbackEnumOptions(enumType);
+    return getFallbackEnumOptions(enumType, { includeAll });
   }
 
-  const values = applyAllowlist(enumType, live);
+  const values = applyAllowlist(enumType, live, { includeAll });
   return values.length > 0
     ? toOptions(values)
-    : getFallbackEnumOptions(enumType);
+    : getFallbackEnumOptions(enumType, { includeAll });
 }

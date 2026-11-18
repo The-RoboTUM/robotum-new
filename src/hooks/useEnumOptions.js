@@ -15,21 +15,23 @@ import { fetchEnumOptions, getFallbackEnumOptions } from "@data";
  * which is exactly what would break form defaults here.
  *
  * @param {string} enumType  value from `ENUM_TYPES`
+ * @param {object} [opts]
+ * @param {boolean} [opts.includeAll]  ignore ENUM_ALLOWLIST (admin screens)
  * @returns {{ options: Array<{value: string, label: string}>, loading: boolean }}
  */
-export function useEnumOptions(enumType) {
+export function useEnumOptions(enumType, { includeAll = false } = {}) {
   const [options, setOptions] = useState(() =>
-    getFallbackEnumOptions(enumType),
+    getFallbackEnumOptions(enumType, { includeAll }),
   );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
-    setOptions(getFallbackEnumOptions(enumType));
+    setOptions(getFallbackEnumOptions(enumType, { includeAll }));
     setLoading(true);
 
-    fetchEnumOptions(enumType)
+    fetchEnumOptions(enumType, { includeAll })
       .then((live) => {
         if (!cancelled && live.length > 0) setOptions(live);
       })
@@ -40,7 +42,7 @@ export function useEnumOptions(enumType) {
     return () => {
       cancelled = true;
     };
-  }, [enumType]);
+  }, [enumType, includeAll]);
 
   return { options, loading };
 }

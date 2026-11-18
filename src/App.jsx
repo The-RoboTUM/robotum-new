@@ -31,6 +31,7 @@ const AdminPartners = lazy(() => import("@pages/admin/AdminPartners"));
 const AdminProjects = lazy(() => import("@pages/admin/AdminProjects"));
 const AdminEvents = lazy(() => import("@pages/admin/AdminEvents"));
 const AdminInventory = lazy(() => import("@pages/admin/AdminInventory"));
+const AdminMembers = lazy(() => import("@pages/admin/AdminMembers"));
 
 export default function App() {
   return (
@@ -63,8 +64,9 @@ export default function App() {
             <Route path="/admin/partners" element={<AdminPartners />} />
             <Route path="/admin/projects" element={<AdminProjects />} />
             <Route path="/admin/events" element={<AdminEvents />} />
-             <Route path="/admin/inventory" element={<AdminInventory />} />
-            {/* later: /admin/applications, /admin/members */}
+            <Route path="/admin/inventory" element={<AdminInventory />} />
+            <Route path="/admin/members" element={<AdminMembers />} />
+            {/* later: /admin/applications */}
           </Route>
 
           {/* 404 - must stay last */}

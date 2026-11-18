@@ -47,8 +47,8 @@ export default function AdminLayout({ children, title, description }) {
     { to: "/admin/projects", label: "Projects" },
     { to: "/admin/events", label: "Events" },
     { to: "/admin/inventory", label: "Inventory" },
+    { to: "/admin/members", label: "Members" },
     // later:
-    // { to: "/admin/members", label: "Members" },
     // { to: "/admin/applications", label: "Applications" },
   ];
 
