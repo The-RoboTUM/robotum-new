@@ -1,5 +1,5 @@
 // src/components/admin/members/StatusTab.jsx
-// Members who are not on the current roster (paused, graduated, deleted, …)
+// Members who are not on the current roster (graduated, suspended, paused, deleted, …)
 // with a filter per status, + editor to change anyone's status.
 import { useMemo, useRef, useState } from "react";
 import { logger } from "@utils/logger";
@@ -24,6 +24,15 @@ import {
 
 const FILTER_ALL = "__all";
 
+// Statuses that set off DB automation (triggers on members_personal.status).
+// Keyed by value so unknown/new statuses simply get no extra warning.
+const STATUS_SIDE_EFFECTS = {
+  graduated:
+    "This runs make_alumni: every membership except Founders is replaced by Alumni and their access is updated.",
+  [MEMBER_STATUS_DELETED]:
+    "This offboards them: all team assignments and club memberships are removed and their Google, Slack and Notion access is revoked. Changing the status back later does NOT restore those.",
+};
+
 function StatusEditor({ member, statusOptions, onSaved, onError }) {
   const [status, setStatus] = useState(member.status);
   const [saving, setSaving] = useState(false);
@@ -32,11 +41,10 @@ function StatusEditor({ member, statusOptions, onSaved, onError }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const warning = STATUS_SIDE_EFFECTS[status];
     if (
-      status === MEMBER_STATUS_DELETED &&
-      !window.confirm(
-        `Mark ${member.fullName} as deleted? They disappear from the public site but can be restored here.`,
-      )
+      warning &&
+      !window.confirm(`Set ${member.fullName} to ${labelOf(status)}?\n\n${warning}`)
     )
       return;
 
@@ -73,7 +81,8 @@ function StatusEditor({ member, statusOptions, onSaved, onError }) {
       </div>
       {member.status === MEMBER_STATUS_DELETED && (
         <p className="text-xs text-white/55">
-          This member is deleted. Pick another status to restore them.
+          This member is deleted. Changing the status does not bring back their
+          team assignments, memberships or tool access - re-add those by hand.
         </p>
       )}
       <div className="flex justify-end pt-1">
@@ -136,7 +145,7 @@ export default function StatusTab({ members, statusOptions, onSaved, onError }) 
   return (
     <div className="grid items-start gap-8 md:grid-cols-[2fr_minmax(0,1.5fr)]">
       <div>
-        <AdminListHeader title="Paused, graduated & deleted" count={filtered.length} />
+        <AdminListHeader title="Other statuses" count={filtered.length} />
 
         <MemberFilterChips
           label="Filter by status"
@@ -207,7 +216,7 @@ export default function StatusTab({ members, statusOptions, onSaved, onError }) 
       <div ref={editorRef} className="scroll-mt-32">
         <AdminSideCard
           title="Change status"
-          description="Change any member's status. Deleted members are hidden from the public site and can be restored here."
+          description="Change any member's status. Graduated and Deleted start automatic offboarding (see the confirmation before saving)."
         >
           <div className="space-y-4">
             <MemberSelect

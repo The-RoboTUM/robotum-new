@@ -65,14 +65,15 @@ const ENUM_FALLBACKS = {
     "Seniors",
     "Department Heads",
     "Project Leads",
+    "Alumni",
   ],
-  // supabase/migrations/0005_member_status.sql
   [ENUM_TYPES.MEMBER_STATUS]: [
     "active",
     "inactive",
-    "paused",
     "graduated",
+    "suspended",
     "deleted",
+    "paused",
   ],
 };
 

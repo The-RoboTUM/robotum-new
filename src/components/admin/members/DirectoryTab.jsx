@@ -1,6 +1,8 @@
 // src/components/admin/members/DirectoryTab.jsx
-// All members: add new people, edit personal details, "delete" (soft delete
-// via status, restorable from the Status tab).
+// All members: add new people, edit personal details, delete.
+// Adding a member fires the member_creation webhook (account provisioning);
+// deleting sets status = 'deleted', which the on_member_deleted trigger turns
+// into a full offboarding (projects + memberships removed, access revoked).
 import { useMemo, useRef, useState } from "react";
 import { logger } from "@utils/logger";
 import Button from "@components/ui/Button";
@@ -111,14 +113,14 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
   const handleDelete = async (member) => {
     if (
       !window.confirm(
-        `Delete ${member.fullName}? They are hidden from the public site and moved to the Status tab, where they can be restored.`,
+        `Delete ${member.fullName}?\n\nThis offboards them: all team assignments and club memberships are removed and their Google, Slack and Notion access is revoked. Changing the status back later does NOT restore those.`,
       )
     )
       return;
     try {
       await adminSetMemberStatus(member.id, MEMBER_STATUS_DELETED);
       if (editingId === member.id) startNew();
-      onSaved(`${member.fullName} was deleted. Restore them from the Status tab if needed.`);
+      onSaved(`${member.fullName} was deleted and is being offboarded.`);
     } catch (err) {
       logger.error("Error deleting member:", err);
       onError(err.message || "Failed to delete member.");

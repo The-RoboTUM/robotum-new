@@ -8,7 +8,9 @@ import { ENUM_TYPES, fetchEnumOptions } from "./enumsApi";
 /**
  * member_status values the code has to reason about (the full list is the
  * DB enum, loaded via useEnumOptions(ENUM_TYPES.MEMBER_STATUS)).
- * - DELETED is a soft delete: hidden from the public site, restorable in admin.
+ * - DELETED: hidden from the public site; the on_member_deleted trigger also
+ *   removes all projects/memberships and revokes tool access (not reversible
+ *   by changing the status back).
  * - CURRENT_MEMBER_STATUSES are the "on the roster" statuses shown on the
  *   admin Teams tab; every other status is listed on the admin Status tab.
  */
@@ -339,7 +341,7 @@ export async function adminUpsertMember(member) {
   return data.id;
 }
 
-/** Admin: change a member's lifecycle status (also used for soft delete). */
+/** Admin: change a member's lifecycle status (DB triggers handle offboarding). */
 export async function adminSetMemberStatus(memberId, status) {
   const { error } = await supabase
     .from("members_personal")
