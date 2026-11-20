@@ -203,7 +203,10 @@ const ADMIN_MEMBER_SELECT = `
   inactive_since,
   suspended_at,
   deleted_at,
-  lifecycle_exempt
+  lifecycle_exempt,
+  last_sign_in,
+  google_created_at,
+  reactivated_at
 `;
 
 // Added by migration 0007. Selected separately so the page keeps working
@@ -318,6 +321,12 @@ export async function adminFetchMembersRegistry() {
       deletedAt: m.deleted_at ?? null,
     },
     lifecycleExempt: Boolean(m.lifecycle_exempt),
+    // Synced daily from Google by the lifecycle Edge Function.
+    signIn: {
+      lastSignIn: m.last_sign_in ?? null,
+      accountCreated: m.google_created_at ?? m.created_at ?? null,
+      reactivatedAt: m.reactivated_at ?? null,
+    },
     memberships: membershipsByMember.get(m.id) ?? [],
     projects: (assignmentsByMember.get(m.id) ?? []).sort((a, b) =>
       a.projectName.localeCompare(b.projectName),

@@ -156,36 +156,91 @@ export function matchesMemberQuery(member, query) {
   );
 }
 
+/** "12 Oct 2026 (39 days ago)" */
+function DateWithAge({ date }) {
+  return (
+    <>
+      {formatShortDate(date)} <span className="text-white/40">({formatRelativeDays(date)})</span>
+    </>
+  );
+}
+
 /**
- * "Inactive since 3 Nov 2026 (17 days ago) · Suspension in 13 days (3 Dec 2026)".
- * Renders nothing for statuses without a timeline (active, paused, …).
+ * One line of status context, e.g.
+ *   active:   "Never signed in (account created 10 Nov 2026) · Becomes inactive in 4 days (24 Nov 2026)"
+ *   inactive: "Inactive since 25 Oct 2026 (26 days ago) · Suspension in 4 days (24 Nov 2026) · Last sign-in …"
+ * Renders nothing for statuses without a timeline (e.g. paused).
  */
 export function MemberStatusTiming({ member, statusLabel }) {
   const timing = getStatusTiming(member);
   if (!timing) return null;
 
-  const { since, next, nextSkippedReason } = timing;
-  return (
-    <p className="text-xs text-white/55">
-      {since ? (
+  const { hasSince, since, signIn, next, note } = timing;
+  const parts = [];
+
+  if (hasSince) {
+    parts.push(
+      since ? (
+        <span key="since">
+          {statusLabel} since <DateWithAge date={since} />
+        </span>
+      ) : (
+        <span key="since" className="text-white/40">
+          {statusLabel} since: date not recorded
+        </span>
+      ),
+    );
+  }
+
+  const signInPart = signIn && (
+    <span key="signin">
+      {signIn.neverSignedIn ? (
         <>
-          {statusLabel} since {formatShortDate(since)}{" "}
-          <span className="text-white/40">({formatRelativeDays(since)})</span>
+          Never signed in
+          {signIn.created && (
+            <span className="text-white/40"> (account created {formatShortDate(signIn.created)})</span>
+          )}
         </>
       ) : (
-        <span className="text-white/40">{statusLabel} since: date not recorded</span>
-      )}
-      {next && (
         <>
-          {" · "}
-          <span className={next.daysLeft <= 7 ? "text-amber-200" : undefined}>
-            {next.overdue
-              ? `${next.label} due - happens with the next daily run`
-              : `${next.label} ${formatRelativeDays(next.date)} (${formatShortDate(next.date)})`}
-          </span>
+          Last sign-in <DateWithAge date={signIn.lastSignIn} />
         </>
       )}
-      {nextSkippedReason && <span className="text-white/40"> · {nextSkippedReason}</span>}
+      {signIn.countsFromReactivation && (
+        <span className="text-white/40"> · reactivated {formatShortDate(signIn.reactivated)}</span>
+      )}
+    </span>
+  );
+
+  // Active members: sign-in first, it's what drives their countdown.
+  if (signInPart && !hasSince) parts.push(signInPart);
+
+  if (next) {
+    parts.push(
+      <span key="next" className={next.daysLeft <= 7 ? "text-amber-200" : undefined}>
+        {next.overdue
+          ? next.dueLabel
+          : `${next.label} ${formatRelativeDays(next.date)} (${formatShortDate(next.date)})`}
+      </span>,
+    );
+  }
+  if (note) {
+    parts.push(
+      <span key="note" className="text-white/40">
+        {note}
+      </span>,
+    );
+  }
+  if (signInPart && hasSince) parts.push(signInPart);
+
+  return (
+    <p className="text-xs text-white/55">
+      {parts.map((part, i) => (
+        <span key={part.key}>
+          {i > 0 && " · "}
+          {part}
+        </span>
+      ))}
     </p>
   );
 }
