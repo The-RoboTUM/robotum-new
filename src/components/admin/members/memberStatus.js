@@ -110,15 +110,17 @@ export function getStatusTiming(member, now = new Date()) {
   }
 
   if (status === "inactive") {
+    const { step, days } = rules.afterInactive;
+    const label = step === "delete" ? "Deletion" : "Suspension";
     if (!result.since) {
       // Set to inactive by hand: the next run sends the warning and starts the clock.
-      result.note = `Warning email + ${rules.suspendAfterInactiveDays}-day countdown start with the next daily run`;
+      result.note = `Warning email + ${days}-day countdown to ${label.toLowerCase()} start with the next daily run`;
       return result;
     }
     result.next = nextStep(
-      "Suspension",
-      "Suspension due - happens with the next daily run",
-      addDays(result.since, rules.suspendAfterInactiveDays),
+      label,
+      `${label} due - happens with the next daily run`,
+      addDays(result.since, days),
       now,
     );
     return result;
