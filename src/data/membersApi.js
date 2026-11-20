@@ -246,7 +246,7 @@ export async function adminFetchMembersRegistry() {
         .select("member_id, project_id, role, department_slug"),
       supabase
         .from("projects")
-        .select("id, name, status")
+        .select("id, name, status, category")
         .order("name", { ascending: true }),
       supabase
         .from("departments")
@@ -270,7 +270,8 @@ export async function adminFetchMembersRegistry() {
   const projects = (projectsRes.data ?? []).map((p) => ({
     id: p.id,
     name: p.name,
-    status: p.status,
+    status: p.status, // project_status enum, may be null
+    category: p.category, // project_category enum
   }));
   const departments = (deptsRes.data ?? []).map((d) => ({
     slug: d.slug,

@@ -7,21 +7,24 @@ import Button from "@components/ui/Button";
 import AdminListHeader from "@components/admin/AdminListHeader";
 import AdminSideCard from "@components/admin/AdminSideCard";
 import { formatEnumLabel } from "@utils/formatCategory";
+import { useEnumOptions } from "@hooks/useEnumOptions";
 import {
   adminRemoveMemberProject,
   adminUpsertMemberProject,
   MEMBER_STATUS_ACTIVE,
   MEMBER_STATUS_DELETED,
   MEMBER_STATUS_INACTIVE,
+  ENUM_TYPES,
 } from "@data";
 import {
+  MemberFilterChips,
   MemberSelect,
   MemberStat,
   revealEditor,
 } from "@components/admin/members/memberUi";
 
 const UNASSIGNED_ID = "__unassigned";
-const ALL_TEAMS = "";
+const ALL = "__all";
 
 function emptyForm(departments) {
   return { projectId: "", role: "", departmentSlug: departments[0]?.slug ?? "" };
@@ -33,6 +36,7 @@ function buildTeams(members, projects) {
     id: project.id,
     name: project.name,
     status: project.status,
+    category: project.category,
     active: [],
     inactive: [],
     otherCount: 0,
@@ -108,14 +112,55 @@ function TeamMemberGroup({ title, entries, tone, onSelect, selectedId }) {
 
 export default function TeamsTab({ members, projects, departments, onSaved, onError }) {
   const editorRef = useRef(null);
-  const [teamFilter, setTeamFilter] = useState(ALL_TEAMS);
+  // Values come from the project_category / project_status enums. The status
+  // filter defaults to the enum's first value (active), like admin form defaults.
+  const { options: categoryOptions } = useEnumOptions(ENUM_TYPES.PROJECT_CATEGORY);
+  const { options: projectStatusOptions } = useEnumOptions(ENUM_TYPES.PROJECT_STATUS);
+  const [categoryFilter, setCategoryFilter] = useState(ALL);
+  const [statusFilter, setStatusFilter] = useState(
+    () => projectStatusOptions[0]?.value ?? ALL,
+  );
   const [selectedId, setSelectedId] = useState("");
   const [form, setForm] = useState(() => emptyForm(departments));
   const [saving, setSaving] = useState(false);
 
   const teams = useMemo(() => buildTeams(members, projects), [members, projects]);
+  const projectTeams = teams.filter((t) => t.id !== UNASSIGNED_ID);
+  const unassignedTeam = teams.find((t) => t.id === UNASSIGNED_ID);
+
+  const matchesCategory = (team, value = categoryFilter) =>
+    value === ALL || team.category === value;
+  const matchesStatus = (team, value = statusFilter) =>
+    value === ALL || team.status === value;
+
+  // Each filter's counts respect the other filter, so the numbers always
+  // match what clicking the chip would show.
+  const categoryChips = [
+    { value: ALL, label: "All", count: projectTeams.filter((t) => matchesStatus(t)).length },
+    ...categoryOptions.map((o) => ({
+      value: o.value,
+      label: o.label,
+      count: projectTeams.filter((t) => matchesStatus(t) && matchesCategory(t, o.value)).length,
+    })),
+  ];
+  const statusChips = [
+    { value: ALL, label: "All", count: projectTeams.filter((t) => matchesCategory(t)).length },
+    ...projectStatusOptions.map((o) => ({
+      value: o.value,
+      label: o.label,
+      count: projectTeams.filter((t) => matchesCategory(t) && matchesStatus(t, o.value)).length,
+    })),
+  ];
+
+  const filteredProjectTeams = projectTeams.filter(
+    (t) => matchesCategory(t) && matchesStatus(t),
+  );
+  // People without a team have no category/status; show them unless a
+  // category is picked.
   const visibleTeams =
-    teamFilter === ALL_TEAMS ? teams : teams.filter((t) => t.id === teamFilter);
+    unassignedTeam && categoryFilter === ALL
+      ? [...filteredProjectTeams, unassignedTeam]
+      : filteredProjectTeams;
 
   const pickable = useMemo(
     () => members.filter((m) => m.status !== MEMBER_STATUS_DELETED),
@@ -212,35 +257,37 @@ export default function TeamsTab({ members, projects, departments, onSaved, onEr
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <MemberStat label="Active members" value={activeCount} />
         <MemberStat label="Inactive members" value={inactiveCount} />
-        <MemberStat label="Teams" value={projects.length} />
+        <MemberStat label="Teams shown" value={filteredProjectTeams.length} />
       </div>
 
       <div className="grid items-start gap-8 md:grid-cols-[2fr_minmax(0,1.5fr)]">
         <div>
-          <AdminListHeader title="Members per team" count={visibleTeams.length} />
+          <AdminListHeader title="Members per team" count={filteredProjectTeams.length} />
 
-          <div className="mb-4 space-y-1">
-            <label htmlFor="teams-filter" className="text-xs text-white/70">
-              Show
-            </label>
-            <select
-              id="teams-filter"
-              value={teamFilter}
-              onChange={(e) => setTeamFilter(e.target.value)}
-              className="field-input"
-            >
-              <option value={ALL_TEAMS}>All teams</option>
-              {teams.map((team) => (
-                <option key={team.id} value={team.id}>
-                  {team.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <p className="mb-1.5 text-[11px] uppercase tracking-[0.12em] text-white/40">
+            Category
+          </p>
+          <MemberFilterChips
+            label="Filter teams by category"
+            options={categoryChips}
+            value={categoryFilter}
+            onChange={setCategoryFilter}
+          />
+          <p className="mb-1.5 text-[11px] uppercase tracking-[0.12em] text-white/40">
+            Project status
+          </p>
+          <MemberFilterChips
+            label="Filter teams by project status"
+            options={statusChips}
+            value={statusFilter}
+            onChange={setStatusFilter}
+          />
 
           {visibleTeams.length === 0 ? (
             <p className="text-sm text-white/60">
-              No projects yet. Create one under Projects first.
+              {projects.length === 0
+                ? "No projects yet. Create one under Projects first."
+                : "No teams match these filters."}
             </p>
           ) : (
             <ul className="space-y-3">
@@ -259,7 +306,7 @@ export default function TeamsTab({ members, projects, departments, onSaved, onEr
                     {team.otherCount > 0 && (
                       <span className="text-white/45">
                         {" · "}
-                        {team.otherCount} paused/other (see Status tab)
+                        {team.otherCount} paused or other status (see Directory)
                       </span>
                     )}
                   </p>
