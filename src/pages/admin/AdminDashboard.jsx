@@ -154,10 +154,15 @@ export default function AdminDashboard() {
             <p className="text-white/70 text-sm">Coming soon…</p>
           </div>
 
-          <div className="card-surface px-6 py-8 opacity-40 cursor-not-allowed backdrop-blur-md">
+          <Link
+            to="/admin/members"
+            className="card-surface card-surface-hover px-6 py-8 transition-all backdrop-blur-md block"
+          >
             <h3 className="text-lg font-semibold text-white mb-2">Members</h3>
-            <p className="text-white/70 text-sm">Coming soon…</p>
-          </div>
+            <p className="text-white/70 text-sm">
+              Manage teams, club memberships and member status.
+            </p>
+          </Link>
         </div>
       </div>
     </AdminLayout>
