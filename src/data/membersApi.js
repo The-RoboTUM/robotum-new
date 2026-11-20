@@ -11,16 +11,11 @@ import { ENUM_TYPES, fetchEnumOptions } from "./enumsApi";
  * - DELETED: hidden from the public site; the on_member_deleted trigger also
  *   removes all projects/memberships and revokes tool access (not reversible
  *   by changing the status back).
- * - CURRENT_MEMBER_STATUSES are the "on the roster" statuses shown on the
- *   admin Teams tab; every other status is listed on the admin Status tab.
+ * - ACTIVE / INACTIVE are the two "on the roster" columns of the Teams tab.
  */
 export const MEMBER_STATUS_ACTIVE = "active";
 export const MEMBER_STATUS_INACTIVE = "inactive";
 export const MEMBER_STATUS_DELETED = "deleted";
-export const CURRENT_MEMBER_STATUSES = [
-  MEMBER_STATUS_ACTIVE,
-  MEMBER_STATUS_INACTIVE,
-];
 
 /**
  * Turn a membership_type label into a per-person role label:
@@ -204,8 +199,33 @@ const ADMIN_MEMBER_SELECT = `
   university,
   study_program,
   linkedin_url,
-  status
+  status,
+  inactive_since,
+  suspended_at,
+  deleted_at,
+  lifecycle_exempt
 `;
+
+// Added by migration 0007. Selected separately so the page keeps working
+// (without graduation dates) if that migration hasn't been run yet.
+const ADMIN_MEMBER_SELECT_WITH_GRADUATED = `${ADMIN_MEMBER_SELECT.trim()},
+  graduated_at
+`;
+const UNDEFINED_COLUMN = "42703";
+
+async function fetchAdminMembersRows() {
+  const withGraduated = await supabase
+    .from("members_personal")
+    .select(ADMIN_MEMBER_SELECT_WITH_GRADUATED)
+    .order("full_name", { ascending: true });
+  if (withGraduated.error?.code !== UNDEFINED_COLUMN) return withGraduated;
+
+  logger.warn("members_personal.graduated_at missing - run migration 0007.");
+  return supabase
+    .from("members_personal")
+    .select(ADMIN_MEMBER_SELECT)
+    .order("full_name", { ascending: true });
+}
 
 /**
  * Admin: every member with their club memberships and project assignments,
@@ -216,10 +236,7 @@ const ADMIN_MEMBER_SELECT = `
 export async function adminFetchMembersRegistry() {
   const [membersRes, membershipsRes, assignmentsRes, projectsRes, deptsRes] =
     await Promise.all([
-      supabase
-        .from("members_personal")
-        .select(ADMIN_MEMBER_SELECT)
-        .order("full_name", { ascending: true }),
+      fetchAdminMembersRows(),
       supabase.from("member_memberships").select("member_id, membership_type"),
       supabase
         .from("member_projects")
@@ -293,6 +310,14 @@ export async function adminFetchMembersRegistry() {
     studyProgram: m.study_program ?? "",
     linkedinUrl: m.linkedin_url ?? "",
     status: m.status ?? "",
+    // When the current status started (null = unknown); see memberStatusTiming.
+    statusDates: {
+      inactiveSince: m.inactive_since ?? null,
+      suspendedAt: m.suspended_at ?? null,
+      graduatedAt: m.graduated_at ?? null,
+      deletedAt: m.deleted_at ?? null,
+    },
+    lifecycleExempt: Boolean(m.lifecycle_exempt),
     memberships: membershipsByMember.get(m.id) ?? [],
     projects: (assignmentsByMember.get(m.id) ?? []).sort((a, b) =>
       a.projectName.localeCompare(b.projectName),

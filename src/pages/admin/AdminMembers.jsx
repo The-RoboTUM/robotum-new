@@ -1,5 +1,5 @@
 // src/pages/admin/AdminMembers.jsx
-// Member registry: Teams / Memberships / Status / Directory tabs, each with its
+// Member registry: Teams / Memberships / Directory tabs, each with its
 // own editor. The active tab lives in ?tab= so reloads and links keep it.
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -8,25 +8,25 @@ import AdminBanner from "@components/admin/AdminBanner";
 import AdminTabs, { AdminTabPanel } from "@components/admin/AdminTabs";
 import TeamsTab from "@components/admin/members/TeamsTab";
 import MembershipsTab from "@components/admin/members/MembershipsTab";
-import StatusTab from "@components/admin/members/StatusTab";
 import DirectoryTab from "@components/admin/members/DirectoryTab";
 import { useAsyncData } from "@hooks/useAsyncData";
 import { useEnumOptions } from "@hooks/useEnumOptions";
 import {
   adminFetchMembersRegistry,
-  CURRENT_MEMBER_STATUSES,
   ENUM_TYPES,
   MEMBER_STATUS_ACTIVE,
   MEMBER_STATUS_DELETED,
 } from "@data";
 
-const TAB_IDS = ["teams", "memberships", "status", "directory"];
+const TAB_IDS = ["teams", "memberships", "directory"];
+// Old links from before Status was merged into Directory.
+const TAB_ALIASES = { status: "directory" };
 const ID_PREFIX = "members";
 const EMPTY_REGISTRY = { members: [], projects: [], departments: [] };
 
 export default function AdminMembers() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const requestedTab = searchParams.get("tab");
+  const requestedTab = TAB_ALIASES[searchParams.get("tab")] ?? searchParams.get("tab");
   const activeTab = TAB_IDS.includes(requestedTab) ? requestedTab : TAB_IDS[0];
 
   const [successMsg, setSuccessMsg] = useState("");
@@ -59,11 +59,6 @@ export default function AdminMembers() {
         id: "memberships",
         label: "Memberships",
         count: roster.filter((m) => m.memberships.length > 0).length,
-      },
-      {
-        id: "status",
-        label: "Status",
-        count: members.filter((m) => !CURRENT_MEMBER_STATUSES.includes(m.status)).length,
       },
       { id: "directory", label: "Directory", count: roster.length },
     ];
@@ -124,7 +119,6 @@ export default function AdminMembers() {
         <AdminTabPanel id={activeTab} idPrefix={ID_PREFIX}>
           {activeTab === "teams" && <TeamsTab {...tabProps} />}
           {activeTab === "memberships" && <MembershipsTab {...tabProps} />}
-          {activeTab === "status" && <StatusTab {...tabProps} />}
           {activeTab === "directory" && <DirectoryTab {...tabProps} />}
         </AdminTabPanel>
       )}

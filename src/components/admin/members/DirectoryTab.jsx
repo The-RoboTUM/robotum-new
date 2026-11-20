@@ -1,8 +1,9 @@
 // src/components/admin/members/DirectoryTab.jsx
-// All members: add new people, edit personal details, delete.
-// Adding a member fires the member_creation webhook (account provisioning);
-// deleting sets status = 'deleted', which the on_member_deleted trigger turns
-// into a full offboarding (projects + memberships removed, access revoked).
+// All members, filterable by status (with counts): add people, edit personal
+// details and status, delete.
+// - Adding a member fires the member_creation webhook (account provisioning).
+// - Status changes can set off DB automation (see STATUS_SIDE_EFFECTS):
+//   graduated -> make_alumni, deleted -> full offboarding.
 import { useMemo, useRef, useState } from "react";
 import { logger } from "@utils/logger";
 import Button from "@components/ui/Button";
@@ -17,9 +18,18 @@ import {
 } from "@data";
 import {
   matchesMemberQuery,
+  MemberFilterChips,
   MemberListItem,
+  MemberStatusTiming,
   revealEditor,
 } from "@components/admin/members/memberUi";
+import {
+  nextStepSortValue,
+  STATUS_SIDE_EFFECTS,
+} from "@components/admin/members/memberStatus";
+
+// "All" deliberately leaves out deleted members; they have their own filter.
+const FILTER_ALL = "__all";
 
 const TEXT_FIELDS = [
   { name: "fullName", label: "Full name", type: "text", required: true, placeholder: "Ada Lovelace" },
@@ -49,18 +59,44 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
   const defaultStatus = statusOptions[0]?.value ?? "";
   const editorRef = useRef(null);
   const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState(FILTER_ALL);
   const [editingId, setEditingId] = useState(null); // null = new member
   const [form, setForm] = useState(() => emptyForm(defaultStatus));
   const [saving, setSaving] = useState(false);
 
-  const roster = useMemo(
-    () =>
-      members.filter(
-        (m) => m.status !== MEMBER_STATUS_DELETED && matchesMemberQuery(m, query),
-      ),
-    [members, query],
+  const labelOf = (value) => statusOptions.find((o) => o.value === value)?.label ?? value;
+  const editing = members.find((m) => m.id === editingId) ?? null;
+
+  const filterOptions = useMemo(
+    () => [
+      {
+        value: FILTER_ALL,
+        label: "All",
+        count: members.filter((m) => m.status !== MEMBER_STATUS_DELETED).length,
+      },
+      ...statusOptions.map((option) => ({
+        value: option.value,
+        label: option.label,
+        count: members.filter((m) => m.status === option.value).length,
+      })),
+    ],
+    [members, statusOptions],
   );
-  const { pageItems, paginationProps, resetPage } = useClientPagination(roster);
+
+  const visible = useMemo(() => {
+    const list = members.filter(
+      (m) =>
+        (statusFilter === FILTER_ALL
+          ? m.status !== MEMBER_STATUS_DELETED
+          : m.status === statusFilter) && matchesMemberQuery(m, query),
+    );
+    // Inactive/suspended: whoever is closest to the next lifecycle step first.
+    if (statusFilter === FILTER_ALL) return list;
+    const now = new Date();
+    return [...list].sort((a, b) => nextStepSortValue(a, now) - nextStepSortValue(b, now));
+  }, [members, statusFilter, query]);
+
+  const { pageItems, paginationProps, resetPage } = useClientPagination(visible);
 
   const startNew = () => {
     setEditingId(null);
@@ -87,19 +123,32 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const confirmStatus = (fullName, status) => {
+    const warning = STATUS_SIDE_EFFECTS[status];
+    return !warning || window.confirm(`Set ${fullName} to ${labelOf(status)}?\n\n${warning}`);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const { status, ...details } = form;
+    // Only send the status when it changes, so editing e.g. a phone number
+    // never touches the status triggers.
+    const statusChanged = editing ? status !== editing.status : true;
+    if (statusChanged && !confirmStatus(form.fullName, status)) return;
+
     setSaving(true);
     try {
-      // Status is only set on create here; later changes go through the Status tab.
-      const { status, ...details } = form;
       await adminUpsertMember(
-        editingId ? { id: editingId, ...details } : { ...details, status },
+        editing
+          ? { id: editing.id, ...details, ...(statusChanged ? { status } : {}) }
+          : { ...details, status },
       );
       onSaved(
-        editingId
-          ? `Saved ${form.fullName}.`
-          : `Added ${form.fullName}. Assign a team in the Teams tab and a club membership in the Memberships tab.`,
+        !editing
+          ? `Added ${form.fullName}. Assign a team in the Teams tab and a club membership in the Memberships tab.`
+          : statusChanged
+            ? `Saved ${form.fullName} - status is now ${labelOf(status)}.`
+            : `Saved ${form.fullName}.`,
       );
       startNew();
     } catch (err) {
@@ -111,12 +160,7 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
   };
 
   const handleDelete = async (member) => {
-    if (
-      !window.confirm(
-        `Delete ${member.fullName}?\n\nThis offboards them: all team assignments and club memberships are removed and their Google, Slack and Notion access is revoked. Changing the status back later does NOT restore those.`,
-      )
-    )
-      return;
+    if (!confirmStatus(member.fullName, MEMBER_STATUS_DELETED)) return;
     try {
       await adminSetMemberStatus(member.id, MEMBER_STATUS_DELETED);
       if (editingId === member.id) startNew();
@@ -127,18 +171,26 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
     }
   };
 
-  const isEditing = Boolean(editingId);
-
   return (
     <div className="grid items-start gap-8 md:grid-cols-[2fr_minmax(0,1.5fr)]">
       <div>
         <AdminListHeader
-          title="All members"
-          count={roster.length}
+          title="Members"
+          count={visible.length}
           buttonLabel="+ New member"
           onButtonClick={() => {
             startNew();
             revealEditor(editorRef);
+          }}
+        />
+
+        <MemberFilterChips
+          label="Filter by status"
+          options={filterOptions}
+          value={statusFilter}
+          onChange={(value) => {
+            setStatusFilter(value);
+            resetPage();
           }}
         />
 
@@ -159,9 +211,9 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
           />
         </div>
 
-        {roster.length === 0 ? (
+        {visible.length === 0 ? (
           <p className="text-sm text-white/60">
-            {query ? "No members match your search." : "No members yet. Add the first one on the right."}
+            {query ? "No members match your search." : "Nobody with this status."}
           </p>
         ) : (
           <ul className="space-y-3">
@@ -175,15 +227,18 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
                     <Button size="xs" variant="secondary" onClick={() => startEdit(member)}>
                       Edit
                     </Button>
-                    <Button size="xs" variant="danger" onClick={() => handleDelete(member)}>
-                      Delete
-                    </Button>
+                    {member.status !== MEMBER_STATUS_DELETED && (
+                      <Button size="xs" variant="danger" onClick={() => handleDelete(member)}>
+                        Delete
+                      </Button>
+                    )}
                   </>
                 }
               >
                 <p className="truncate text-xs text-white/60">
                   {member.robotumEmail || member.personalEmail || "No email"}
                 </p>
+                <MemberStatusTiming member={member} statusLabel={labelOf(member.status)} />
                 {(member.studyProgram || member.university) && (
                   <p className="text-xs text-white/45">
                     {[member.studyProgram, member.university].filter(Boolean).join(" · ")}
@@ -199,11 +254,11 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
 
       <div ref={editorRef} className="scroll-mt-32">
         <AdminSideCard
-          title={isEditing ? "Edit member" : "New member"}
+          title={editing ? "Edit member" : "New member"}
           description={
-            isEditing
-              ? "Update this member's personal details."
-              : "Add a new person to the club registry."
+            editing
+              ? "Update personal details or status. Graduated and Deleted start automatic offboarding."
+              : "Add a new person to the club registry. This creates their roboTUM Google account."
           }
         >
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -226,37 +281,44 @@ export default function DirectoryTab({ members, statusOptions, onSaved, onError 
               </div>
             ))}
 
-            {!isEditing && (
-              <div className="space-y-1">
-                <label htmlFor="directory-status" className="text-xs text-white/70">
-                  Status
-                </label>
-                <select
-                  id="directory-status"
-                  name="status"
-                  value={form.status}
-                  onChange={handleChange}
-                  className="field-input"
-                >
-                  {statusOptions
-                    .filter((o) => o.value !== MEMBER_STATUS_DELETED)
-                    .map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            )}
+            <div className="space-y-1">
+              <label htmlFor="directory-status" className="text-xs text-white/70">
+                Status
+              </label>
+              <select
+                id="directory-status"
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+                className="field-input"
+              >
+                {statusOptions
+                  // A new member can't start out deleted.
+                  .filter((o) => editing || o.value !== MEMBER_STATUS_DELETED)
+                  .map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+              </select>
+              {editing && (
+                <MemberStatusTiming member={editing} statusLabel={labelOf(editing.status)} />
+              )}
+              {editing?.status === MEMBER_STATUS_DELETED && form.status !== MEMBER_STATUS_DELETED && (
+                <p className="text-xs text-amber-200/90">
+                  Restoring doesn’t bring back their teams, memberships or tool access - re-add those by hand.
+                </p>
+              )}
+            </div>
 
             <div className="flex justify-end gap-2 pt-2">
-              {isEditing && (
+              {editing && (
                 <Button type="button" variant="secondary" size="sm" onClick={startNew}>
                   Cancel
                 </Button>
               )}
               <Button type="submit" variant="primary" size="sm" disabled={saving}>
-                {saving ? "Saving…" : isEditing ? "Save member" : "Add member"}
+                {saving ? "Saving…" : editing ? "Save member" : "Add member"}
               </Button>
             </div>
           </form>

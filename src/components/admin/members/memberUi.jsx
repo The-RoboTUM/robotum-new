@@ -2,6 +2,8 @@
 // Small building blocks shared by the /admin/members tabs.
 import clsx from "clsx";
 import { formatEnumLabel } from "@utils/formatCategory";
+import { formatRelativeDays, formatShortDate } from "@utils/relativeTime";
+import { getStatusTiming } from "@components/admin/members/memberStatus";
 
 // Colour per known member_status value. A status added later in the DB still
 // renders (neutral tone, label derived from the value) - no code change needed.
@@ -151,5 +153,39 @@ export function matchesMemberQuery(member, query) {
   if (!q) return true;
   return [member.fullName, member.personalEmail, member.robotumEmail].some(
     (field) => field && field.toLowerCase().includes(q),
+  );
+}
+
+/**
+ * "Inactive since 3 Nov 2026 (17 days ago) · Suspension in 13 days (3 Dec 2026)".
+ * Renders nothing for statuses without a timeline (active, paused, …).
+ */
+export function MemberStatusTiming({ member, statusLabel }) {
+  const timing = getStatusTiming(member);
+  if (!timing) return null;
+
+  const { since, next, nextSkippedReason } = timing;
+  return (
+    <p className="text-xs text-white/55">
+      {since ? (
+        <>
+          {statusLabel} since {formatShortDate(since)}{" "}
+          <span className="text-white/40">({formatRelativeDays(since)})</span>
+        </>
+      ) : (
+        <span className="text-white/40">{statusLabel} since: date not recorded</span>
+      )}
+      {next && (
+        <>
+          {" · "}
+          <span className={next.daysLeft <= 7 ? "text-amber-200" : undefined}>
+            {next.overdue
+              ? `${next.label} due - happens with the next daily run`
+              : `${next.label} ${formatRelativeDays(next.date)} (${formatShortDate(next.date)})`}
+          </span>
+        </>
+      )}
+      {nextSkippedReason && <span className="text-white/40"> · {nextSkippedReason}</span>}
+    </p>
   );
 }
