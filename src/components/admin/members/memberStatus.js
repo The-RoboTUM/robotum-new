@@ -90,20 +90,20 @@ export function getStatusTiming(member, now = new Date()) {
   }
 
   result.signIn = getSignInInfo(member);
+  const rules = result.signIn.neverSignedIn
+    ? MEMBER_LIFECYCLE.neverSignedIn
+    : MEMBER_LIFECYCLE.signedIn;
 
   if (status === "active") {
-    const { lastSeen, neverSignedIn } = result.signIn;
+    const { lastSeen } = result.signIn;
     if (!lastSeen) {
       result.note = "Sign-in data arrives with the next daily run";
       return result;
     }
-    const afterDays = neverSignedIn
-      ? MEMBER_LIFECYCLE.inactiveAfterDaysNeverSignedIn
-      : MEMBER_LIFECYCLE.inactiveAfterDays;
     result.next = nextStep(
       "Becomes inactive",
       "Becomes inactive with the next daily run",
-      addDays(lastSeen, afterDays),
+      addDays(lastSeen, rules.inactiveAfterDays),
       now,
     );
     return result;
@@ -112,13 +112,13 @@ export function getStatusTiming(member, now = new Date()) {
   if (status === "inactive") {
     if (!result.since) {
       // Set to inactive by hand: the next run sends the warning and starts the clock.
-      result.note = "Warning email + 30-day countdown start with the next daily run";
+      result.note = `Warning email + ${rules.suspendAfterInactiveDays}-day countdown start with the next daily run`;
       return result;
     }
     result.next = nextStep(
       "Suspension",
       "Suspension due - happens with the next daily run",
-      addDays(result.since, MEMBER_LIFECYCLE.suspendAfterInactiveDays),
+      addDays(result.since, rules.suspendAfterInactiveDays),
       now,
     );
     return result;
@@ -126,13 +126,13 @@ export function getStatusTiming(member, now = new Date()) {
 
   // suspended
   if (!result.since) {
-    result.note = "Suspended in Google with the next daily run; deletion 14 days later";
+    result.note = `Suspended in Google with the next daily run; deletion ${rules.deleteAfterSuspendedDays} days later`;
     return result;
   }
   result.next = nextStep(
     "Deletion",
     "Deletion due - happens with the next daily run",
-    addDays(result.since, MEMBER_LIFECYCLE.deleteAfterSuspendedDays),
+    addDays(result.since, rules.deleteAfterSuspendedDays),
     now,
   );
   return result;
