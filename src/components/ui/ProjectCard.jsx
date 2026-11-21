@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import ImageFrame from "@components/ui/ImageFrame";
 import Button from "@components/ui/Button";
+import { formatEnumLabel } from "@utils/formatCategory";
 
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ project, showStatus = false }) {
   // prefer Supabase `cover_url`, fallback to legacy `cover`
   const imageSrc = project.cover_url || project.cover || "/placeholder.png";
 
@@ -19,6 +20,11 @@ export default function ProjectCard({ project }) {
           vignette
           className="w-full"
         />
+        {showStatus && project.status && (
+          <span className="chip absolute top-3 left-3 bg-black/60 backdrop-blur-sm">
+            {formatEnumLabel(project.status)}
+          </span>
+        )}
       </div>
 
       <div className="p-5">

@@ -36,6 +36,7 @@ const emptyForm = (defaultCategory = "") => ({
   viewer_id: "",
   tagsText: "", // comma-separated in the form
   is_featured: false,
+  show_on_website: true,
 });
 
 export default function AdminProjects() {
@@ -159,6 +160,7 @@ export default function AdminProjects() {
       viewer_id: project.viewer_id || "",
       tagsText: (project.tags || []).join(", "),
       is_featured: !!project.is_featured,
+      show_on_website: project.show_on_website !== false,
     });
 
     setCoverFile(null);
@@ -216,6 +218,7 @@ export default function AdminProjects() {
         // tags will be parsed inside adminUpsertProject
         tags: form.tagsText,
         is_featured: form.is_featured,
+        show_on_website: form.show_on_website,
         imageFile: coverFile,
         previous_cover_url: form.id
           ? projects.find((projectItem) => projectItem.id === form.id)
@@ -319,6 +322,11 @@ export default function AdminProjects() {
                           </span>
                         )}
                       </span>
+                      {p.show_on_website === false && (
+                        <span className="inline-flex items-center rounded-full bg-red-500/10 border border-red-400/30 px-2 py-0.5 text-[10px] text-red-300 uppercase tracking-wide">
+                          hidden
+                        </span>
+                      )}
                       {p.status && (
                         <span className="inline-flex items-center rounded-full bg-white/5 border border-white/10 px-2 py-0.5 text-[10px] text-white/60 uppercase tracking-wide">
                           {p.status}
@@ -664,8 +672,8 @@ export default function AdminProjects() {
               </p>
             </div>
 
-            {/* Featured */}
-            <div className="flex items-center justify-between gap-3 pt-2">
+            {/* Featured + visibility */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <label className="flex items-center gap-2 text-xs text-white/80">
                 <input
                   type="checkbox"
@@ -675,6 +683,17 @@ export default function AdminProjects() {
                   className="h-4 w-4 rounded border-white/30 bg-black/40 text-accent focus-visible:ring-accent"
                 />
                 <span>Show as featured on homepage</span>
+              </label>
+
+              <label className="flex items-center gap-2 text-xs text-white/80">
+                <input
+                  type="checkbox"
+                  name="show_on_website"
+                  checked={form.show_on_website}
+                  onChange={handleChange}
+                  className="h-4 w-4 rounded border-white/30 bg-black/40 text-accent focus-visible:ring-accent"
+                />
+                <span>Show on website</span>
               </label>
 
               {form.id && (

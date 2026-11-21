@@ -30,7 +30,8 @@ const PROJECT_FIELDS = `
   show_cover_image,
   viewer_id,
   tags,
-  is_featured
+  is_featured,
+  show_on_website
 `;
 
 /**
@@ -41,6 +42,7 @@ export async function fetchFeaturedProjects({ limit } = {}) {
     .from("projects")
     .select(PROJECT_FIELDS)
     .eq("is_featured", true)
+    .eq("show_on_website", true)
     .order("created_at", { ascending: false });
 
   if (typeof limit === "number") {
@@ -65,6 +67,7 @@ export async function fetchProjectBySlug(slug) {
     .from("projects")
     .select(PROJECT_FIELDS)
     .eq("slug", slug)
+    .eq("show_on_website", true)
     .maybeSingle();
 
   if (error) {
@@ -81,9 +84,12 @@ export async function fetchProjectBySlug(slug) {
 export async function fetchProjects(options = {}) {
   const { category, tag, search, isFeatured } = options;
 
+  // Hidden projects never reach the public site. Status (active vs.
+  // paused/completed) is split client-side into current vs. history.
   let query = supabase
     .from("projects")
     .select(PROJECT_FIELDS)
+    .eq("show_on_website", true)
     .order("created_at", { ascending: false });
 
   if (category) {
@@ -206,6 +212,7 @@ export async function adminUpsertProject(project) {
     viewer_id: project.viewer_id?.trim() || null,
     tags,
     is_featured: !!project.is_featured,
+    show_on_website: project.show_on_website !== false,
   };
 
   // Basic validation to avoid DB errors

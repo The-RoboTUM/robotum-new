@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { ENUM_TYPES, fetchProjects } from "@data"; // Supabase
 import { useAsyncData } from "@hooks/useAsyncData";
@@ -9,6 +9,11 @@ import Navbar from "@components/sections/common-sections/Navbar";
 import FooterSection from "@components/sections/common-sections/FooterSection";
 import PageLoader from "@components/sections/common-sections/PageLoader";
 import { usePageTitle } from "@hooks/usePageTitle";
+import {
+  filterProjects,
+  resolveActiveTab,
+  splitByStatus,
+} from "@utils/projectFilters";
 
 // Top tabs come from the Supabase `project_category` enum - see
 // src/data/enumsApi.js. The `?type=` query param stays the category value.
@@ -44,53 +49,37 @@ export default function Projects() {
     ENUM_TYPES.PROJECT_CATEGORY,
   );
 
-  // Trust the URL on first render (it may point at a category that only exists
-  // in the DB yet), and fall back to the first tab when there is no param.
-  const [active, setActive] = useState(
-    () => params.get("type") || tabs[0]?.value || "",
+  // The URL is the single source of truth for tab/search/tag, so the Navbar
+  // projects dropdown (which navigates to `?type=`) and back/forward always
+  // update the page. A `?type=` the live enum doesn't have falls back to the
+  // first tab; while the enum is still loading we trust the URL.
+  const active = resolveActiveTab(
+    params.get("type") || "",
+    tabs,
+    tabsLoading,
   );
+  const query = params.get("q") || "";
+  const tag = params.get("tag") || "";
 
-  // Once the live enum is known, drop a `?type=` that no longer exists.
-  useEffect(() => {
-    if (tabsLoading || tabs.length === 0) return;
-    if (!tabs.some((t) => t.value === active)) setActive(tabs[0].value);
-  }, [tabsLoading, tabs, active]);
-
-  // search + tag filters
-  const [query, setQuery] = useState(params.get("q") || "");
-  const [tag, setTag] = useState(params.get("tag") || "");
+  const updateParams = (patch) => {
+    const next = new URLSearchParams(params);
+    for (const [key, value] of Object.entries(patch)) {
+      if (value) next.set(key, value);
+      else next.delete(key);
+    }
+    setParams(next, { replace: true });
+  };
+  const setActive = (value) => updateParams({ type: value });
+  const setQuery = (value) => updateParams({ q: value });
+  const setTag = (value) => updateParams({ tag: value });
 
   usePageTitle("Projects | roboTUM");
 
-  // sync URL
-  useEffect(() => {
-    const next = new URLSearchParams();
-    next.set("type", active);
-    if (query) next.set("q", query);
-    if (tag) next.set("tag", tag);
-    setParams(next, { replace: true });
-  }, [active, query, tag, setParams]);
-
-  // Filtering logic
-  const filtered = useMemo(() => {
-    return projects.filter((p) => {
-      // 1) filter by category tab
-      if (p.category !== active) return false;
-
-      // 2) search text
-      const content = (
-        p.title +
-        (p.summary || "") +
-        (p.tags || []).join(" ")
-      ).toLowerCase();
-      const okQ = query ? content.includes(query.toLowerCase()) : true;
-
-      // 3) curated tag filter
-      const okTag = tag ? (p.tags || []).includes(tag) : true;
-
-      return okQ && okTag;
-    });
-  }, [active, query, tag, projects]);
+  const { current: currentProjects, past: pastProjects } = useMemo(
+    () =>
+      splitByStatus(filterProjects(projects, { category: active, query, tag })),
+    [active, query, tag, projects],
+  );
 
   // curated tags show always
   const availableTags = CURATED_TAGS;
@@ -190,16 +179,33 @@ export default function Projects() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {filtered.map((p) => (
+            {currentProjects.map((p) => (
               <ProjectCard key={p.slug} project={p} />
             ))}
 
-            {filtered.length === 0 && (
+            {currentProjects.length === 0 && (
               <p className="text-center text-sm text-white/60 col-span-full">
                 No matching projects yet.
               </p>
             )}
           </div>
+
+          {/* History: paused / completed projects */}
+          {pastProjects.length > 0 && (
+            <section className="mt-16" aria-labelledby="project-history">
+              <h2 id="project-history" className="heading heading-h2">
+                Project history
+              </h2>
+              <p className="text-text2 text-white/70 mt-2 mb-6">
+                Paused and completed projects from this area.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {pastProjects.map((p) => (
+                  <ProjectCard key={p.slug} project={p} showStatus />
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* CTA */}
           <div className="mt-10 text-center">
