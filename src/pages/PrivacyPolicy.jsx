@@ -54,13 +54,6 @@ export default function PrivacyPolicy() {
                 Registergericht: Amtsgericht München
               </address>
               <p className="mt-2">
-                Owner contact phone:{" "}
-                <a
-                  href="tel:+4915222178503"
-                  className="text-accent hover:underline"
-                >
-                  +49 (0) 15222178503
-                </a>
                 <br />
                 Owner contact email:{" "}
                 <a
@@ -518,12 +511,6 @@ export default function PrivacyPolicy() {
                 outreach@robotum.info
               </a>
               <br />
-              Phone:{" "}
-              <a
-                href="tel:+4915222178503"
-                className="text-accent hover:underline"
-              >
-                +49 (0) 15222178503
               </a>
             </p>
           </article>
