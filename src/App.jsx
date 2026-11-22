@@ -25,6 +25,9 @@ const NotFound = lazy(() => import("@pages/NotFound"));
 
 // 🔐 Admin pages
 const AdminLogin = lazy(() => import("@pages/admin/AdminLogin"));
+const AdminSignup = lazy(() => import("@pages/admin/AdminSignup"));
+const AdminForgotPassword = lazy(() => import("@pages/admin/AdminForgotPassword"));
+const AdminResetPassword = lazy(() => import("@pages/admin/AdminResetPassword"));
 const AdminDashboard = lazy(() => import("@pages/admin/AdminDashboard"));
 const AdminFaqs = lazy(() => import("@pages/admin/AdminFaqs"));
 const AdminPartners = lazy(() => import("@pages/admin/AdminPartners"));
@@ -56,6 +59,9 @@ export default function App() {
 
           {/* 🔐 Admin auth (public login page) */}
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/signup" element={<AdminSignup />} />
+          <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+          <Route path="/admin/reset-password" element={<AdminResetPassword />} />
 
           {/* 🔐 Admin area (protected by AdminRoute) */}
           <Route element={<AdminRoute />}>
