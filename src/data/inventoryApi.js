@@ -1,7 +1,16 @@
 
+
 import { supabase } from "@lib/supabaseClient";
 import { logger } from "@utils/logger";
 import { pageRange } from "./pagination";
+
+export const INVENTORY_CATEGORIES = {
+  Electronics: "EL",
+  Printer: "PR",
+  Devices: "DV",
+  Hardware: "HW",
+  "Office Stationery": "OS",
+};
 
 const INVENTORY_FIELDS = `
   id,
@@ -24,8 +33,47 @@ const INVENTORY_LOAN_FIELDS = `
   borrowed_at,
   due_at,
   returned_at,
+  comment,
   created_at
 `;
+
+export async function generateInventoryNumber(category) {
+  const prefix = INVENTORY_CATEGORIES[category];
+
+  if (!prefix) {
+    throw new Error("Please select a valid category first.");
+  }
+
+  const { data, error } = await supabase
+    .from("inventory_items")
+    .select("inventory_number")
+    .ilike("inventory_number", `${prefix}-%`);
+
+  if (error) {
+    logger.error("Error generating inventory number:", error);
+    throw error;
+  }
+
+  const usedNumbers = new Set(
+    (data ?? [])
+      .map((item) => {
+        const match = item.inventory_number?.match(
+          new RegExp(`^${prefix}-(\\d+)$`),
+        );
+
+        return match ? Number(match[1]) : null;
+      })
+      .filter((number) => number !== null),
+  );
+
+  let nextNumber = 1;
+
+  while (usedNumbers.has(nextNumber)) {
+    nextNumber += 1;
+  }
+
+  return `${prefix}-${String(nextNumber).padStart(3, "0")}`;
+}
 
 export async function fetchPublicInventoryCatalog() {
   const { data, error } = await supabase
@@ -149,7 +197,6 @@ export async function adminFetchActiveInventoryLoans() {
   return data ?? [];
 }
 
-
 export async function adminUpsertInventoryItem(item) {
   const payload = {
     inventory_number: item.inventory_number?.trim(),
@@ -162,15 +209,15 @@ export async function adminUpsertInventoryItem(item) {
   };
 
   if (!payload.inventory_number) {
-    throw new Error("Inventarnummer ist erforderlich.");
+    throw new Error("Inventory number is required.");
   }
 
   if (!payload.name) {
-    throw new Error("Name ist erforderlich.");
+    throw new Error("Item name is required.");
   }
 
   if (!payload.category) {
-    throw new Error("Kategorie ist erforderlich.");
+    throw new Error("Category is required.");
   }
 
   if (item.id) {
@@ -238,30 +285,30 @@ export async function adminCreateInventoryLoan({
   borrower_name,
   borrower_email,
   due_at,
+  comment = "",
 }) {
   if (!item_id) {
-    throw new Error("Bitte einen Gegenstand auswählen.");
+    throw new Error("Please select an item.");
   }
 
   if (!borrower_name?.trim()) {
-    throw new Error("Name des Ausleihers ist erforderlich.");
+    throw new Error("Borrower name is required.");
   }
 
   if (!borrower_email?.trim()) {
-    throw new Error("E-Mail-Adresse des Ausleihers ist erforderlich.");
+    throw new Error("Borrower email address is required.");
   }
 
   if (!due_at) {
-    throw new Error("Rückgabedatum ist erforderlich.");
+    throw new Error("Due date is required.");
   }
 
   const dueDate = new Date(due_at);
 
   if (Number.isNaN(dueDate.getTime()) || dueDate <= new Date()) {
-    throw new Error("Das Rückgabedatum muss in der Zukunft liegen.");
+    throw new Error("The due date must be in the future.");
   }
 
-  // Nur Gegenstände im normalen Bestand dürfen ausgeliehen werden.
   const { data: item, error: itemError } = await supabase
     .from("inventory_items")
     .select("id, lifecycle_status")
@@ -274,13 +321,11 @@ export async function adminCreateInventoryLoan({
   }
 
   if (!item) {
-    throw new Error("Der ausgewählte Gegenstand wurde nicht gefunden.");
+    throw new Error("The selected item could not be found.");
   }
 
   if (item.lifecycle_status !== "active") {
-    throw new Error(
-      "Dieser Gegenstand ist aktuell nicht zur Ausleihe verfügbar.",
-    );
+    throw new Error("This item is currently unavailable for borrowing.");
   }
 
   const { error } = await supabase.from("inventory_loans").insert({
@@ -288,13 +333,14 @@ export async function adminCreateInventoryLoan({
     borrower_name: borrower_name.trim(),
     borrower_email: borrower_email.trim(),
     due_at: dueDate.toISOString(),
+    comment: comment.trim() || null,
   });
 
   if (error) {
     logger.error("Error creating inventory loan:", error);
 
     if (error.code === "23505") {
-      throw new Error("Dieser Gegenstand ist bereits ausgeliehen.");
+      throw new Error("This item is already borrowed.");
     }
 
     throw error;
@@ -317,7 +363,7 @@ export async function adminReturnInventoryLoan(id) {
 
   if (!data) {
     throw new Error(
-      "Die Ausleihe wurde nicht gefunden oder bereits zurückgegeben.",
+      "The loan could not be found or has already been returned.",
     );
   }
 }
