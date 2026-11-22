@@ -510,8 +510,6 @@ export default function PrivacyPolicy() {
               >
                 outreach@robotum.info
               </a>
-              <br />
-              </a>
             </p>
           </article>
         </main>
