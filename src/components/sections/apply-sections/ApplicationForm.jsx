@@ -249,8 +249,10 @@ export default function ApplicationForm() {
   const topRef = useRef(null);
 
   useEffect(() => {
+    // After a real submit the draft was cleared on purpose - don't re-create it.
+    if (submitted && applicationForm.submissionEnabled) return;
     saveDraft(answers);
-  }, [answers]);
+  }, [answers, submitted]);
 
   const set = (path) => (value) => {
     setAnswers((prev) => setPath(prev, path, value));
