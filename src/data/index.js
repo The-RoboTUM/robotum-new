@@ -9,3 +9,4 @@ export * from "./storageApi";
 export * from "./robocastApi";
 export * from "./authApi";
 export * from "./inventoryApi";
+export * from "./applicationsApi";

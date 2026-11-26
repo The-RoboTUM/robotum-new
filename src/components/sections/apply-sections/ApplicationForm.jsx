@@ -16,6 +16,8 @@ import {
   SKILL_LEVELS,
   WORK_QUESTIONS,
 } from "@config/applicationForm";
+import { applications } from "@config/applications";
+import { submitApplication } from "@data";
 import { validateStep } from "@utils/applicationValidation";
 import { logger } from "@utils/logger";
 import { STEP_COMPONENTS } from "./ApplicationSteps";
@@ -242,6 +244,8 @@ export default function ApplicationForm() {
   const [errors, setErrors] = useState({});
   const [cvFile, setCvFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState("");
   const topRef = useRef(null);
 
   useEffect(() => {
@@ -286,7 +290,10 @@ export default function ApplicationForm() {
     goTo(step + 1);
   };
 
-  const submit = () => {
+  const submit = async () => {
+    if (sending) return;
+    setSendError("");
+
     // Re-check every step; jump to the first one with problems.
     const firstBad = APPLICATION_STEPS.findIndex(
       (s) => Object.keys(validateStep(s.id, answers)).length > 0,
@@ -296,7 +303,35 @@ export default function ApplicationForm() {
       setErrors(validateStep(APPLICATION_STEPS[firstBad].id, answers));
       return;
     }
-    // TODO: send `answers` + cvFile to Supabase once submissionEnabled.
+
+    if (cvFile && cvFile.size > applicationForm.cvMaxSizeMb * 1024 * 1024) {
+      setSendError(
+        `Your CV is larger than ${applicationForm.cvMaxSizeMb} MB. Please choose a smaller PDF.`,
+      );
+      return;
+    }
+
+    if (applicationForm.submissionEnabled) {
+      setSending(true);
+      try {
+        await submitApplication({
+          answers,
+          round: applications.semester,
+          cvFile,
+        });
+      } catch (err) {
+        setSendError(err.message);
+        setSending(false);
+        return;
+      }
+      setSending(false);
+      // Sent - don't leave personal data behind in this browser.
+      clearDraft();
+      setAnswers(emptyApplication());
+      setCvFile(null);
+      setCompleted(new Set());
+    }
+
     setSubmitted(true);
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -327,12 +362,20 @@ export default function ApplicationForm() {
             : "Preview mode: this form isn't connected yet, so nothing was sent. Your answers stay saved in this browser."}
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button variant="secondary" onClick={() => setSubmitted(false)}>
-            Back to review
-          </Button>
-          <Button variant="secondary" onClick={startOver}>
-            Clear answers
-          </Button>
+          {applicationForm.submissionEnabled ? (
+            <Button variant="secondary" to="/join">
+              Back to Join us
+            </Button>
+          ) : (
+            <>
+              <Button variant="secondary" onClick={() => setSubmitted(false)}>
+                Back to review
+              </Button>
+              <Button variant="secondary" onClick={startOver}>
+                Clear answers
+              </Button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -389,6 +432,15 @@ export default function ApplicationForm() {
           </p>
         )}
 
+        {isReview && sendError && (
+          <p
+            role="alert"
+            className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200"
+          >
+            {sendError}
+          </p>
+        )}
+
         <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
           <Button
             variant="secondary"
@@ -399,7 +451,7 @@ export default function ApplicationForm() {
             ← Back
           </Button>
           <div className="flex flex-col items-stretch gap-2 sm:items-end">
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" loading={sending}>
               {isReview
                 ? applicationForm.submissionEnabled
                   ? "Submit application"

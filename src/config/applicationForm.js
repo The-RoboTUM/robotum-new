@@ -6,22 +6,23 @@
 // `rated` / `reviewer` on each step is metadata for the CV screening tool
 // later - it is never shown to applicants.
 //
-// STATUS: draft. `submissionEnabled` is false, so the form validates and
-// shows a review of the answers but does not send anything yet.
+// STATUS: draft. `submissionEnabled` is true: answers + CV are saved to
+// Supabase (table `applications`, private bucket `applications-cv`; set up
+// by supabase/migrations/0008_applications.sql). false = preview only.
 // `liveOnSite` is false, so /join/apply only exists in local development
 // (npm run dev) - on robotum.info the URL shows the 404 page.
 // `useOwnForm` decides whether the "Apply" buttons on /join point here
 // (true) or to the Google Form in src/config/applications.js (false).
 //
-// TO GO LIVE: liveOnSite → true, submissionEnabled → true (once saving
-// works), useOwnForm → true. Commit + redeploy.
+// TO GO LIVE: run migration 0008 in Supabase, then liveOnSite → true and
+// useOwnForm → true. Commit + redeploy.
 // ─────────────────────────────────────────────────────────────────────────
 
 export const applicationForm = {
   path: "/join/apply",
   liveOnSite: false, // ← false = page only exists locally (npm run dev)
   useOwnForm: false, // ← flip to true once submissions are saved
-  submissionEnabled: false, // ← true once answers are stored in Supabase
+  submissionEnabled: true, // ← sends to Supabase (needs migration 0008)
   draftStorageKey: "robotum-application-draft-v1",
   targetWords: 150, // guidance shown under long answers
   maxWords: 250, // hard limit per long answer
