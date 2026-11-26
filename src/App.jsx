@@ -6,11 +6,17 @@ import ErrorBoundary from "@components/ErrorBoundary";
 
 // 🔐 Admin route guard
 import AdminRoute from "@components/admin/AdminRoute";
+import { applicationForm } from "@config/applicationForm";
 
 // Lazy-load route components for better performance (code-splitting)
 const Home = lazy(() => import("@pages/Home"));
 const About = lazy(() => import("@pages/About"));
 const Join = lazy(() => import("@pages/Join-us"));
+const JoinApply = lazy(() => import("@pages/JoinApply"));
+
+// On-site application form: local dev only until it goes live
+// (see src/config/applicationForm.js).
+const showApplicationForm = import.meta.env.DEV || applicationForm.liveOnSite;
 const Events = lazy(() => import("@pages/Events"));
 const EventDetail = lazy(() => import("@pages/EventDetail"));
 const Partners = lazy(() => import("@pages/Partners"));
@@ -46,6 +52,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/join" element={<Join />} />
+          {showApplicationForm && (
+            <Route path={applicationForm.path} element={<JoinApply />} />
+          )}
           <Route path="/events" element={<Events />} />
           <Route path="/events/:slug" element={<EventDetail />} />
           <Route path="/partners" element={<Partners />} />
