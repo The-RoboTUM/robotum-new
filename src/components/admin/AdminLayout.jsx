@@ -48,8 +48,7 @@ export default function AdminLayout({ children, title, description }) {
     { to: "/admin/events", label: "Events" },
     { to: "/admin/inventory", label: "Inventory" },
     { to: "/admin/members", label: "Members" },
-    // later:
-    // { to: "/admin/applications", label: "Applications" },
+    { to: "/admin/applications", label: "Applications" },
   ];
 
   const navLinkClass = (active) =>

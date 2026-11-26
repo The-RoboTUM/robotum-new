@@ -41,6 +41,7 @@ const AdminProjects = lazy(() => import("@pages/admin/AdminProjects"));
 const AdminEvents = lazy(() => import("@pages/admin/AdminEvents"));
 const AdminInventory = lazy(() => import("@pages/admin/AdminInventory"));
 const AdminMembers = lazy(() => import("@pages/admin/AdminMembers"));
+const AdminApplications = lazy(() => import("@pages/admin/AdminApplications"));
 
 export default function App() {
   return (
@@ -81,6 +82,7 @@ export default function App() {
             <Route path="/admin/events" element={<AdminEvents />} />
             <Route path="/admin/inventory" element={<AdminInventory />} />
             <Route path="/admin/members" element={<AdminMembers />} />
+            <Route path="/admin/applications" element={<AdminApplications />} />
             {/* later: /admin/applications */}
           </Route>
 

@@ -1,7 +1,7 @@
 // Multi-step application form: 5 steps + a review screen.
 // Answers are kept as a draft in this browser (localStorage) so a long form
-// survives a reload. Nothing is sent anywhere while
-// applicationForm.submissionEnabled is false.
+// survives a reload. On submit, answers + CV go to Supabase via
+// submitApplication (preview only while submissionEnabled is false).
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { CheckIcon } from "@heroicons/react/24/solid";
@@ -9,18 +9,14 @@ import Button from "@components/ui/Button";
 import {
   applicationForm,
   APPLICATION_STEPS,
-  ATTENDANCE_DATES,
   emptyApplication,
-  LIVING_OPTIONS,
-  PROJECT_TYPES,
-  SKILL_LEVELS,
-  WORK_QUESTIONS,
 } from "@config/applicationForm";
 import { applications } from "@config/applications";
 import { submitApplication } from "@data";
 import { validateStep } from "@utils/applicationValidation";
 import { logger } from "@utils/logger";
 import { STEP_COMPONENTS } from "./ApplicationSteps";
+import ApplicationAnswers from "./ApplicationAnswers";
 
 const REVIEW = APPLICATION_STEPS.length; // index of the review screen
 
@@ -119,120 +115,6 @@ function Stepper({ current, completed, onJump }) {
         })}
       </ol>
     </nav>
-  );
-}
-
-// ── Review screen ────────────────────────────────────────────────────────
-const labelOf = (options, value) =>
-  options.find((o) => o.value === value)?.label ?? value;
-
-function ReviewRow({ label, value }) {
-  const empty = value === undefined || value === null || value === "";
-  return (
-    <div className="grid grid-cols-1 gap-1 py-2 sm:grid-cols-[minmax(0,14rem)_1fr] sm:gap-4">
-      <dt className="text-xs text-white/50">{label}</dt>
-      <dd
-        className={clsx(
-          "whitespace-pre-line text-sm",
-          empty ? "text-white/35 italic" : "text-white/85",
-        )}
-      >
-        {empty ? "Not answered" : value}
-      </dd>
-    </div>
-  );
-}
-
-function ReviewSection({ title, onEdit, children }) {
-  return (
-    <section className="card-inset p-4 sm:p-5">
-      <div className="mb-1 flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-white">{title}</h3>
-        <Button variant="secondary" size="xs" onClick={onEdit}>
-          Edit
-        </Button>
-      </div>
-      <dl className="divide-y divide-white/10">{children}</dl>
-    </section>
-  );
-}
-
-function Review({ answers: a, cvFile, onEdit }) {
-  const skills = Object.entries(a.skillLevels)
-    .filter(([, lvl]) => lvl !== "none")
-    .map(([tag, lvl]) => `${tag} (${labelOf(SKILL_LEVELS, lvl).toLowerCase()})`)
-    .join(", ");
-
-  return (
-    <div className="flex flex-col gap-4">
-      <ReviewSection title="About you" onEdit={() => onEdit(0)}>
-        <ReviewRow label="Name" value={`${a.firstName} ${a.lastName}`.trim()} />
-        <ReviewRow label="Email" value={a.email} />
-        <ReviewRow label="Phone" value={a.phone} />
-        <ReviewRow label="Matriculation number" value={a.matriculationNumber} />
-        <ReviewRow
-          label="University"
-          value={a.university === "Other" ? a.universityOther : a.university}
-        />
-        <ReviewRow
-          label="Degree & field"
-          value={[a.degree, a.fieldOfStudy].filter(Boolean).join(" · ")}
-        />
-        <ReviewRow label="Semester" value={a.semester} />
-        <ReviewRow
-          label="Living during the semester"
-          value={
-            a.living === "other"
-              ? a.livingOther
-              : labelOf(LIVING_OPTIONS, a.living)
-          }
-        />
-        <ReviewRow label="Heard about us via" value={a.heardAbout} />
-      </ReviewSection>
-
-      <ReviewSection title="Availability" onEdit={() => onEdit(1)}>
-        {ATTENDANCE_DATES.map((d) => (
-          <ReviewRow
-            key={d.id}
-            label={`${d.label} (${d.date})`}
-            value={
-              a.attendance[d.id] && (a.attendance[d.id] === "yes" ? "Yes" : "No")
-            }
-          />
-        ))}
-        <ReviewRow label="Hours per week" value={a.hoursPerWeek} />
-        <ReviewRow label="Other commitments" value={a.otherCommitments} />
-      </ReviewSection>
-
-      <ReviewSection title="How you work" onEdit={() => onEdit(2)}>
-        {WORK_QUESTIONS.map((q) => (
-          <ReviewRow key={q.id} label={q.label} value={a.work[q.id]} />
-        ))}
-      </ReviewSection>
-
-      <ReviewSection title="Interests" onEdit={() => onEdit(3)}>
-        <ReviewRow label="Skills" value={skills} />
-        <ReviewRow label="Roles" value={a.roles.join(", ")} />
-        <ReviewRow
-          label="Project type"
-          value={labelOf(PROJECT_TYPES, a.projectType)}
-        />
-        <ReviewRow label="Curious about" value={a.curiousProjects} />
-      </ReviewSection>
-
-      <ReviewSection title="Skills & experience" onEdit={() => onEdit(4)}>
-        <ReviewRow label="Main skill area" value={a.mainSkillArea} />
-        <ReviewRow label="About that skill" value={a.mainSkillStory} />
-        {a.secondSkillArea && (
-          <>
-            <ReviewRow label="Second skill area" value={a.secondSkillArea} />
-            <ReviewRow label="About that skill" value={a.secondSkillStory} />
-          </>
-        )}
-        <ReviewRow label="CV" value={cvFile?.name} />
-        <ReviewRow label="Links" value={a.links} />
-      </ReviewSection>
-    </div>
   );
 }
 
@@ -417,7 +299,11 @@ export default function ApplicationForm() {
         </header>
 
         {isReview ? (
-          <Review answers={answers} cvFile={cvFile} onEdit={goTo} />
+          <ApplicationAnswers
+            answers={answers}
+            cvLabel={cvFile?.name ?? ""}
+            onEdit={goTo}
+          />
         ) : (
           <StepComponent
             answers={answers}

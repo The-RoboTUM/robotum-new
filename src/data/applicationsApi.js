@@ -75,3 +75,85 @@ export async function submitApplication({ answers, round, cvFile }) {
 
   return data;
 }
+
+/* -------------------------------------------------------
+   ADMIN HELPERS - used by /admin/applications.
+   RLS (migration 0008) only lets admins read/update; everyone else gets
+   an empty list. Adapt when per-area roles (screeners etc.) land.
+------------------------------------------------------- */
+
+/** Must match the check constraint on applications.status (0008). */
+export const APPLICATION_STATUSES = [
+  { value: "received", label: "Received" },
+  { value: "in_review", label: "In review" },
+  { value: "interview", label: "Interview" },
+  { value: "accepted", label: "Accepted" },
+  { value: "rejected", label: "Rejected" },
+  { value: "withdrawn", label: "Withdrawn" },
+];
+
+const APPLICATION_SELECT = `
+  id,
+  created_at,
+  updated_at,
+  round,
+  status,
+  first_name,
+  last_name,
+  email,
+  university,
+  degree,
+  field_of_study,
+  semester_of_study,
+  main_skill_area,
+  answers,
+  cv_path
+`;
+
+/** All applications, newest first. */
+export async function adminFetchApplications() {
+  const { data, error } = await supabase
+    .from("applications")
+    .select(APPLICATION_SELECT)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    logger.error("Error loading applications:", error);
+    throw error;
+  }
+
+  return data ?? [];
+}
+
+/** Change an application's status; returns the updated row. */
+export async function adminSetApplicationStatus(id, status) {
+  const { data, error } = await supabase
+    .from("applications")
+    .update({ status })
+    .eq("id", id)
+    .select(APPLICATION_SELECT)
+    .single();
+
+  if (error) {
+    logger.error("Error updating application status:", error);
+    throw error;
+  }
+
+  return data;
+}
+
+/** Short-lived link to open a CV from the private bucket. */
+export async function adminGetApplicationCvUrl(cvPath, expiresInSeconds = 300) {
+  if (!cvPath) return "";
+
+  const { data, error } = await supabase.storage
+    .from(APPLICATION_CV_BUCKET)
+    .createSignedUrl(cvPath, expiresInSeconds);
+
+  if (error) {
+    logger.error("Error creating CV link:", error);
+    throw error;
+  }
+
+  return data?.signedUrl ?? "";
+}
