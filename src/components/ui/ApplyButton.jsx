@@ -4,6 +4,7 @@ import {
   applicationsOpen,
   hasApplicationForm,
 } from "@config/applications";
+import { applicationForm } from "@config/applicationForm";
 
 /**
  * The single place that decides what the "apply" call to action does.
@@ -29,6 +30,21 @@ export default function ApplyButton({
         className={className}
       >
         Applications closed
+      </Button>
+    );
+  }
+
+  // On-site form (src/config/applicationForm.js) replaces the Google Form.
+  if (applicationForm.useOwnForm) {
+    return (
+      <Button
+        to={applicationForm.path}
+        variant={variant}
+        size={size}
+        fullWidth={fullWidth}
+        className={className}
+      >
+        {label} →
       </Button>
     );
   }
