@@ -187,16 +187,19 @@ export const MAX_ROLES = 3;
 export const PROJECT_TYPES = [
   {
     value: "advanced",
+    short: "Advanced", // shown in the /admin/applications table
     label: "Advanced technical project",
     hint: "You already have solid hands-on experience.",
   },
   {
     value: "entry",
+    short: "Entry-level",
     label: "Entry-level technical project",
     hint: "You want to learn by building.",
   },
   {
     value: "non_technical",
+    short: "Non-technical",
     label: "Non-technical",
     hint: "Operations, marketing, partnerships, events.",
   },

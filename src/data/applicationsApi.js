@@ -142,6 +142,24 @@ export async function adminSetApplicationStatus(id, status) {
   return data;
 }
 
+/** Change the status of several applications at once; returns the updated rows. */
+export async function adminSetApplicationsStatus(ids, status) {
+  if (!ids?.length) return [];
+
+  const { data, error } = await supabase
+    .from("applications")
+    .update({ status })
+    .in("id", ids)
+    .select(APPLICATION_SELECT);
+
+  if (error) {
+    logger.error("Error updating application statuses:", error);
+    throw error;
+  }
+
+  return data ?? [];
+}
+
 /** Short-lived link to open a CV from the private bucket. */
 export async function adminGetApplicationCvUrl(cvPath, expiresInSeconds = 300) {
   if (!cvPath) return "";
